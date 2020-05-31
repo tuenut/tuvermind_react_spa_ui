@@ -1,11 +1,12 @@
 import {combineReducers} from "redux";
 
-import {exampleReducer} from "./example/reducers"
-import {timeTickReducer} from "./ClockFrame/reducers";
+import timeTickReducer from "./Clock/reducers";
+import weatherReducer from "./Weather/reducers";
+
 
 export default combineReducers({
-  example: exampleReducer,
-  time: timeTickReducer
+  time: timeTickReducer,
+  weather: weatherReducer
 });
 
 
