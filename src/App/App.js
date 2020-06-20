@@ -11,10 +11,14 @@ import {HOST} from "../constants";
 import rootReducer from ".././Store/reducers";
 import WeatherView from "./components/Weather/View";
 
-const enchancers = [
+let enchancers = [
   applyMiddleware(thunk),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ];
+
+const _dev_tools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+if (_dev_tools) {
+  enchancers = enchancers.concat(_dev_tools)
+}
 
 const store = createStore(
   rootReducer,

@@ -5,7 +5,7 @@ import {Image} from 'react-bootstrap';
 import humidity_icon from "../../../icons/weather/027-humidity.svg";
 import barometer_icon from "../../../icons/weather/050-barometer.svg";
 
-const invert_style = {webkitFilter: "invert(.90)"};
+const invert_style = {WebkitFilter: "invert(.90)"};
 
 export default class BaseWeatherCard extends React.Component {
   getTime() {
