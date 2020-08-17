@@ -8,7 +8,10 @@ export const getTodayWeather = () => {
   return dispatch => {
 
     // let date = new Date();
-    // let date_string = String(date.getDate()) + String(date.getMonth() + 1).padStart(2, "0") + String(date.getFullYear());
+    // let day = date.getDate().toString().padStart(2, '0');
+    // let month = (date.getMonth()+1).toString().padStart(2, '0');
+    // let year = date.getFullYear();
+    // let date_string = `${day}${month}${year}`;
 
     axios
       .get('/api/weather/next15h/')

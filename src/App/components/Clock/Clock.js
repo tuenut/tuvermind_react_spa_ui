@@ -24,7 +24,7 @@ export default class Clock extends React.Component {
               {this.props.current_date}
             </div>
 
-            <div className={"font-weight-bold"} style={{fontSize: 196, marginTop: -48}}>
+            <div className={"font-weight-bold"} style={{fontSize: 196, marginTop: -24}}>
               {this.props.current_time}
             </div>
 

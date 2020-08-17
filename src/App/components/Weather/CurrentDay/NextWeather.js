@@ -10,17 +10,27 @@ export default class NextWeatherCard extends BaseWeatherCard {
         <Card.Body>
 
           <Card.Title className={"pl-4"}>
-            <h4>{this.getDate()} {this.getTime()}</h4>
+            <h4>
+              {this.getDate()} {this.getTime()}
+            </h4>
           </Card.Title>
 
           <Row>
-            <Col className={"mx-2"} style={{fontSize: 24}}>{this.getTemperature()}</Col>
-            <Col>{this.getWeatherIcon(48, 48)}</Col>
+            <Col className={"mx-2"} style={{fontSize: 24}}>
+              {this.getTemperature()}
+            </Col>
+            <Col>
+              {this.getWeatherIcon(48, 48)}
+            </Col>
           </Row>
 
           <Row>
-            <Col >{this.getHumidity()}</Col>
-            <Col xs={6} className={"px-0"}>{this.getPressure()}</Col>
+            <Col>
+              {this.getHumidity()}
+            </Col>
+            <Col xs={6} className={"px-0"}>
+              {this.getPressure()}
+            </Col>
           </Row>
 
         </Card.Body>

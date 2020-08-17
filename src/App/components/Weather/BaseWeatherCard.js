@@ -25,14 +25,16 @@ export default class BaseWeatherCard extends React.Component {
 
     if (!temperature) {
       return
-    } else if (temperature > 25) {
+    } else if (25 <= temperature) {
       color = "text-danger";
-    } else if (25 >= temperature >= 15) {
+    } else if (15 <= temperature && temperature < 25) {
       color = "text-warning";
-    } else if (15 > temperature > 0) {
+    } else if (0 <= temperature && temperature < 15) {
       color = "text-success";
     } else if (temperature < 0) {
       color = "text-info";
+    } else {
+      console.log('else')
     }
 
     return <b className={color}>{temperature}°</b>

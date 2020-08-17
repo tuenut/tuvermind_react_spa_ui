@@ -28,7 +28,8 @@ export default class View extends React.Component {
           <CardDeck style={{maxWidth: "100%"}}>
             {
               this.props.data && this.props.data.map(
-                (data) => new Date(data.timestamp) > new Date() && <NextWeatherCard key={data.timestamp} data={data}/>
+                (data) =>
+                  new Date(data.timestamp) > new Date() && <NextWeatherCard key={data.timestamp} data={data}/>
               )
             }
 
