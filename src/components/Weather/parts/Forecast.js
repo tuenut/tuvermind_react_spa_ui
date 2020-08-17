@@ -1,9 +1,9 @@
 import React from "react";
 import {Card, Row, Col} from 'react-bootstrap';
-import BaseWeatherCard from "../BaseWeatherCard";
+import BaseWeatherCard from "./BaseWeatherCard";
 
 
-export default class NextWeatherCard extends BaseWeatherCard {
+export default class ForecatsCard extends BaseWeatherCard {
   render() {
     return (
       <Card bg={"dark"} className={"text-center border-0"}>

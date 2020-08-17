@@ -1,7 +1,7 @@
 import React from 'react';
 import {CardDeck, Row, Col} from 'react-bootstrap'
-import CurrentWeatherCardContainer from "../../../containers/Weather/CurrentDay/CurrentWeather";
-import NextWeatherCard from "./NextWeather";
+import CurrentWeatherCardContainer from "./CurrentWeatherContainer";
+import NextWeatherCard from "./Forecast";
 
 
 export default class View extends React.Component {

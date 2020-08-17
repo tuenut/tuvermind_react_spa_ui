@@ -2,8 +2,8 @@ import React from 'react';
 
 import Table from 'react-bootstrap/Table';
 
-import ClockContainer from "../../containers/Clock/Clock";
-import CurrentDayWeatherViewContainer from "../../containers/Weather/CurrentDay/View";
+import ClockContainer from "../Clock/ClockContainer";
+import CurrentDayWeatherViewContainer from "./parts/ViewContainer";
 
 
 export default class View extends React.Component {

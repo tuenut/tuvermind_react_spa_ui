@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 
-import {getCurrentWeather} from "../../../../Store/Weather/CurrentDay/CurrentWeather/actions";
-import CurrentWeatherCard from "../../../components/Weather/CurrentDay/CurrentWeather";
+import {getCurrentWeather} from "../../../Store/Weather/CurrentDay/CurrentWeather/actions";
+import CurrentWeatherCard from "./CurrentWeather";
 
 
 const mapStateToProps = state => {
