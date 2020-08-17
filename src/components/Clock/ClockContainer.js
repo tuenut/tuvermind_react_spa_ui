@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 
-import Clock from "./Clock";
-import {timeTickAction} from "../../Store/Clock/actions";
+import {ClockCard} from "./Clock";
+import {timeTickAction} from "../../Store/actions";
 
 
 const mapStateToProps = state => {
@@ -15,4 +15,4 @@ const mapDispatchToProps = {
   timeTick: timeTickAction
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Clock);
+export const Clock = connect(mapStateToProps, mapDispatchToProps)(ClockCard);

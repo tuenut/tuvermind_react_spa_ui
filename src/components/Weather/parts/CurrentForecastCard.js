@@ -1,9 +1,11 @@
 import React from "react";
+
 import {Card, Row, Col} from 'react-bootstrap';
-import BaseWeatherCard from "./BaseWeatherCard";
+
+import {ForecastCard} from "./ForecastCard";
 
 
-export default class CurrentWeatherCard extends BaseWeatherCard {
+export class CurrentForecastCard extends ForecastCard {
   componentDidMount() {
     this.props.getCurrentWeather();
 

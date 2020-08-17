@@ -1,10 +1,12 @@
 import React from 'react';
+
 import {CardDeck, Row, Col} from 'react-bootstrap'
-import CurrentWeatherCardContainer from "./CurrentWeatherContainer";
-import NextWeatherCard from "./Forecast";
+
+import {CurrentWeatherCardContainer} from "./CurrentForecastCardContainer";
+import {TodayForecastCards} from "./TodayForecastCards";
 
 
-export default class View extends React.Component {
+export class TodayForecast extends React.Component {
   componentDidMount() {
     this.props.getTodayWeather();
 
@@ -27,9 +29,9 @@ export default class View extends React.Component {
         <Col xs={9}>
           <CardDeck style={{maxWidth: "100%"}}>
             {
-              this.props.data && this.props.data.map(
-                (data) =>
-                  new Date(data.timestamp) > new Date() && <NextWeatherCard key={data.timestamp} data={data}/>
+              this.props.data && this.props.data.map((data) =>
+                (new Date(data.timestamp) > new Date())
+                && <TodayForecastCards key={data.timestamp} data={data}/>
               )
             }
 

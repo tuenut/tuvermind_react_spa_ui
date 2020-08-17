@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {Container} from "react-bootstrap";
-import WeatherView from "../Weather/View";
+import {Weather} from "../Weather";
 
 
 export const App = props => (
-    <Container fluid>
+  <Container fluid>
 
-        <WeatherView/>
+    <Weather/>
 
-    </Container>
+  </Container>
 );

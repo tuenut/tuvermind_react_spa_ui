@@ -1,13 +1,13 @@
-import React from "react";
-import {Fragment} from "react";
+import React, {Fragment} from "react";
+
 import {Image} from 'react-bootstrap';
 
-import humidity_icon from "../../../icons/weather/027-humidity.svg";
-import barometer_icon from "../../../icons/weather/050-barometer.svg";
+import humidity_icon from "../../../assets/icons/weather/027-humidity.svg";
+import barometer_icon from "../../../assets/icons/weather/050-barometer.svg";
 
 const invert_style = {WebkitFilter: "invert(.90)"};
 
-export default class BaseWeatherCard extends React.Component {
+export class ForecastCard extends React.Component {
   getTime() {
     return this.props.data && new Date(this.props.data.timestamp).toLocaleTimeString().split(':').slice(0, 2).join(':')
   }

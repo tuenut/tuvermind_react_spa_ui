@@ -2,7 +2,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card'
 
 
-export default class Clock extends React.Component {
+export class ClockCard extends React.Component {
   componentDidMount() {
     this.timerID = setInterval(
       this.props.timeTick,

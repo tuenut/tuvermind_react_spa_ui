@@ -1,8 +1,9 @@
 import {combineReducers} from "redux";
-import getCurrentWeatherReducer from "./CurrentDay/CurrentWeather/reducers";
-import getCurrentDayReducer from "./CurrentDay/reducers";
 
-export default combineReducers({
-  current: getCurrentWeatherReducer,
-  today: getCurrentDayReducer
+import {currentForecastReducer} from "./parts/currentForecastReducers";
+import {todayForecastReducer} from "./parts/todayForecastReducers";
+
+export const weatherReducer = combineReducers({
+  current: currentForecastReducer,
+  today: todayForecastReducer
 });
