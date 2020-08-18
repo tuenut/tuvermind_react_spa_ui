@@ -4,8 +4,8 @@ import {TIME_TICK_ACTION} from "./actions";
 const getCurrentDateTime = (state, action) => {
   let date = new Date();
   let current_day = `${date.toLocaleDateString("ru", {weekday: 'long'})}`;
-  let current_date = `${date.toLocaleDateString()}`;
-  let current_time = `${date.toLocaleTimeString()}`;
+  let current_date = `${date.toLocaleDateString("ru")}`;
+  let current_time = `${date.toLocaleTimeString("ru")}`;
 
   return {
     ...state,
