@@ -2,7 +2,7 @@ import React from 'react';
 
 import Table from 'react-bootstrap/Table';
 
-import {Clock} from "../Clock/ClockContainer";
+import {ClockCard} from "../Clock";
 import {TodayForecast} from "./parts";
 
 
@@ -12,7 +12,7 @@ export const Weather = props => (
 
     <tr>
       <td>
-        <Clock/>
+        <ClockCard/>
       </td>
     </tr>
 
