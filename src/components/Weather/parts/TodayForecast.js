@@ -34,7 +34,6 @@ export class TodayForecast extends React.Component {
                 && <TodayForecastCards key={data.timestamp} data={data}/>
               )
             }
-
           </CardDeck>
         </Col>
       </Row>

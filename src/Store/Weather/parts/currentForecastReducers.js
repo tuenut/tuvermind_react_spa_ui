@@ -18,7 +18,7 @@ const
   fetchingSuccess = (state, action) => ({
     ...state,
     loading: false,
-    data: action.data
+    data: action.data.results[0]
   }),
   fetchingError = (state, action) => ({
     ...state,
