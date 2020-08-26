@@ -19,11 +19,19 @@ const fetchingError = response => ({
 export const requestTodayForecast = () => {
   const dateFrom = roundDate(new Date());
   const dateTo = new Date(dateFrom);
+
   dateTo.setHours(dateFrom.getHours() + 12);
+
+  const filterOptions = {
+    timestamp__gte: dateFrom.toISOString(),
+    timestamp__lte: dateTo.toISOString()
+  };
+
+  const opts = Object.entries(filterOptions).map((opt) => opt.join("=")).join("&");
 
   return dispatch => {
     axios
-      .get(`${WEATHER_URL}?timestamp__gte=${dateFrom.toISOString()}&timestamp__lte=${dateTo.toISOString()}`)
+      .get(`${WEATHER_URL}?${opts}`)
       .then(res => dispatch(fetchingSuccess(res)))
       .catch(err => dispatch(fetchingError(err)));
   };
