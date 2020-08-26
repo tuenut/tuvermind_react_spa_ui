@@ -1,7 +1,7 @@
 import axios from "axios";
 import {GET_CURRENT_WEATHER_ERROR, GET_CURRENT_WEATHER_SUCCESS} from "./currentForecastActionsTypes";
 import {WEATHER_URL} from "../../../settings/remoteAPI";
-import {roundDate} from "../../../utils/rounDate";
+import {roundDate} from "../../../utils/roundDate";
 
 
 const fetchingSuccess = response => ({
