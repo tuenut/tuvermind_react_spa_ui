@@ -6,13 +6,17 @@ export const ClockCard = props => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
+    console.log('useEffect callback body');
     const interval = setInterval(
       () => setDate(new Date()),
       1000
     );
 
-    return () => clearInterval(interval)
-  });
+    return () => {
+      console.log('useEffect callback result');
+      clearInterval(interval);
+    }
+  }, []);
 
   const dateString = `${date.toLocaleDateString("ru", {weekday: 'long'})} ${date.toLocaleDateString("ru")}`;
   const timeString = `${date.toLocaleTimeString("ru")}`;
