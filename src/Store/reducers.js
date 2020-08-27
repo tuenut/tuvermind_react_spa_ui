@@ -1,10 +1,11 @@
 import {combineReducers} from "redux";
 
-import {weatherReducer} from "./Weather/reducers";
 
-
-export default combineReducers({
-  weather: weatherReducer
-});
+export default (state, action) => {
+  switch (action) {
+    default:
+      return state;
+  }
+};
 
 

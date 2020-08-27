@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Table from 'react-bootstrap/Table';
+import {Table, Row, Col} from 'react-bootstrap';
 
 import {ClockCard} from "../Clock";
-import {TodayForecast} from "./parts";
+import {CurrentForecast, TodayForecast} from "./parts";
 
 
 export const Weather = props => (
@@ -18,7 +18,14 @@ export const Weather = props => (
 
     <tr>
       <td>
-        <TodayForecast/>
+        <Row>
+          <Col>
+            <CurrentForecast/>
+          </Col>
+          <Col xs={9}>
+            <TodayForecast/>
+          </Col>
+        </Row>
       </td>
     </tr>
 

@@ -1,1 +1,2 @@
-export {TodayForecastContainer as TodayForecast} from "./TodayForecastContainer";
+export {CurrentForecast} from "./CurrentForecast";
+export {TodayForecast} from "./TodayForecast";

@@ -1,42 +1,53 @@
-import React from 'react';
+import React, {useEffect, useState} from "react";
 
-import {CardDeck, Row, Col} from 'react-bootstrap'
+import axios from "axios/index";
 
-import {CurrentWeatherCardContainer} from "./CurrentForecastCardContainer";
-import {TodayForecastCards} from "./TodayForecastCards";
+import {CardDeck} from 'react-bootstrap';
+import {roundDate} from "../../../utils/roundDate";
+import {WEATHER_URL} from "../../../settings/remoteAPI";
+import {ForecastCard} from "./ForecastCard";
+
+const cardDeckStyle = {maxWidth: "100%"};
 
 
-export class TodayForecast extends React.Component {
-  componentDidMount() {
-    this.props.getTodayWeather();
+export const TodayForecast = props => {
+  const [data, setData] = useState([]);
 
-    this.timerID = setInterval(
-      this.props.getTodayWeather,
-      1000 * 60 * 10
-    );
-  }
+  const request = () => {
+    const dateFrom = roundDate(new Date());
+    const dateTo = new Date(dateFrom);
+    dateTo.setHours(dateFrom.getHours() + 12);
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
+    const opts = Object
+      .entries({
+        timestamp__gte: dateFrom.toISOString(),
+        timestamp__lte: dateTo.toISOString()
+      })
+      .map((opt) => opt.join("="))
+      .join("&");
 
-  render() {
-    return (
-      <Row>
-        <Col>
-          <CurrentWeatherCardContainer/>
-        </Col>
-        <Col xs={9}>
-          <CardDeck style={{maxWidth: "100%"}}>
-            {
-              this.props.data && this.props.data.map((data) =>
-                (new Date(data.timestamp) > new Date())
-                && <TodayForecastCards key={data.timestamp} data={data}/>
-              )
-            }
-          </CardDeck>
-        </Col>
-      </Row>
-    )
-  }
-}
+    axios
+      .get(`${WEATHER_URL}?${opts}`)
+      .then(res => setData(res.data.results))
+      .catch(err => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  useEffect(() => {
+    request();
+
+    const interval = setInterval(request, 1000 * 60 * 10);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <CardDeck style={cardDeckStyle}>
+      {data && data.map((item, index) =>
+        <ForecastCard {...item} key={index}/>
+      )}
+    </CardDeck>
+  )
+};

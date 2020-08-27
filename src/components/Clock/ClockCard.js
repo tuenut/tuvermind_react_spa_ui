@@ -6,14 +6,12 @@ export const ClockCard = props => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
-    console.log('useEffect callback body');
     const interval = setInterval(
       () => setDate(new Date()),
       1000
     );
 
     return () => {
-      console.log('useEffect callback result');
       clearInterval(interval);
     }
   }, []);

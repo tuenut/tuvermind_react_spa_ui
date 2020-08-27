@@ -1,78 +1,51 @@
-import React, {Fragment} from "react";
+import React from "react";
 
-import {Image} from 'react-bootstrap';
+import {Card, Row, Col} from 'react-bootstrap';
 
-import humidity_icon from "../../../assets/icons/weather/027-humidity.svg";
-import barometer_icon from "../../../assets/icons/weather/050-barometer.svg";
+import {getDate, getHumidity, getPressure, getTemperature, getTime, getWeatherIcon} from "./_utils";
 
-const invert_style = {WebkitFilter: "invert(.90)"};
 
-export class ForecastCard extends React.Component {
-  getTime() {
-    return this.props.data && new Date(this.props.data.timestamp).toLocaleTimeString().split(':').slice(0, 2).join(':')
-  }
+const temperatureStyle = {fontSize: 24};
+const currenttemperatureStyle = {fontSize: 48};
 
-  getDate() {
-    return this.props.data && new Date(this.props.data.timestamp).toLocaleDateString("ru", {
-      day: 'numeric',
-      month: 'long',
-    })
-  }
+export const ForecastCard = props => (
+  <Card bg={"dark"} className={"text-center border-0"}>
+    <Card.Body>
 
-  getTemperature() {
-    let temperature = this.props.data && Math.round(this.props.data.temperature - 273);
-    let color;
+      <Card.Title className={"pl-4"}>
+        {
+          props.current
+            ? <h1>Погода сейчас</h1>
+            : <h4>{`${getDate(props.timestamp)} ${getTime(props.timestamp)}`}</h4>
+        }
 
-    if (!temperature) {
-      return
-    } else if (25 <= temperature) {
-      color = "text-danger";
-    } else if (15 <= temperature && temperature < 25) {
-      color = "text-warning";
-    } else if (0 <= temperature && temperature < 15) {
-      color = "text-success";
-    } else if (temperature < 0) {
-      color = "text-info";
-    } else {
-      console.log('else')
-    }
+      </Card.Title>
 
-    return <b className={color}>{temperature}°</b>
-  }
+      <Row>
+        <Col
+          className={"mx-2"}
+          style={props.current ? currenttemperatureStyle : temperatureStyle}
+        >
+          {getTemperature(props.temperature)}
+        </Col>
+        <Col>
+          {props.weather_data && getWeatherIcon(
+            props.weather_data,
+            props.current ? 128 : 48,
+            props.current ? 128 : 48
+          )}
+        </Col>
+      </Row>
 
-  getWeatherIcon(w, h) {
-    try {
-      return (
-        <img
-          height={w}
-          width={h}
-          alt={this.props.data.weather_data.description}
-          src={this.props.data.weather_data.icon}
-        />
-      )
-    }
-    catch (e) {
-      return ""
-    }
-  }
+      <Row>
+        <Col>
+          {getHumidity(props.humidity)}
+        </Col>
+        <Col xs={6} className={"px-0"}>
+          {getPressure(props.pressure)}
+        </Col>
+      </Row>
 
-  getHumidity() {
-    return this.props.data &&
-      <span style={{color: "#c3c3c3"}}>
-        <Image width={16} height={16} src={humidity_icon} alt={"humidity"} className={"mr-2"} style={invert_style}/>
-        {`${this.props.data.humidity}%`}
-      </span>
-  }
-
-  getPressure() {
-    return this.props.data &&
-      <span style={{color: "#c3c3c3"}}>
-        <Image width={16} height={16} src={barometer_icon} alt={"humidity"} className={"mr-2"} style={invert_style}/>
-        {`${Math.round(this.props.data.pressure / 1.333)}мм рт.ст.`}
-      </span>
-  }
-
-  render() {
-    return (<Fragment/>)
-  }
-}
+    </Card.Body>
+  </Card>
+);
