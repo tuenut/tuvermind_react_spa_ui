@@ -6,7 +6,7 @@ import {getDate, getHumidity, getPressure, getTemperature, getTime, getWeatherIc
 
 
 const temperatureStyle = {fontSize: 24};
-const currenttemperatureStyle = {fontSize: 48};
+const currentTemperatureStyle = {fontSize: 48};
 
 export const ForecastCard = props => (
   <Card bg={"dark"} className={"text-center border-0"}>
@@ -24,7 +24,7 @@ export const ForecastCard = props => (
       <Row>
         <Col
           className={"mx-2"}
-          style={props.current ? currenttemperatureStyle : temperatureStyle}
+          style={props.current ? currentTemperatureStyle : temperatureStyle}
         >
           {getTemperature(props.temperature)}
         </Col>
