@@ -45,9 +45,16 @@ export const TodayForecast = props => {
 
   return (
     <CardDeck style={cardDeckStyle}>
-      {data && data.map((item, index) =>
-        <ForecastCard {...item} key={index}/>
-      )}
+      {
+        data && data
+          .sort((item1, item2) => {
+            if (item1.timestamp > item2.timestamp) return 1;
+            if (item1.timestamp < item2.timestamp) return -1;
+            return 0;
+          })
+          .map((item, index) =>
+            <ForecastCard {...item} key={index}/>
+          )}
     </CardDeck>
   )
 };

@@ -7,7 +7,7 @@ export const roundDate = date => {
 
   for (let h of hours) {
     if (more === undefined && (h > date.getHours())) more = h;
-    if (more === undefined && (h <= date.getHours())) less = h;
+    if (less === undefined && (h <= date.getHours())) less = h;
   }
 
   // console.log(`more:${more}; less:${less}`);
