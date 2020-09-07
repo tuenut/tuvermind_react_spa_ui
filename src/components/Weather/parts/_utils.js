@@ -5,7 +5,7 @@ import {Image} from 'react-bootstrap';
 import humidity_icon from "../../../assets/icons/weather/027-humidity.svg";
 import barometer_icon from "../../../assets/icons/weather/050-barometer.svg";
 
-export const getTime = timestamp => new Date(timestamp).toLocaleTimeString().split(':').slice(0, 2).join(':');
+export const getTime = timestamp => new Date(timestamp).toLocaleTimeString("ru").split(':').slice(0, 2).join(':');
 
 export const getDate = timestamp => new Date(timestamp).toLocaleDateString("ru", {day: 'numeric', month: 'long',});
 
