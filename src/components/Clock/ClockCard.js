@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Card from 'react-bootstrap/Card';
 
 
-export const ClockCard = props => {
+export const ClockCard = () => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {

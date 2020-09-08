@@ -7,7 +7,7 @@ import {WEATHER_URL} from "../../settings/remoteAPI";
 import {ForecastCard} from "./parts";
 
 
-export const CurrentForecast = props => {
+export const CurrentForecast = () => {
   const [data, setData] = useState({
     timestamp: undefined,
     temperature: undefined,

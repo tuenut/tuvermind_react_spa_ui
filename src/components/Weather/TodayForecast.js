@@ -7,10 +7,8 @@ import {roundDate} from "../../utils/roundDate";
 import {WEATHER_URL} from "../../settings/remoteAPI";
 import {ForecastCard} from "./parts";
 
-const cardDeckStyle = {maxWidth: "100%"};
 
-
-export const TodayForecast = props => {
+export const TodayForecast = () => {
   const [data, setData] = useState([]);
 
   const request = () => {

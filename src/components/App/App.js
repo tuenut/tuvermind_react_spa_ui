@@ -8,7 +8,7 @@ import {LoadingSpinner} from "../_lib";
 
 const TheLayout = React.lazy(() => import("../TheLayout"));
 
-export const App = props => (
+export const App = () => (
   <HashRouter>
 
     <Suspense fallback={<LoadingSpinner/>}>
