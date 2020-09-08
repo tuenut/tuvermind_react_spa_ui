@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 
-import {Container} from "react-bootstrap";
-import {Weather} from "../Weather";
+import {HashRouter, Route, Switch} from 'react-router-dom';
 
+import {HOME_ROUTE} from "../../settings/routesPaths";
+import {LoadingSpinner} from "../_lib";
+
+
+const TheLayout = React.lazy(() => import("../TheLayout"));
 
 export const App = props => (
-  <Container fluid>
+  <HashRouter>
 
-    <Weather/>
+    <Suspense fallback={<LoadingSpinner/>}>
+      <Switch>
+        <Route path={HOME_ROUTE} name={"Home"} render={props => <TheLayout/>}/>
+      </Switch>
+    </Suspense>
 
-  </Container>
+  </HashRouter>
 );

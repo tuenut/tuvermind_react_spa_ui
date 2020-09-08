@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 
 import axios from "axios/index";
 
-import {roundDate} from "../../../utils/roundDate";
-import {WEATHER_URL} from "../../../settings/remoteAPI";
-import {ForecastCard} from "./ForecastCard";
+import {roundDate} from "../../utils/roundDate";
+import {WEATHER_URL} from "../../settings/remoteAPI";
+import {ForecastCard} from "./parts";
 
 
 export const CurrentForecast = props => {

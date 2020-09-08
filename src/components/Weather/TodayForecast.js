@@ -3,9 +3,9 @@ import React, {useEffect, useState} from "react";
 import axios from "axios/index";
 
 import {CardDeck} from 'react-bootstrap';
-import {roundDate} from "../../../utils/roundDate";
-import {WEATHER_URL} from "../../../settings/remoteAPI";
-import {ForecastCard} from "./ForecastCard";
+import {roundDate} from "../../utils/roundDate";
+import {WEATHER_URL} from "../../settings/remoteAPI";
+import {ForecastCard} from "./parts";
 
 const cardDeckStyle = {maxWidth: "100%"};
 
@@ -44,7 +44,7 @@ export const TodayForecast = props => {
   }, []);
 
   return (
-    <CardDeck style={cardDeckStyle}>
+    <CardDeck className="w-100">
       {
         data && data
           .sort((item1, item2) => {
