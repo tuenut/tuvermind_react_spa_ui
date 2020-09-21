@@ -7,20 +7,24 @@ import {CurrentForecast, TodayForecast} from "../Weather";
 
 export const Home = () => (
   <Fragment>
+
     <Row className={"justify-content-center text-light"}>
       <ClockCard/>
     </Row>
+
     <Row className={"justify-content-center text-light"}>
       <Col xs={3}>
-
         <CurrentForecast/>
-
       </Col>
+
       <Col>
-
         <TodayForecast/>
-
       </Col>
     </Row>
+
+    <Row>
+
+    </Row>
+
   </Fragment>
 );
