@@ -1,3 +1,3 @@
-export {TODOList} from "./TODOListCard";
-export {TODOListElement} from "./TODOListElement";
-export {TODOEdit} from "./TODOEditCard";
+export {TodoList} from "./TodoList";
+export {TODOCard} from "./TODOCard";
+export {TodoEditorCard} from "./TODOEditorCard";

@@ -2,50 +2,95 @@ import React, {useEffect, useState, useCallback} from "react";
 
 import axios from "axios/index";
 
-import {CardColumns} from "react-bootstrap";
+import {Row, Col, Fade} from "react-bootstrap";
 
 import {TODOES_URL} from "../../settings/remoteAPI";
-import {TODOEdit, TODOList} from "./parts";
+import {TodoEditorCard, TodoList} from "./parts";
 import {listToObject} from "../../utils/common";
 
-
-const getTODO = (list, id) => list && listToObject(list)[id];
+const emptyTodoObject = {
+  id: "",
+  title: "",
+  description: "",
+};
 
 export const TODOPage = () => {
   const [todoList, setTodoList] = useState();
-  const [editingTodoId, setEditingTodoId] = useState();
-  const [showEditCard, setShowEditCard] = useState(false);
 
-  const todoSelectedToEdit = getTODO(todoList, editingTodoId);
-
-  const editTodo = useCallback((id) => {
-    setEditingTodoId(id);
-
-    if (todoSelectedToEdit && (todoSelectedToEdit.id !== id)) {
-      setShowEditCard(true);
-    } else {
-      setShowEditCard(!showEditCard);
-    }
-  });
+  const updateTodoList = () => axios
+    .get(`${TODOES_URL}`) // TODO implement pagination
+    .then(res => setTodoList(res.data.results))
+  ;
 
   useEffect(() => {
-    if (!todoList) {
-      axios
-      // TODO implement pagination
-        .get(`${TODOES_URL}`)
-        .then(res => setTodoList(res.data.results))
-        .catch(err => {
-          console.log(err);
-          alert("Error while request TODO in `TODOPage->useEffect`. See console for info.")
-        })
-    }
-    return () => console.log("component unMount");
+    if (!todoList) updateTodoList();
+  }, []);
+
+  // TODO every time when todoInEditod changes, all entire component will rerender. That's wrong.
+  const [todoInEditor, setTodoInEditor] = useState({...emptyTodoObject});
+  const [showEditCard, setShowEditCard] = useState(false);
+
+  const openTodoInEditor = (id) => {
+    setShowEditCard(true);
+    setTodoInEditor(listToObject(todoList)[id]);
+  };
+  const closeTodoEditor = () => {
+    setShowEditCard(false);
+    setTodoInEditor({...emptyTodoObject});
+  };
+  const openNewTodoInEditor = () => {
+    setShowEditCard(true);
+    setTodoInEditor({...emptyTodoObject});
+  };
+
+  const createTask = useCallback((todo) => {
+    axios
+      .post(TODOES_URL, todo)
+      .then(updateTodoList)
+      .then(closeTodoEditor)
+  }, []);
+  const updateTask = useCallback((todo) => {
+    axios
+      .put(`${TODOES_URL}${todo.id}/`, todo)
+      .then(updateTodoList)
+      .then(closeTodoEditor)
+  }, []);
+  const completeTask = useCallback((todo) => {
+    return axios
+      .get(`${TODOES_URL}${todo.id}/complete`)
+      .then(updateTodoList)
+      .then(closeTodoEditor);
+  }, []);
+  const deleteTask = useCallback((todo) => {
+    axios
+      .delete(`${TODOES_URL}${todo.id}`)
+      .then(updateTodoList)
+      .then(closeTodoEditor);
   }, []);
 
   return (
-    <CardColumns>
-      <TODOList content={todoList} onEditClick={editTodo}/>
-      <TODOEdit todo={todoSelectedToEdit} show={showEditCard}/>
-    </CardColumns>
+    <Row>
+      <Fade in={Boolean(todoList)}>
+        <Col xs="12" lg="6">
+          <TodoList
+            content={todoList}
+            editTask={useCallback(openTodoInEditor, [todoList])}
+            addNewTask={useCallback(openNewTodoInEditor, [])}
+            updateList={updateTodoList}
+            completeTask={completeTask}
+            deleteTask={deleteTask}
+          />
+        </Col>
+      </Fade>
+      <Col xs="12" lg="6">
+        <TodoEditorCard
+          editingTask={todoInEditor}
+          show={showEditCard}
+          closeEditor={useCallback(closeTodoEditor, [])}
+          createTask={createTask}
+          updateTask={updateTask}
+        />
+      </Col>
+    </Row>
   )
 };
