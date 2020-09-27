@@ -10,19 +10,19 @@ export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
     return (
       <Dropdown as={Card.Header} className="border-bottom p-0" style={{fontSize: "60%"}}>
         <ButtonGroup className="w-100">
-          <Accordion.Toggle as={Button} eventKey={`${todo.id}`} className="btn-light btn-block">
+          <Button block disabled variant={"light"}>
             {
               todoIsDone
                 ? <s className="h5 text-success">{todo.title}</s>
                 : <b className="h5">{todo.title}</b>
             }
-          </Accordion.Toggle>
+          </Button>
           <Dropdown.Toggle variant="light" className="border-0">
 
           </Dropdown.Toggle>
         </ButtonGroup>
 
-        <Dropdown.Menu className="col col-sm-6 m-0 p-0">
+        <Dropdown.Menu className="col col-sm-6 col-md-10 col-lg-9 col-xl-8 m-0 p-0">
 
           <ButtonGroup vertical className="w-100">
             <Alert variant={"light"} className="w-100">
@@ -102,11 +102,7 @@ export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
   return (
     <Card>
       <TODOCardHeader/>
-
-      <Accordion.Collapse eventKey={`${todo.id}`}>
-        <TODOCardBody/>
-      </Accordion.Collapse>
-
+      <TODOCardBody/>
     </Card>
   );
 };

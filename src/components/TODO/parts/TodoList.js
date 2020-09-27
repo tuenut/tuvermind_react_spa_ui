@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 
-import {Accordion, Alert, Col, Fade, Button, Row} from "react-bootstrap";
+import {Accordion, Alert, Col, Button, Row, CardColumns} from "react-bootstrap";
 
 import {TODOCard} from "./TODOCard";
 
@@ -10,7 +10,7 @@ export const TodoList = (
 ) => {
   const TodoListHeader = () => {
     return (
-      <Row className="justify-content-between my-2">
+      <Row className="justify-content-between mt-2 mb-3">
         <Col xs="auto" className="pr-1 flex-fill">
           <Alert variant="light" className="font-weight-bold text-dark h3 h-100 my-auto">
             Список задач
@@ -41,20 +41,17 @@ export const TodoList = (
 
   const TodoListContent = () => {
     return (
-      <Accordion>
+      <CardColumns>
         {content.map((item, index) =>
-          <Row key={`${item.id}.${index}`}>
-            <Col className="my-1">
-              <TODOCard
-                todo={item}
-                editTask={editTask}
-                completeTask={completeTask}
-                deleteTask={deleteTask}
-              />
-            </Col>
-          </Row>
+          <TODOCard
+            key={`${item.id}.${index}`}
+            todo={item}
+            editTask={editTask}
+            completeTask={completeTask}
+            deleteTask={deleteTask}
+          />
         )}
-      </Accordion>
+      </CardColumns>
     );
   };
 

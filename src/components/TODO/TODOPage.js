@@ -5,7 +5,7 @@ import axios from "axios/index";
 import {Row, Col, Fade} from "react-bootstrap";
 
 import {TODOES_URL} from "../../settings/remoteAPI";
-import {TodoEditorCard, TodoList} from "./parts";
+import {TodoEditor, TodoList} from "./parts";
 import {listToObject} from "../../utils/common";
 
 const emptyTodoObject = {
@@ -28,7 +28,7 @@ export const TODOPage = () => {
 
   // TODO every time when todoInEditod changes, all entire component will rerender. That's wrong.
   const [todoInEditor, setTodoInEditor] = useState({...emptyTodoObject});
-  const [showEditCard, setShowEditCard] = useState(false);
+  const [showEditCard, setShowEditCard] = useState(true);
 
   const openTodoInEditor = (id) => {
     setShowEditCard(true);
@@ -71,7 +71,7 @@ export const TODOPage = () => {
   return (
     <Row>
       <Fade in={Boolean(todoList)}>
-        <Col xs="12" lg="6">
+        <Col>
           <TodoList
             content={todoList}
             editTask={useCallback(openTodoInEditor, [todoList])}
@@ -82,15 +82,15 @@ export const TODOPage = () => {
           />
         </Col>
       </Fade>
-      <Col xs="12" lg="6">
-        <TodoEditorCard
-          editingTask={todoInEditor}
-          show={showEditCard}
-          closeEditor={useCallback(closeTodoEditor, [])}
-          createTask={createTask}
-          updateTask={updateTask}
-        />
-      </Col>
+
+      <TodoEditor
+        editingTask={todoInEditor}
+        show={showEditCard}
+        closeEditor={useCallback(closeTodoEditor, [])}
+        createTask={createTask}
+        updateTask={updateTask}
+      />
+
     </Row>
   )
 };
