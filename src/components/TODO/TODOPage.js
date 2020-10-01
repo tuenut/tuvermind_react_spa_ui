@@ -12,6 +12,7 @@ const emptyTodoObject = {
   id: "",
   title: "",
   description: "",
+  reminders: []
 };
 
 export const TODOPage = () => {
@@ -28,7 +29,7 @@ export const TODOPage = () => {
 
   // TODO every time when todoInEditod changes, all entire component will rerender. That's wrong.
   const [todoInEditor, setTodoInEditor] = useState({...emptyTodoObject});
-  const [showEditCard, setShowEditCard] = useState(true);
+  const [showEditCard, setShowEditCard] = useState(false);
 
   const openTodoInEditor = (id) => {
     setShowEditCard(true);
