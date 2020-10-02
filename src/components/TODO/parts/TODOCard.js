@@ -4,15 +4,13 @@ import {Accordion, Card, Col, Row, Button, ButtonGroup, Dropdown, Alert} from "r
 
 
 export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
-  const todoIsDone = (todo.history && todo.history[0] && todo.history[0].completed);
-
   const TODOCardHeader = () => {
     return (
       <Dropdown as={Card.Header} className="border-bottom p-0" style={{fontSize: "60%"}}>
         <ButtonGroup className="w-100">
           <Button block disabled variant={"light"}>
             {
-              todoIsDone
+              todo.completed
                 ? <s className="h5 text-success">{todo.title}</s>
                 : <b className="h5">{todo.title}</b>
             }
@@ -46,20 +44,20 @@ export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
                 </Row>
               }
               {
-                todoIsDone &&
+                todo.completed &&
                 <Row className="justify-content-between text-success">
                   <Col xs="5">
                     <small>Завершено:</small>
                   </Col>
                   <Col xs={"auto"} className="pl-0">
-                    <small>{new Date(todo.history[0].completed).toLocaleString("ru")}</small>
+                    <small>{new Date(todo.completed).toLocaleString("ru")}</small>
                   </Col>
                 </Row>
               }
             </Alert>
 
             {
-              !todoIsDone &&
+              !todo.completed &&
               <Fragment>
                 <Button
                   block
@@ -93,7 +91,7 @@ export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
 
   const TODOCardBody = () => {
     return (
-      <Card.Body className={`${todoIsDone && "text-muted"}`} style={{whiteSpace: "pre-wrap"}}>
+      <Card.Body className={`${todo.completed && "text-muted"}`} style={{whiteSpace: "pre-wrap"}}>
         {todo.description}
       </Card.Body>
     );

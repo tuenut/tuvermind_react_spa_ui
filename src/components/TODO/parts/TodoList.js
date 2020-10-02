@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 
-import {Accordion, Alert, Col, Button, Row, CardColumns} from "react-bootstrap";
+import {Alert, Col, Button, Row, CardColumns} from "react-bootstrap";
 
 import {TODOCard} from "./TODOCard";
 

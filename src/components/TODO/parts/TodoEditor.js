@@ -46,8 +46,6 @@ export const TodoEditor = ({editingTask, show, closeEditor, createTask, updateTa
     setTodo(editingTask);
   }, [show]);
 
-  const todoIsDone = (todo.history && todo.history[0] && todo.history[0].completed);
-
   return (
     <Modal show={show} onHide={closeEditor}>
       <Modal.Header closeButton>
@@ -140,7 +138,7 @@ export const TodoEditor = ({editingTask, show, closeEditor, createTask, updateTa
         {
           todo.id
             ? <Button
-              disabled={todoIsDone || false}
+              disabled={todo.completed || false}
               variant="primary"
               onClick={() => updateTask(todo)}
               children={"Сохранить"}
