@@ -1,8 +1,8 @@
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useEffect, useState, useCallback, Fragment} from "react";
 
 import axios from "axios/index";
 
-import {Row, Col, Fade} from "react-bootstrap";
+import {Row, Col, Fade, Alert, Button} from "react-bootstrap";
 
 import {TODOES_URL} from "../../settings/remoteAPI";
 import {TodoEditor, TodoList} from "./parts";
@@ -69,15 +69,46 @@ export const TODOPage = () => {
       .then(closeTodoEditor);
   }, []);
 
+  const TodoListHeader = () => {
+    return (
+      <Row className="justify-content-between mt-2 mb-3">
+        <Col sm="auto" className="pr-1 flex-fill">
+          <Alert variant="light" className="font-weight-bold text-dark h3 h-100 my-auto">
+            Список задач
+          </Alert>
+        </Col>
+
+        <Col sm="auto" className="pl-1">
+          <Button
+            variant="success"
+            size="lg"
+            className="border-0 h-100 mx-1"
+            onClick={openNewTodoInEditor}
+          >
+            Добавить
+          </Button>
+          <Button
+            variant="primary"
+            size="lg"
+            className="border-0 h-100 ml-1"
+            onClick={updateTodoList}
+          >
+            Обновить
+          </Button>
+        </Col>
+      </Row>
+    );
+  };
+
   return (
-    <Row>
+    <Fragment>
+      <TodoListHeader/>
+
       <Fade in={Boolean(todoList)}>
         <Col>
           <TodoList
             content={todoList}
             editTask={useCallback(openTodoInEditor, [todoList])}
-            addNewTask={useCallback(openNewTodoInEditor, [])}
-            updateList={updateTodoList}
             completeTask={completeTask}
             deleteTask={deleteTask}
           />
@@ -92,6 +123,6 @@ export const TODOPage = () => {
         updateTask={updateTask}
       />
 
-    </Row>
+    </Fragment>
   )
 };

@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 
-import {Accordion, Card, Col, Row, Button, ButtonGroup, Dropdown, Alert} from "react-bootstrap";
+import {Card, Col, Row, Button, ButtonGroup, Dropdown, Alert} from "react-bootstrap";
 
 
 export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
@@ -8,15 +8,18 @@ export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
     return (
       <Dropdown as={Card.Header} className="border-bottom p-0" style={{fontSize: "60%"}}>
         <ButtonGroup className="w-100">
-          <Button block disabled variant={"light"}>
+          {/*<Button block disabled variant={"light"}>*/}
+
+          {/*</Button>*/}
+          <Dropdown.Toggle
+            variant={todo.completed ? "outline-success" : "outline-info"}
+            className="border-0"
+            bsPrefix="card-header">
             {
               todo.completed
-                ? <s className="h5 text-success">{todo.title}</s>
-                : <b className="h5">{todo.title}</b>
+                ? <s className="h5">{todo.title}</s>
+                : <span className="h5 font-weight-bold">{todo.title}</span>
             }
-          </Button>
-          <Dropdown.Toggle variant="light" className="border-0">
-
           </Dropdown.Toggle>
         </ButtonGroup>
 
@@ -47,10 +50,10 @@ export const TODOCard = ({todo, editTask, completeTask, deleteTask}) => {
                 todo.completed &&
                 <Row className="justify-content-between text-success">
                   <Col xs="5">
-                    <small>Завершено:</small>
+                    <small><b>Завершено:</b></small>
                   </Col>
                   <Col xs={"auto"} className="pl-0">
-                    <small>{new Date(todo.completed).toLocaleString("ru")}</small>
+                    <small><b>{new Date(todo.completed).toLocaleString("ru")}</b></small>
                   </Col>
                 </Row>
               }
