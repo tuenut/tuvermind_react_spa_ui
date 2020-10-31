@@ -37,9 +37,9 @@ export const TODOPage = () => {
     setTodoInEditor({...EMPTY_TODO_OBJECT});
   };
 
-  const createTask = useCallback((todo) => {
+  const createTask = useCallback((todoId) => {
     axios
-      .post(TODOES_URL, todo)
+      .post(TODOES_URL, todoId)
       .then(updateTodoList)
       .then(closeTodoEditor)
   }, []);
@@ -49,15 +49,15 @@ export const TODOPage = () => {
       .then(updateTodoList)
       .then(closeTodoEditor)
   }, []);
-  const completeTask = useCallback((todo) => {
+  const completeTask = useCallback((todoId) => {
     return axios
-      .get(`${TODOES_URL}${todo.id}/complete`)
+      .get(`${TODOES_URL}${todoId}/complete`)
       .then(updateTodoList)
       .then(closeTodoEditor);
   }, []);
-  const deleteTask = useCallback((todo) => {
+  const deleteTask = useCallback((todoId) => {
     axios
-      .delete(`${TODOES_URL}${todo.id}`)
+      .delete(`${TODOES_URL}${todoId}`)
       .then(updateTodoList)
       .then(closeTodoEditor);
   }, []);
@@ -101,7 +101,7 @@ export const TODOPage = () => {
         <Col>
           <TodoList
             content={todoList}
-            editTask={useCallback(openTodoInEditor, [todoList])}
+            openTaskToEdit={useCallback(openTodoInEditor, [todoList])}
             completeTask={completeTask}
             deleteTask={deleteTask}
           />
