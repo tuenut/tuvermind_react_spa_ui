@@ -2,7 +2,7 @@ import React, {Fragment, useCallback, useEffect, useState} from "react";
 
 import axios from "axios/index";
 
-import {Alert, Button, Col, Fade, Row, Modal} from "react-bootstrap";
+import {Alert, Button, Col, Fade, Row} from "react-bootstrap";
 
 import {TODOES_URL} from "../../settings/remoteAPI";
 import {TodoEditor, TodoList, EMPTY_TODO_OBJECT} from "./parts";
