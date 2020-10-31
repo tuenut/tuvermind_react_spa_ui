@@ -1,19 +1,13 @@
-import React, {useEffect, useState, useCallback, Fragment} from "react";
+import React, {Fragment, useCallback, useEffect, useState} from "react";
 
 import axios from "axios/index";
 
-import {Row, Col, Fade, Alert, Button} from "react-bootstrap";
+import {Alert, Button, Col, Fade, Row, Modal} from "react-bootstrap";
 
 import {TODOES_URL} from "../../settings/remoteAPI";
-import {TodoEditor, TodoList} from "./parts";
+import {TodoEditor, TodoList, EMPTY_TODO_OBJECT} from "./parts";
 import {listToObject} from "../../utils/common";
 
-const emptyTodoObject = {
-  id: "",
-  title: "",
-  description: "",
-  reminders: []
-};
 
 export const TODOPage = () => {
   const [todoList, setTodoList] = useState();
@@ -28,7 +22,7 @@ export const TODOPage = () => {
   }, []);
 
   // TODO every time when todoInEditod changes, all entire component will rerender. That's wrong.
-  const [todoInEditor, setTodoInEditor] = useState({...emptyTodoObject});
+  const [todoInEditor, setTodoInEditor] = useState({...EMPTY_TODO_OBJECT});
   const [showEditCard, setShowEditCard] = useState(false);
 
   const openTodoInEditor = (id) => {
@@ -37,11 +31,11 @@ export const TODOPage = () => {
   };
   const closeTodoEditor = () => {
     setShowEditCard(false);
-    setTodoInEditor({...emptyTodoObject});
+    setTodoInEditor({...EMPTY_TODO_OBJECT});
   };
   const openNewTodoInEditor = () => {
     setShowEditCard(true);
-    setTodoInEditor({...emptyTodoObject});
+    setTodoInEditor({...EMPTY_TODO_OBJECT});
   };
 
   const createTask = useCallback((todo) => {
@@ -115,13 +109,16 @@ export const TODOPage = () => {
         </Col>
       </Fade>
 
-      <TodoEditor
-        editingTask={todoInEditor}
-        show={showEditCard}
-        closeEditor={useCallback(closeTodoEditor, [])}
-        createTask={createTask}
-        updateTask={updateTask}
-      />
+      {
+        showEditCard &&
+        <TodoEditor
+          show={showEditCard}
+          editingTask={todoInEditor}
+          closeEditor={closeTodoEditor}
+          createTask={createTask}
+          updateTask={updateTask}
+        />
+      }
 
     </Fragment>
   )
