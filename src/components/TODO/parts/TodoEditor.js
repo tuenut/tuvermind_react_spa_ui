@@ -3,12 +3,13 @@ import React, {useEffect, useState, Fragment} from "react";
 import {Form, Button, Row, Col, Modal, Alert} from "react-bootstrap";
 
 import {v4 as uuidv4} from 'uuid';
+import {EMPTY_REMINDER} from "./common";
 
 
 const cleanTodoObjectForAPI = todo => ({
   ...todo,
   reminders: (todo.planned_completion_date && todo.planned_completion_time)
-    ? todo.reminders.map(item => item.value)
+    ? todo.reminders.map(item => ({value: item.value, dimension: item.dimension}))
     : [],
   planned_completion_date: todo.planned_completion_date || null,
   planned_completion_time: todo.planned_completion_time || null,
@@ -16,7 +17,7 @@ const cleanTodoObjectForAPI = todo => ({
 const prepareTodoForUI = todo => ({
   ...todo,
   reminders: todo.reminders
-    ? todo.reminders.map(value => ({value, key: uuidv4()}))
+    ? todo.reminders.map(value => ({...value, key: uuidv4()}))
     : []
 });
 
@@ -90,13 +91,25 @@ const Description = ({description, setDescription}) => (
 
 const Reminder = ({item, setReminder, delReminder}) => (
   <Form.Row>
-
     <Form.Group as={Col}>
       <Form.Control
         type={"number"}
         value={item.value}
-        onChange={e => setReminder(e.target.value, item.key)}
+        onChange={e => setReminder({...item, value: e.target.value})}
       />
+    </Form.Group>
+
+    <Form.Group as={Col}>
+      <Form.Control
+        as={"select"}
+        value={item.dimension}
+        onChange={e => setReminder({...item, dimension: e.target.value})}
+      >
+        <option value={"min"}>минут</option>
+        <option value={"hour"}>часов</option>
+        <option value={"day"}>дней</option>
+        <option value={"week"}>недель</option>
+      </Form.Control>
     </Form.Group>
 
     <Form.Group as={Col} className="col-1">
@@ -118,7 +131,7 @@ const Reminders = ({enabled, reminders, setReminder, delReminder, addReminder}) 
       enabled ? (
         <Fragment>
           <Form.Label>
-            Напомнить
+            Напомнить за
           </Form.Label>
 
           {reminders.map(item =>
@@ -151,22 +164,18 @@ export const TodoEditor = ({editingTask, show, closeEditor, createTask, updateTa
   const setCompletionTime = time => setTodo({...todo, planned_completion_time: time});
   const setDescription = text => setTodo({...todo, description: text});
 
-  const setReminder = (value, key) => {
-    const index = todo.reminders.findIndex(obj => obj.key === key);
+  const setReminder = (item) => {
+    const index = todo.reminders.findIndex(obj => obj.key === item.key);
 
     setTodo({
       ...todo,
-      reminders: [
-        ...todo.reminders.slice(0, index),
-        {...todo.reminders[index], value},
-        ...todo.reminders.slice(index + 1)
-      ]
+      reminders: [...todo.reminders.slice(0, index), item, ...todo.reminders.slice(index + 1)]
     });
   };
 
   const addReminder = () => setTodo({
     ...todo,
-    reminders: [...todo.reminders, {value: "", key: uuidv4()}]
+    reminders: [...todo.reminders, {...EMPTY_REMINDER, key: uuidv4()}]
   });
 
   const delReminder = (key) => {

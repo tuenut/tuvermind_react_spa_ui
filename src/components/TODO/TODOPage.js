@@ -14,8 +14,7 @@ export const TODOPage = () => {
 
   const updateTodoList = () => axios
     .get(`${TODOES_URL}`) // TODO implement pagination
-    .then(res => setTodoList(res.data.results))
-  ;
+    .then(res => setTodoList(res.data.results));
 
   useEffect(() => {
     if (!todoList) updateTodoList();
