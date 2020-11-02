@@ -192,7 +192,7 @@ export const TodoEditor = ({editingTask, show, closeEditor, createTask, updateTa
   };
 
   return (
-    <Modal show={show} onHide={closeEditor}>
+    <Modal show={show} onHide={closeEditor} style={{paddingTop: 36}} className="my-3">
       {
         show &&
         <Fragment>

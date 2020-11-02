@@ -2,11 +2,14 @@ import React, {Fragment, useCallback, useEffect, useState} from "react";
 
 import axios from "axios/index";
 
-import {Alert, Button, Col, Fade, Row} from "react-bootstrap";
+import {Alert, Button, Col, Fade, Row, Breadcrumb} from "react-bootstrap";
+import {Cached, Add} from '@material-ui/icons';
+import {Fab} from '@material-ui/core';
 
 import {TODOES_URL} from "../../settings/remoteAPI";
 import {TodoEditor, TodoList, EMPTY_TODO_OBJECT} from "./parts";
 import {listToObject} from "../../utils/common";
+import {HOME_ROUTE} from "../../settings/routesPaths";
 
 
 export const TODOPage = () => {
@@ -62,41 +65,27 @@ export const TODOPage = () => {
       .then(closeTodoEditor);
   }, []);
 
-  const TodoListHeader = () => {
-    return (
-      <Row className="justify-content-between mt-2 mb-3">
-        <Col sm="auto" className="pr-1 flex-fill">
-          <Alert variant="light" className="font-weight-bold text-dark h3 h-100 my-auto">
-            Список задач
-          </Alert>
-        </Col>
-
-        <Col sm="auto" className="pl-1">
-          <Button
-            variant="success"
-            size="lg"
-            className="border-0 h-100 mx-1"
-            onClick={openNewTodoInEditor}
-          >
-            Добавить
-          </Button>
-          <Button
-            variant="primary"
-            size="lg"
-            className="border-0 h-100 ml-1"
-            onClick={updateTodoList}
-          >
-            Обновить
-          </Button>
-        </Col>
-      </Row>
-    );
-  };
+  const FloatControls = () => (
+    <Row style={{position: "fixed", bottom: 20, right: 20}}>
+      <Col sm="auto" className="pl-1">
+        <Fab
+          className="bg-success text-white mx-1"
+          onClick={openNewTodoInEditor}
+        >
+          <Add/>
+        </Fab>
+        <Fab
+          className="bg-info text-white mx-1"
+          onClick={updateTodoList}
+        >
+          <Cached/>
+        </Fab>
+      </Col>
+    </Row>
+  );
 
   return (
     <Fragment>
-      <TodoListHeader/>
-
       <Fade in={Boolean(todoList)}>
         <Col>
           <TodoList
@@ -118,6 +107,7 @@ export const TODOPage = () => {
           updateTask={updateTask}
         />
       }
+      <FloatControls/>
 
     </Fragment>
   )

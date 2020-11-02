@@ -11,13 +11,13 @@ export const routes = [
   {
     path: HOME_ROUTE,
     exact: true,
-    name: "Home",
+    name: "Главная",
     component: Home
   },
   {
     path: TODO_LIST_ROUTE,
     exact: true,
-    name: "Todo List",
+    name: "Список задач",
     component: TODOPage
   },
 ];

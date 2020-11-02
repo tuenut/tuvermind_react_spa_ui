@@ -7,25 +7,21 @@ import {routes} from "../../settings/routes";
 
 
 export const TheContent = () => (
-  <main>
-    <Container fluid>
-      <Suspense>
-        <Switch>
+  <Suspense>
+    <Switch>
 
-          {routes.map((route, index) => (
-            route.component && (
-              <Route
-                key={index}
-                path={route.path}
-                exact={route.exact}
-                name={route.name}
-                render={props => <route.component {...props}/>}
-              />
-            )
-          ))}
+      {routes.map((route, index) => (
+        route.component && (
+          <Route
+            key={index}
+            path={route.path}
+            exact={route.exact}
+            name={route.name}
+            render={props => <route.component {...props}/>}
+          />
+        )
+      ))}
 
-        </Switch>
-      </Suspense>
-    </Container>
-  </main>
+    </Switch>
+  </Suspense>
 );
