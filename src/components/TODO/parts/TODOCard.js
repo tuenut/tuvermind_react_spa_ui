@@ -1,22 +1,6 @@
-import React, {Fragment} from "react";
+import React from "react";
 
 import clsx from 'clsx';
-
-// import {
-//   // Card,
-//   Col,
-//   Row,
-//   Button,
-//   ButtonGroup,
-//   Dropdown,
-//   Alert,
-//   ListGroup,
-//   ListGroupItem,
-//   Tooltip,
-//   OverlayTrigger,
-//   Badge
-// } from "react-bootstrap";
-
 
 import {
   Card,
@@ -138,7 +122,7 @@ export const TODOCard = ({todo, openTaskToEdit, completeTask, deleteTask}) => {
               {
                 (todo.reminders.length > 0) &&
                 todo.reminders.map(item => (
-                  <Grid item>
+                  <Grid item key={uuidv4()}>
                     <Chip size={"small"} label={`за ${item.value} ${item.dimension}`}/>
                   </Grid>
                 ))
