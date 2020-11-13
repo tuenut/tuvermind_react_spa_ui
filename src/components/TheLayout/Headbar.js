@@ -70,7 +70,7 @@ export const HeadBar = ({showMenu, setShowMenu, ...props}) => {
                 {homePageText}
               </LinkBreadcrumb>
             }
-            <CurrentBreadcrumb color="contrastText">
+            <CurrentBreadcrumb color="textPrimary">
               {currentPageText}
             </CurrentBreadcrumb>
           </Breadcrumbs>

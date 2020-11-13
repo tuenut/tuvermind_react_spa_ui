@@ -64,7 +64,7 @@ export const useHeadbarStyles = makeStyles((theme) => {
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(3, 0, 0, 10),
+      padding: theme.spacing(3, 2, 3, 11),
     },
     separator: {
       color: theme.palette.primary.dark

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 
 import clsx from 'clsx';
 
@@ -7,17 +7,15 @@ import {
   CardHeader,
   CardContent,
   CardActions,
+  CardActionArea,
   Typography,
   IconButton,
   Collapse,
-  Menu,
-  MenuItem,
-  MenuList,
-  makeStyles,
   Chip,
   Grid
 } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {makeStyles} from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -40,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const TODOCard = ({todo, openTaskToEdit, completeTask, deleteTask}) => {
   const [expanded, setEpand] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const classes = useStyles();
 
@@ -48,87 +45,86 @@ export const TODOCard = ({todo, openTaskToEdit, completeTask, deleteTask}) => {
     ? new Date(`${todo.planned_completion_date}T${todo.planned_completion_time}`)
     : null;
 
+  const onCardClick = () => openTaskToEdit(todo.id);
 
-  const openMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const closeMenu = () => {
-    setAnchorEl(null);
-  };
+  const Reminders = ({titled}) => (
+    <Fragment>
+      {
+        (todo.reminders.length > 0) &&
+        <Typography paragraph color="textSecondary">
+          {!titled && "Напоминания:"}
+          <Grid container spacing={1}>
+            {
+              todo.reminders.slice(0, titled && 3).map(item => (
+                <Grid item key={uuidv4()}>
+                  <Chip size={"small"} label={`за ${item.value} ${item.dimension}`}/>
+                </Grid>
+              ))
+            }
+            {(titled && todo.reminders.length > 3) && "..."}
+          </Grid>
+        </Typography>
+      }
+    </Fragment>
+  );
 
   return (
     <Card>
-      <CardHeader
-        title={(
-          <Typography color={todo.completed ? "textSecondary" : "textPrimary"}>
-            {todo.title}
-          </Typography>
-        )}
-        subheader={completionDate && completionDate.toLocaleString("ru")}
-        action={(
-          <div>
-            <IconButton onClick={openMenu}>
-              <MoreVertIcon/>
-            </IconButton>
-            <Menu
-              id={"todo" + todo.id + todo.key}
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={closeMenu}
-            >
-              <MenuList>
-                <MenuItem onClick={() => completeTask(todo.id)}>
-                  Выполнить
-                </MenuItem>
-                <MenuItem onClick={() => deleteTask(todo.id)}>
-                  Удалить
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </div>
-        )}
-      />
+      <CardActionArea onClick={!todo.completed && onCardClick}>
+        <CardHeader
+          title={(
+            <Typography color={todo.completed ? "primary" : "textPrimary"}>
+              {todo.completed && <CheckCircleIcon color="primary"/>}
+              <b>
+                {todo.title}
+              </b>
+            </Typography>
+          )}
+          subheader={completionDate && completionDate.toLocaleString("ru")}
+        />
 
-      <CardContent>
-        <Typography>
-          {todo.description}
-        </Typography>
-      </CardContent>
+        <Collapse in={!expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography noWrap>
+              {todo.description}
+            </Typography>
+
+          </CardContent>
+        </Collapse>
+      </CardActionArea>
 
       <CardActions disableSpacing>
-        <IconButton color="primary">
-          <CheckCircleIcon/>
-        </IconButton>
-        <IconButton color="secondary">
+        {
+          !todo.completed &&
+          <IconButton color="primary" onClick={() => completeTask(todo.id)}>
+            <CheckCircleIcon/>
+          </IconButton>
+        }
+        <IconButton color="secondary" onClick={() => deleteTask(todo.id)}>
           <DeleteForeverIcon/>
         </IconButton>
 
-        <IconButton
-          className={clsx(classes.expand, {[classes.expandOpen]: expanded,})}
-          onClick={() => setEpand(!expanded)}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon/>
-        </IconButton>
+        {
+          todo.description &&
+          <IconButton
+            className={clsx(classes.expand, {[classes.expandOpen]: expanded,})}
+            onClick={() => setEpand(!expanded)}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon/>
+          </IconButton>
+        }
+
       </CardActions>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph color="textSecondary">
-            Напоминания:
-            <Grid container spacing={1}>
-              {
-                (todo.reminders.length > 0) &&
-                todo.reminders.map(item => (
-                  <Grid item key={uuidv4()}>
-                    <Chip size={"small"} label={`за ${item.value} ${item.dimension}`}/>
-                  </Grid>
-                ))
-              }
-            </Grid>
+          <Typography paragraph color="textPrimary">
+            {todo.description}
           </Typography>
+
+          <Reminders/>
 
           <Typography paragraph color="textSecondary">
             <Grid container>

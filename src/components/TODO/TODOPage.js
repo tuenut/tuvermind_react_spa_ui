@@ -2,28 +2,54 @@ import React, {Fragment, useCallback, useEffect, useState} from "react";
 
 import axios from "axios/index";
 
-import {Alert, Button, Col, Fade, Row, Breadcrumb} from "react-bootstrap";
 import {Cached, Add} from '@material-ui/icons';
-import {Fab} from '@material-ui/core';
+import {Box, Fab, Grid} from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {useTheme, makeStyles} from '@material-ui/core/styles';
 
 import {TODOES_URL} from "../../settings/remoteAPI";
-import {TodoEditor, TodoList, EMPTY_TODO_OBJECT} from "./parts";
+import {TodoEditor, EMPTY_TODO_OBJECT, TODOCard} from "./parts";
 import {listToObject} from "../../utils/common";
-import {HOME_ROUTE} from "../../settings/routesPaths";
+import {v4 as uuidv4} from "uuid";
 
+
+const useStyles = makeStyles(theme => ({}));
+
+const splitArrayToColumns = (array_, columnsCount = 1) => {
+  let columns = Array.from(new Array(columnsCount), () => new Array(0));
+
+  let counter = 0;
+  for (const item of array_) {
+    columns[counter].push(item);
+    counter += 1;
+    if (counter === (columnsCount)) counter = 0;
+  }
+
+  return columns;
+};
 
 export const TODOPage = () => {
-  const [todoList, setTodoList] = useState();
+  const [todoList, setTodoList] = useState([]);
 
   const updateTodoList = () => axios
     .get(`${TODOES_URL}`) // TODO implement pagination
     .then(res => setTodoList(res.data.results));
 
   useEffect(() => {
-    if (!todoList) updateTodoList();
+    updateTodoList();
   }, []);
 
-  // TODO every time when todoInEditod changes, all entire component will rerender. That's wrong.
+  const theme = useTheme();
+  const classes = useStyles();
+
+  const breakpoints = [
+    useMediaQuery(theme.breakpoints.up('lg')) && 4,
+    useMediaQuery(theme.breakpoints.up('md')) && 3,
+    useMediaQuery(theme.breakpoints.up('sm')) && 2,
+    useMediaQuery(theme.breakpoints.up('xs')) && 1,
+  ];
+  const cols = breakpoints.find(x => x) || 1;
+
   const [todoInEditor, setTodoInEditor] = useState({...EMPTY_TODO_OBJECT});
   const [showEditCard, setShowEditCard] = useState(false);
 
@@ -65,40 +91,30 @@ export const TODOPage = () => {
       .then(closeTodoEditor);
   }, []);
 
-  const FloatControls = () => (
-    <Row style={{position: "fixed", bottom: 20, right: 20}}>
-      <Col sm="auto" className="pl-1">
-        <Fab
-          className="bg-success text-white mx-1"
-          onClick={openNewTodoInEditor}
-        >
-          <Add/>
-        </Fab>
-        <Fab
-          className="bg-info text-white mx-1"
-          onClick={updateTodoList}
-        >
-          <Cached/>
-        </Fab>
-      </Col>
-    </Row>
-  );
-
   return (
     <Fragment>
-      <Fade in={Boolean(todoList)}>
-        <Col>
-          <TodoList
-            content={todoList}
-            openTaskToEdit={useCallback(openTodoInEditor, [todoList])}
-            completeTask={completeTask}
-            deleteTask={deleteTask}
-          />
-        </Col>
-      </Fade>
+      <Grid container spacing={2} alignContent="center">
+        {splitArrayToColumns(todoList, cols).map(column => (
+          <Grid item  xs={12 / cols} key={uuidv4()}>
+            <Grid container spacing={2} alignContent="flex-start">
 
-      {
-        showEditCard &&
+            {column.map(item =>
+              <Grid item xs={12} key={uuidv4()}>
+                <TODOCard
+                  todo={item}
+                  openTaskToEdit={openTodoInEditor}
+                  completeTask={completeTask}
+                  deleteTask={deleteTask}
+                />
+              </Grid>
+            )}
+
+            </Grid>
+          </Grid>
+        ))}
+      </Grid>
+
+      {showEditCard && (
         <TodoEditor
           show={showEditCard}
           editingTask={todoInEditor}
@@ -106,8 +122,22 @@ export const TODOPage = () => {
           createTask={createTask}
           updateTask={updateTask}
         />
-      }
-      <FloatControls/>
+      )}
+
+      <Box position="fixed" bottom={20} right={20}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Fab onClick={openNewTodoInEditor}>
+              <Add/>
+            </Fab>
+          </Grid>
+          <Grid item>
+            <Fab color="primary" onClick={updateTodoList}>
+              <Cached/>
+            </Fab>
+          </Grid>
+        </Grid>
+      </Box>
 
     </Fragment>
   )
