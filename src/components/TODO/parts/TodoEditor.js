@@ -10,7 +10,7 @@ import {EMPTY_REMINDER} from "./common";
 const cleanTodoObjectForAPI = todo => ({
   ...todo,
   reminders: (todo.planned_completion_date && todo.planned_completion_time)
-    ? todo.reminders.map(item => ({value: item.value, dimension: item.dimension}))
+    ? todo.reminders.map(item => ({value: item.value, units: item.units}))
     : [],
   planned_completion_date: todo.planned_completion_date || null,
   planned_completion_time: todo.planned_completion_time || null,
@@ -40,7 +40,7 @@ const Title = ({title, setTitle}) => (
   </Form.Group>
 );
 
-const CompletionDateTime = ({date, time, setDate, setTime}) => (
+const CompletionConfig = ({date, time, setDate, setTime}) => (
   <Form.Group>
     <Form.Label>
       Когда
@@ -67,6 +67,36 @@ const CompletionDateTime = ({date, time, setDate, setTime}) => (
 
     <Form.Text className="text-muted">
       И чо, когда уже покончим с этим?
+    </Form.Text>
+  </Form.Group>
+);
+
+const RepeatConfig = ({value, setValue, repeatType, setRepeatType}) => (
+  <Form.Group>
+    <Form.Label>
+      Повторять
+    </Form.Label>
+
+    <Form.Row>
+      <Form.Group>
+        <Form.Control
+          type={"text"}
+          value={value}
+          onChange={e => setValue(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Control
+          type={"text"}
+          value={value}
+          onChange={e => setValue(e.target.value)}
+        />
+      </Form.Group>
+    </Form.Row>
+
+    <Form.Text className="text-muted">
+      Можем повторить...
     </Form.Text>
   </Form.Group>
 );
@@ -103,8 +133,8 @@ const Reminder = ({item, setReminder, delReminder}) => (
     <Form.Group as={Col}>
       <Form.Control
         as={"select"}
-        value={item.dimension}
-        onChange={e => setReminder({...item, dimension: e.target.value})}
+        value={item.units}
+        onChange={e => setReminder({...item, units: e.target.value})}
       >
         <option value={"min"}>минут</option>
         <option value={"hour"}>часов</option>
@@ -193,64 +223,61 @@ export const TodoEditor = ({editingTask, show, closeEditor, createTask, updateTa
 
   return (
     <Modal show={show} onHide={closeEditor} style={{paddingTop: 36}} className="my-3">
-      {
-        show &&
-        <Fragment>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              {todo.id ? "Редактирование" : "Новая задача"}
-            </Modal.Title>
-          </Modal.Header>
+      <Fragment>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {todo.id ? "Редактирование" : "Новая задача"}
+          </Modal.Title>
+        </Modal.Header>
 
-          <Modal.Body>
-            <Form onSubmit={e => e.preventDefault()}>
+        <Modal.Body>
+          <Form onSubmit={e => e.preventDefault()}>
 
-              <Title
-                title={todo.title}
-                setTitle={setTitle}
-              />
-              <CompletionDateTime
-                date={todo.planned_completion_date}
-                time={todo.planned_completion_time}
-                setDate={setCompletionDate}
-                setTime={setCompletionTime}
-              />
-              <Description
-                description={todo.description}
-                setDescription={setDescription}
-              />
-              <Reminders
-                enabled={(todo.planned_completion_date && todo.planned_completion_time)}
-                reminders={todo.reminders}
-                setReminder={setReminder}
-                delReminder={delReminder}
-                addReminder={addReminder}
-              />
+            <Title
+              title={todo.title}
+              setTitle={setTitle}
+            />
+            <CompletionConfig
+              date={todo.planned_completion_date}
+              time={todo.planned_completion_time}
+              setDate={setCompletionDate}
+              setTime={setCompletionTime}
+            />
+            <Description
+              description={todo.description}
+              setDescription={setDescription}
+            />
+            <Reminders
+              enabled={(todo.planned_completion_date && todo.planned_completion_time)}
+              reminders={todo.reminders}
+              setReminder={setReminder}
+              delReminder={delReminder}
+              addReminder={addReminder}
+            />
 
-            </Form>
-          </Modal.Body>
+          </Form>
+        </Modal.Body>
 
-          <Modal.Footer>
-            <Button variant="secondary" onClick={closeEditor} children={"Закрыть"}/>
-            {
-              todo.id ? (
-                <Button
-                  disabled={todo.completed || false}
-                  variant="primary"
-                  onClick={() => updateTask(cleanTodoObjectForAPI(todo))}
-                  children={"Сохранить"}
-                />
-              ) : (
-                <Button
-                  variant="success"
-                  onClick={() => createTask(cleanTodoObjectForAPI(todo))}
-                  children={"Создать"}
-                />
-              )
-            }
-          </Modal.Footer>
-        </Fragment>
-      }
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeEditor} children={"Закрыть"}/>
+          {
+            todo.id ? (
+              <Button
+                disabled={todo.completed || false}
+                variant="primary"
+                onClick={() => updateTask(cleanTodoObjectForAPI(todo))}
+                children={"Сохранить"}
+              />
+            ) : (
+              <Button
+                variant="success"
+                onClick={() => createTask(cleanTodoObjectForAPI(todo))}
+                children={"Создать"}
+              />
+            )
+          }
+        </Modal.Footer>
+      </Fragment>
     </Modal>
   )
 };

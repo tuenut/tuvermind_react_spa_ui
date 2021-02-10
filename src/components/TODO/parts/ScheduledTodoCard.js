@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TODOCard = ({todo, openTaskToEdit, completeTask, deleteTask}) => {
+
+export const ScheduledTodoCard = ({todo, openTaskToEdit, completeTask, deleteTask}) => {
   const [expanded, setEpand] = React.useState(false);
 
   const classes = useStyles();
@@ -113,7 +114,7 @@ export const TODOCard = ({todo, openTaskToEdit, completeTask, deleteTask}) => {
           {todo.description}
         </Typography>
 
-        <RemindersList list={todo.reminders}/>
+        {/*<RemindersList list={todo.reminders}/>*/}
 
         <Typography paragraph color="textSecondary">
           <Grid container>

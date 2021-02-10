@@ -7,8 +7,8 @@ import {Box, Fab, Grid} from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {useTheme, makeStyles} from '@material-ui/core/styles';
 
-import {TODOES_URL} from "../../settings/remoteAPI";
-import {TodoEditor, EMPTY_TODO_OBJECT, TODOCard} from "./parts";
+import {TODOES_SCHEDULED_URL, TODOES_URL} from "../../settings/remoteAPI";
+import {TodoEditor, EMPTY_TODO_OBJECT, TODOCard, ScheduledTodoCard} from "./parts";
 import {listToObject} from "../../utils/common";
 import {v4 as uuidv4} from "uuid";
 
@@ -30,10 +30,17 @@ const splitArrayToColumns = (array_, columnsCount = 1) => {
 
 export const TODOPage = () => {
   const [todoList, setTodoList] = useState([]);
+  const [todoScheduledList, setScheduledTodoList] = useState([]);
 
-  const updateTodoList = () => axios
-    .get(`${TODOES_URL}`) // TODO implement pagination
-    .then(res => setTodoList(res.data.results));
+  const updateTodoList = () => {
+    // TODO implement pagination
+    axios
+      .get(TODOES_URL)
+      .then(res => setTodoList(res.data.results));
+    axios
+      .get(TODOES_SCHEDULED_URL)
+      .then(res => setScheduledTodoList(res.data.results));
+  };
 
   useEffect(() => {
     updateTodoList();
@@ -55,7 +62,7 @@ export const TODOPage = () => {
 
   const openTodoInEditor = (id) => {
     setShowEditCard(true);
-    setTodoInEditor(listToObject(todoList)[id]);
+    setTodoInEditor(listToObject([...todoList, ...todoScheduledList])[id]);
   };
   const closeTodoEditor = () => {
     setShowEditCard(false);
@@ -91,23 +98,38 @@ export const TODOPage = () => {
       .then(closeTodoEditor);
   }, []);
 
+  const todosList = [
+    ...todoList.map(item => ({...item, _type: "common"})),
+    ...todoScheduledList.map(item => ({...item, _type: "repeatable"}))
+  ];
+
+  const TaskCard = (props) => {
+    switch (props.todo._type) {
+      case "common":
+        return (<TODOCard {...props}/>);
+
+      case "repeatable":
+        return (<ScheduledTodoCard {...props}/>);
+    }
+  };
+
   return (
     <Fragment>
       <Grid container spacing={2} alignContent="center">
-        {splitArrayToColumns(todoList, cols).map(column => (
-          <Grid item  xs={12 / cols} key={uuidv4()}>
+        {splitArrayToColumns(todosList, cols).map(column => (
+          <Grid item xs={12 / cols} key={uuidv4()}>
             <Grid container spacing={2} alignContent="flex-start">
 
-            {column.map(item =>
-              <Grid item xs={12} key={uuidv4()}>
-                <TODOCard
-                  todo={item}
-                  openTaskToEdit={openTodoInEditor}
-                  completeTask={completeTask}
-                  deleteTask={deleteTask}
-                />
-              </Grid>
-            )}
+              {column.map(todo => (
+                <Grid item xs={12} key={uuidv4()}>
+                  <TaskCard
+                    todo={todo}
+                    openTaskToEdit={openTodoInEditor}
+                    completeTask={completeTask}
+                    deleteTask={deleteTask}
+                  />
+                </Grid>
+              ))}
 
             </Grid>
           </Grid>
