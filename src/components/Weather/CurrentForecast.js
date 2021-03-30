@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 
-import axios from "axios/index";
+import {API, URI} from "../../API";
+import {WEATHER_URL} from "../../settings/remoteAPI";
 
 import {roundDate} from "../../utils/roundDate";
-import {WEATHER_URL} from "../../settings/remoteAPI";
 import {ForecastCard} from "./parts";
+
+
+const MINUTE = 1000 * 60;
 
 
 export const CurrentForecast = () => {
@@ -17,21 +20,21 @@ export const CurrentForecast = () => {
     weather_data: undefined
   });
 
-  const request = () => {
-    const nearestDate = roundDate(new Date());
-    axios
-      .get(`${WEATHER_URL}?timestamp=${nearestDate.toISOString()}`)
-      .then(res => setData(res.data.results[0]))
-      .catch(err => {
-        console.log(err);
-        alert(err.message);
-      });
-  };
+  const request = React.useCallback(() => {
+    const api = new API();
+
+    const options = {timestamp: roundDate(new Date()).toISOString()};
+    const url = new URI(WEATHER_URL).list(1, 1, options);
+
+    const successHandler = res => setData(res.data.results[0]);
+
+    api.list(url, successHandler);
+  }, []);
 
   useEffect(() => {
     request();
 
-    const interval = setInterval(request, 1000 * 60 * 10);
+    const interval = setInterval(request, 10 * MINUTE);
 
     return () => clearInterval(interval);
   }, []);
