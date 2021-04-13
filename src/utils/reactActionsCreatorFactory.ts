@@ -15,7 +15,7 @@ interface IActionCreator<Action> {
  *  и `...restArgs`, которые должны соответсвовать другим полям Action,
  *  кроме поля `type` и возвращать функцию, которая будет собирать объект Action.
  */
-export interface IMakeActionCreator {
+export interface IGetActionCreator {
   <Action>(
     type: ActionType<Action>,
     ...argsNames: Exclude<keyof Action, "type">[]
@@ -23,7 +23,7 @@ export interface IMakeActionCreator {
 }
 
 
-export const makeActionCreator: IMakeActionCreator = (type, ...argsNames) =>
+export const getActionCreator: IGetActionCreator = (type, ...argsNames) =>
   (...args) => {
     const argsMapper = (arg, idx) => ({[argsNames[idx]]: args[idx]});
 

@@ -4,7 +4,7 @@ import {
 } from "./routesPaths";
 
 import {Home} from "../components/pages";
-import {TODOPage} from "../components/TODO";
+import {Todoes} from "../components/TODO";
 
 
 export const routes = [
@@ -18,6 +18,6 @@ export const routes = [
     path: TODO_LIST_ROUTE,
     exact: true,
     name: "Список задач",
-    component: TODOPage
+    component: Todoes
   },
 ];

@@ -22,7 +22,8 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import {ICronTodo, IMemoTodo, ITodo} from "../Context/dataTypes";
+import {ICronTodo} from "../../../Store/Todoes/types";
+import {IMemoTodo, ITodo} from "../../../Store/Todoes/types";
 
 
 const useStyles = makeStyles((theme) => ({

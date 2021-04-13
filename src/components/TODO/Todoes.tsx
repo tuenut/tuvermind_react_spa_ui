@@ -8,14 +8,12 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 
 import {v4 as uuidv4} from "uuid";
 
-import {TodoProvider, useTodo} from "./Context";
+import {TodoProvider} from "./Context";
 import {TodoCard} from "./parts/TodoCard";
-import {updateListAction} from "./Context/actions";
-import {getTestTodoes} from "./Context/testData";
-import {ApiMock, URI} from "../../API";
-import {TODOES_URL} from "../../settings/remoteAPI";
 import {splitArrayToColumns} from "./utils";
-import {TodoListType} from "./Context/dataTypes";
+import {useDispatch, useSelector} from "react-redux";
+import {todoesListSelector} from "../../Store/Todoes/reducers";
+import {getTodoesList} from "../../Store/Todoes";
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const TodoContent = ({getData}) => {
+const TodoContent = () => {
   const theme = useTheme();
 
   const breakpoints = [
@@ -37,12 +35,12 @@ const TodoContent = ({getData}) => {
   ];
   const cols = breakpoints.find(x => x) || 1;
 
-  const [todoList] = useTodo();
+  const todoesList = useSelector(todoesListSelector);
 
   return (
     <React.Fragment>
       <Grid container spacing={2} alignContent="center">
-        {splitArrayToColumns(todoList, cols).map(column => (
+        {splitArrayToColumns(todoesList.data!, cols).map(column => (
           <Grid item xs={Math.floor(12 / cols) as GridSize} key={uuidv4()}>
             <Grid container spacing={2} alignContent="flex-start">
 
@@ -65,7 +63,7 @@ const TodoContent = ({getData}) => {
             </Fab>
           </Grid>
           <Grid item>
-            <Fab color="primary" onClick={getData}>
+            <Fab color="primary" onClick={() => null}>
               <CachedIcon/>
             </Fab>
           </Grid>
@@ -76,54 +74,25 @@ const TodoContent = ({getData}) => {
   )
 };
 
-export const TodoLayout = () => {
+export const Todoes = () => {
   const classes = useStyles();
 
-  const [apiResponse, setApiResponse] = React.useState<any | null>(null);
-  const [isFetching, setIsFetching] = React.useState<boolean>(false);
-  const [, dispatch] = useTodo();
-
-  const getData = React.useCallback(() => {
-    if (!isFetching) {
-      setIsFetching(true);
-
-      const url = new URI(TODOES_URL).list();
-
-      const successHandler = res => {
-        setApiResponse(res);
-        setIsFetching(false);
-        dispatch(updateListAction(res));
-      };
-      const errorHandler = error => setIsFetching(false);
-
-      new ApiMock(1000, 5000, getTestTodoes)
-        .list(url, successHandler, errorHandler);
-    }
-  }, [isFetching]);
+  const todoesList = useSelector(todoesListSelector);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (apiResponse === null) {
-      getData();
+    if (todoesList.data === null) {
+      dispatch(getTodoesList());
     }
   }, []);
 
   return (
     <React.Fragment>
-      {(!isFetching) && (
-        <TodoContent getData={getData}/>
-      )}
+      {!todoesList.loading && <TodoContent/>}
 
-      <Backdrop className={classes.backdrop} open={isFetching}>
+      <Backdrop className={classes.backdrop} open={todoesList.loading}>
         <CircularProgress color="inherit"/>
       </Backdrop>
     </React.Fragment>
   );
 };
-
-export const TODOPage = () => (
-  <TodoProvider>
-
-    <TodoLayout/>
-
-  </TodoProvider>
-);

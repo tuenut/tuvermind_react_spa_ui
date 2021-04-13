@@ -1,40 +1,44 @@
-import {AxiosError, AxiosInstance, AxiosResponse} from "axios";
+import {AxiosError, AxiosInstance, AxiosResponse, AxiosPromise} from "axios";
 
-export interface ISuccessHandler {
-  (response: AxiosResponse): void
-}
+export type SuccessHandler = (response: AxiosResponse) => any;
+export type ErrorHandler = (error: AxiosError) => any;
 
-export interface IEerrorHandler {
-  (error: AxiosError): void
-}
+export type GetRequest = (
+  id: number,
+  successHandler?: SuccessHandler,
+  errorHandler?: ErrorHandler
+) => AxiosPromise;
 
-export interface IGetRequest {
-  (
-    url: string,
-    successHandler: ISuccessHandler,
-    errorHandler?: IEerrorHandler
-  ): void
-}
 
-export interface IPostRequest {
-  <DataType>(
-    url: string,
-    data: DataType,
-    successHandler: ISuccessHandler,
-    errorHandler?: IEerrorHandler
-  ): void
-}
+export type ListRequest = (
+  options?: {
+    [key: string]: undefined | null | boolean | number | string
+  },
+  successHandler?: SuccessHandler,
+  errorHandler?: ErrorHandler
+) => AxiosPromise;
+
+
+export type PostRequest = <DataType>(
+  url: string,
+  data: DataType,
+  successHandler?: SuccessHandler,
+  errorHandler?: ErrorHandler
+) => AxiosPromise;
+
 
 export interface IApi {
-  retrieve: IGetRequest,
-  list: IGetRequest,
-  create: IPostRequest,
-  update: IPostRequest,
-  delete: IGetRequest
+  retrieve?: GetRequest,
+  list?: ListRequest,
+  create?: PostRequest,
+  update?: PostRequest,
+  delete?: GetRequest
 }
 
 export interface IUri {
   retrieve(entitytId: number, extraAction?: string): string,
+
   list(page?: number, psize?: number, restOptions?: object): string,
+
   delete(entitytId: number): string
 }

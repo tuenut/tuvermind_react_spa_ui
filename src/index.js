@@ -5,11 +5,10 @@ import * as serviceWorker from './serviceWorker';
 
 import {createStore, applyMiddleware, compose} from "redux";
 import {Provider} from "react-redux";
-import thunk from 'redux-thunk';
-import rootReducer from "./Store/reducers";
+import createSagaMiddleware from "redux-saga";
 
-import axios from "axios";
-import {HOST} from "./settings/remoteAPIHost";
+import {rootReducer} from "./Store/reducers";
+import {getTodoesListWatcher} from "./Store/Todoes";
 
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,10 +17,9 @@ import './styles.css';
 import {App} from './components/App/App';
 
 
-axios.defaults.baseURL = HOST;
-
+const sagaMiddleware = createSagaMiddleware();
 let enchancers = [
-    applyMiddleware(thunk),
+    applyMiddleware(sagaMiddleware),
 ];
 
 const _dev_tools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
@@ -34,10 +32,11 @@ const store = createStore(
     compose(...enchancers)
 );
 
+sagaMiddleware.run(getTodoesListWatcher);
+
 
 ReactDOM.render(
     <React.StrictMode>
-
         <Provider store={store}>
             <App/>
         </Provider>
