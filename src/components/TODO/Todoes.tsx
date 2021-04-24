@@ -8,7 +8,6 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 
 import {v4 as uuidv4} from "uuid";
 
-import {TodoProvider} from "./Context";
 import {TodoCard} from "./parts/TodoCard";
 import {splitArrayToColumns} from "./utils";
 import {useDispatch, useSelector} from "react-redux";
@@ -88,7 +87,7 @@ export const Todoes = () => {
 
   return (
     <React.Fragment>
-      {!todoesList.loading && <TodoContent/>}
+      {(!todoesList.loading && todoesList.data) && <TodoContent/>}
 
       <Backdrop className={classes.backdrop} open={todoesList.loading}>
         <CircularProgress color="inherit"/>

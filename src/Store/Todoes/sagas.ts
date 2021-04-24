@@ -7,26 +7,20 @@ import {
   TODOES_GET_LIST_ACTION
 } from "./actions";
 import {IGetTodoesList} from "./types";
-import {API, ApiMock} from "../../API";
-import {getTestTodoes} from "../../components/TODO/Context/testData";
+import {getApi} from "../../settings/remoteAPI";
 
 
 export function* getTodoesListWorker(action: IGetTodoesList) {
   yield put(getTodoesListStartLoading());
 
-  const api = new ApiMock(1000, 5000, getTestTodoes);
-
   try {
-    // const api = new API();
-    // const response: SagaReturnType<typeof api.todoes.list> =
-    //   yield call(() => api.todoes.list(action.options));
-    //
-    const response = yield call(() => api.list(action.options));
+    const Api = getApi();
+    const response = yield call(() => Api.todoes.list(action.options));
 
     yield put(getTodoesListOnSuccess(response));
 
   } catch (e) {
-    console.log({e});
+    console.exception(e);
 
     yield put(getTodoesListOnFailure(e));
   }

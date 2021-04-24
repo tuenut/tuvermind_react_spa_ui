@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 
 import {Table, Row, Col} from 'react-bootstrap';
 import {ClockCard} from "../Clock";
-import {CurrentForecast, TodayForecast} from "../Weather";
+// import {CurrentForecast, TodayForecast} from "../Weather";
 
 
 export const Home = () => (
@@ -14,11 +14,11 @@ export const Home = () => (
 
     <Row className={"justify-content-center text-light"}>
       <Col xs={3}>
-        <CurrentForecast/>
+        {/*<CurrentForecast/>*/}
       </Col>
 
       <Col>
-        <TodayForecast/>
+        {/*<TodayForecast/>*/}
       </Col>
     </Row>
 

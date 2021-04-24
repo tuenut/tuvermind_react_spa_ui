@@ -110,7 +110,6 @@ const TodoCardTitle = ({todo, completed, onCardClick, expanded}) => {
       </CardActionArea>
     );
   }
-
 };
 
 const Actions = ({todo, completed, expanded, setEpand}) => {
@@ -144,10 +143,7 @@ const Actions = ({todo, completed, expanded, setEpand}) => {
 };
 
 const Content = ({todo, expanded}) => {
-  const showUpdate = (
-    new Date(todo.updated).valueOf()
-    - new Date(todo.created).valueOf()
-  ) > 10000;
+  const showUpdate = (new Date(todo.updated).valueOf() - new Date(todo.created).valueOf()) > 10000;
 
   return (
     <Collapse in={expanded} timeout="auto" unmountOnExit>

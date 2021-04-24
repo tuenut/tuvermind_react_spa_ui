@@ -15,6 +15,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
 import {App} from './components/App/App';
+import {configurator} from "./API";
+import {TodoesApi} from "./API/endpoints";
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -33,6 +35,9 @@ const store = createStore(
 );
 
 sagaMiddleware.run(getTodoesListWatcher);
+
+
+configurator.configure({todoes: TodoesApi});
 
 
 ReactDOM.render(
