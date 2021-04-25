@@ -3,7 +3,13 @@ import {ApiConfigurationObject} from "./types";
 
 
 class EndpointDoesNotExist {
-  name = "Endpoint does not exist"
+  name = "Endpoint {} does not exist!";
+  object = null;
+
+  constructor(endpointName, object) {
+    this.name = this.name.replace('{}', endpointName);
+    this.object = object;
+  }
 }
 
 /**
@@ -26,10 +32,12 @@ class ApiConfigurator {
 
     const proxyHandler = {
       get: (target, name) => {
-        if (!(name in target) && (name in this.config)) {
-          Object.getPrototypeOf(api)[name] = new this.config[name](api.client);
-        } else {
-          throw new EndpointDoesNotExist();
+        if (!(name in target)) {
+          if (name in this.config) {
+            Object.getPrototypeOf(api)[name] = new this.config[name](api.client);
+          } else {
+            throw new EndpointDoesNotExist(name, {target, config: this.config});
+          }
         }
 
         return target[name];
