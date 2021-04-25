@@ -1,8 +1,9 @@
-import {makeStyles} from "@material-ui/core/styles/index";
+import {makeStyles, createStyles} from "@material-ui/core/styles/index";
 
 const drawerWidth = 240;
-export const useHeadbarStyles = makeStyles((theme) => {
-  return ({
+
+export const useHeadbarStyles = makeStyles((theme) =>
+  createStyles({
     root: {
       display: 'flex',
     },
@@ -35,6 +36,7 @@ export const useHeadbarStyles = makeStyles((theme) => {
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
+      boxSizing: 'border-box',
     },
     drawerOpen: {
       width: drawerWidth,
@@ -49,9 +51,9 @@ export const useHeadbarStyles = makeStyles((theme) => {
         duration: theme.transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
+      width: `calc(${theme.spacing(7)} + 1px)`,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
+        width: `calc(${theme.spacing(9)} + 1px)`,
       },
     },
     toolbar: {
@@ -63,11 +65,18 @@ export const useHeadbarStyles = makeStyles((theme) => {
       ...theme.mixins.toolbar,
     },
     content: {
-      flexGrow: 1,
-      padding: theme.spacing(3, 2, 3, 11),
+      flexGrow: 0,
+      padding: theme.spacing(3),
+      overflowX: "auto"
     },
-    separator: {
-      color: theme.palette.primary.dark
-    }
-  });
-});
+    // contentClose: {
+    //   flexGrow: 1,
+    //   padding: theme.spacing(3, 2, 3, 11),
+    //
+    //   transition: theme.transitions.create('width', {
+    //     easing: theme.transitions.easing.sharp,
+    //     duration: theme.transitions.duration.leavingScreen,
+    //   }),
+    // }
+  }),
+);

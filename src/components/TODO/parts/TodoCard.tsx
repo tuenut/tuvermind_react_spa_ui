@@ -84,6 +84,7 @@ const TodoCardTitle = ({todo, completed, onCardClick, expanded}) => {
         </Collapse>
       </React.Fragment>
     );
+
   } else {
     return (
       <CardActionArea onClick={onCardClick}>
@@ -111,6 +112,7 @@ const TodoCardTitle = ({todo, completed, onCardClick, expanded}) => {
     );
   }
 };
+
 
 const Actions = ({todo, completed, expanded, setEpand}) => {
   const classes = useStyles();
@@ -141,6 +143,7 @@ const Actions = ({todo, completed, expanded, setEpand}) => {
     </CardActions>
   )
 };
+
 
 const Content = ({todo, expanded}) => {
   const showUpdate = (new Date(todo.updated).valueOf() - new Date(todo.created).valueOf()) > 10000;
@@ -174,12 +177,15 @@ const Content = ({todo, expanded}) => {
 };
 
 
-export const TodoCard: React.FC<ITodo & ICronTodo | IMemoTodo> = (todo) => {
+export const TodoCard: React.FC<{
+  todo: ITodo | ICronTodo | IMemoTodo,
+  openTodoInEditor
+}> = ({todo, openTodoInEditor}) => {
   const [expanded, setEpand] = React.useState(false);
 
   const isCompleted = !(
-    (todo.status === "suspense")
-    || (todo.status === "inProcess")
+    (todo.status === "suspense") ||
+    (todo.status === "inProcess")
   );
 
   const onCardClick = () => null;
@@ -190,7 +196,7 @@ export const TodoCard: React.FC<ITodo & ICronTodo | IMemoTodo> = (todo) => {
         todo={todo}
         expanded={expanded}
         completed={isCompleted}
-        onCardClick={isCompleted ? onCardClick : () => null}
+        onCardClick={isCompleted ? onCardClick : openTodoInEditor}
       />
       <Actions
         todo={todo}

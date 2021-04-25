@@ -42,17 +42,24 @@ export type GetTodoesListActions =
 
 
 export interface ITodoesListState extends IBaseStateWithApi {
-  data: null | TodoListType,
+  data: null | ITodoesData,
 }
 
-export type TypeOfTodoType = "MEMO" | "TODO" | "CRON";
+export const MEMO = "MEMO";
+export const TODO = "TODO";
+export const CRON = "CRON";
+export type TodoType =
+  | typeof MEMO
+  | typeof TODO
+  | typeof CRON
+  ;
 export type TodoStatusType = "suspense" | "inProcess" | "done" | "expired" | "archived";
 export type CronScheduleType = string;
 
 export interface IBaseTodo {
   id: number,
   status: TodoStatusType,
-  type: TypeOfTodoType,
+  type: TodoType,
   title: string,
   description: string | null,
   duration: number | null,
@@ -62,12 +69,12 @@ export interface IBaseTodo {
 
 export interface IMemoTodo extends IBaseTodo {
   type: "MEMO",
-  date: number,
+  date: number | null,
 }
 
 export interface ITodo extends IBaseTodo {
   type: "TODO",
-  date: number,
+  date: number | null,
 }
 
 export interface ICronTodo extends IBaseTodo {
@@ -75,7 +82,11 @@ export interface ICronTodo extends IBaseTodo {
   schedule: CronScheduleType,
 }
 
-export type TodoListType = Array<IMemoTodo | ITodo | ICronTodo>;
+export interface ITodoesData {
+  [id: number]: IMemoTodo | ITodo | ICronTodo
+}
+
+export type TodoesListType = Array<IMemoTodo | ITodo | ICronTodo>;
 
 export interface ITodoesState {
   list: ITodoesListState

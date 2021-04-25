@@ -9,7 +9,7 @@ import {useTheme, makeStyles} from '@material-ui/core/styles';
 
 import {TODOES_SCHEDULED_URL, TODOES_URL} from "../../settings/remoteAPI";
 import {TodoEditor, EMPTY_TODO_OBJECT, TODOCard, ScheduledTodoCard} from "./parts";
-import {listToObject} from "../../utils/common";
+import {listToObject__DEPRECATED__} from "../../utils/common";
 import {v4 as uuidv4} from "uuid";
 
 
@@ -62,7 +62,7 @@ export const TODOPage = () => {
 
   const openTodoInEditor = (id) => {
     setShowEditCard(true);
-    setTodoInEditor(listToObject([...todoList, ...todoScheduledList])[id]);
+    setTodoInEditor(listToObject__DEPRECATED__([...todoList, ...todoScheduledList])[id]);
   };
   const closeTodoEditor = () => {
     setShowEditCard(false);

@@ -1,4 +1,4 @@
-export const listToObject = (array, idField = "id") =>
+export const listToObject__DEPRECATED__ = (array, idField = "id") =>
   Object.assign({}, ...Object.values(array).map(o => ({[o[idField]]: o})));
 
 export const getDateTime = datetime => {
@@ -26,3 +26,42 @@ export const range = (from, size) => (
     ? [...Array(size).keys()].map(i => i + from)
     : [...Array(Math.abs(size)).keys()].map(i => i + from + size)
 );
+
+export class DateTime {
+  constructor(dateObject) {
+    this._object = dateObject ? new Date(dateObject) : new Date();
+
+    const [UTCdate, UTCtime] = this._object.toISOString().split("T");
+    this.UTCdate = UTCdate;
+    this.UTCtime = UTCtime;
+
+    this.localDate = this._object.toLocaleDateString("ru");
+    this.localTime = this._object.toLocaleTimeString("ru");
+  }
+}
+
+DateTime.prototype.toString = function () {
+  return this.localDate;
+};
+
+export const convertResponseDataToStoreObject = (data, keyField = "id") =>
+  Object.assign({}, ...data.map((x) => ({[x[keyField]]: x})));
+
+export const convertStoreObjectToArray = (data, sortByField = "id") => {
+  if (!data || Object.values(data).length === 0)
+    return [];
+
+  return Object.values(data)
+    .sort(
+      (item1, item2) => {
+        if (item1[sortByField] > item2[sortByField]) {
+          return 1;
+        }
+        if (item1[sortByField] < item2[sortByField]) {
+          return -1;
+        }
+
+        return 0;
+      }
+    );
+};

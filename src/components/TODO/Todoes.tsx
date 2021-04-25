@@ -1,80 +1,31 @@
 import React from "react";
 
-import {Backdrop, Box, CircularProgress, Fab, Grid, GridSize} from '@material-ui/core';
-
-import {Add as AddIcon, Cached as CachedIcon} from '@material-ui/icons';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-
-import {v4 as uuidv4} from "uuid";
-
-import {TodoCard} from "./parts/TodoCard";
-import {splitArrayToColumns} from "./utils";
 import {useDispatch, useSelector} from "react-redux";
+
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Fab from "@material-ui/core/Fab";
+import CachedIcon from '@material-ui/icons/Cached';
+import AddIcon from '@material-ui/icons/Add';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from "@material-ui/core/CircularProgress"
+import Dialog from "@material-ui/core/Dialog";
+
 import {todoesListSelector} from "../../Store/Todoes/reducers";
 import {getTodoesList} from "../../Store/Todoes";
 
+import {useStyles} from "./parts/styles";
+import {TodoesList, TodoEditor} from "./parts";
+import {EditorContextProvider} from "./parts/TodoEditorContext";
 
-const useStyles = makeStyles(theme => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
-}));
-
-
-const TodoContent = () => {
-  const theme = useTheme();
-
-  const breakpoints = [
-    useMediaQuery(theme.breakpoints.up('lg')) && 4,
-    useMediaQuery(theme.breakpoints.up('md')) && 3,
-    useMediaQuery(theme.breakpoints.up('sm')) && 2,
-    useMediaQuery(theme.breakpoints.up('xs')) && 1,
-  ];
-  const cols = breakpoints.find(x => x) || 1;
-
-  const todoesList = useSelector(todoesListSelector);
-
-  return (
-    <React.Fragment>
-      <Grid container spacing={2} alignContent="center">
-        {splitArrayToColumns(todoesList.data!, cols).map(column => (
-          <Grid item xs={Math.floor(12 / cols) as GridSize} key={uuidv4()}>
-            <Grid container spacing={2} alignContent="flex-start">
-
-              {column.map((todo, idx) => (
-                <Grid item xs={12} key={uuidv4()}>
-                  <TodoCard {...todo}/>
-                </Grid>
-              ))}
-
-            </Grid>
-          </Grid>
-        ))}
-      </Grid>
-
-      <Box position="fixed" bottom={20} right={20}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <Fab onClick={() => null}>
-              <AddIcon/>
-            </Fab>
-          </Grid>
-          <Grid item>
-            <Fab color="primary" onClick={() => null}>
-              <CachedIcon/>
-            </Fab>
-          </Grid>
-        </Grid>
-      </Box>
-
-    </React.Fragment>
-  )
-};
 
 export const Todoes = () => {
   const classes = useStyles();
+
+  const [todoInEditor, setTodoInEditor] = React.useState<number>();
+  const onCloseEditor = React.useCallback(
+    () => setTodoInEditor(undefined),
+    []);
 
   const todoesList = useSelector(todoesListSelector);
   const dispatch = useDispatch();
@@ -87,11 +38,43 @@ export const Todoes = () => {
 
   return (
     <React.Fragment>
-      {(!todoesList.loading && todoesList.data) && <TodoContent/>}
+      {(!todoesList.loading && todoesList.data) && (
+        <TodoesList openTodoInEditor={setTodoInEditor}/>
+      )}
+
+      <Dialog
+        open={todoInEditor !== undefined}
+        onClose={() => setTodoInEditor(undefined)}
+        fullWidth={true}
+        maxWidth={"sm"}
+      >
+        <React.Fragment>
+          {((todoInEditor !== undefined) && todoesList.data) && (
+            <EditorContextProvider todo={todoesList.data[todoInEditor]}>
+              <TodoEditor onClose={onCloseEditor}/>
+            </EditorContextProvider>
+          )}
+        </React.Fragment>
+      </Dialog>
 
       <Backdrop className={classes.backdrop} open={todoesList.loading}>
         <CircularProgress color="inherit"/>
       </Backdrop>
+
+      <Box position="fixed" bottom={20} right={20}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Fab onClick={() => null}>
+              <AddIcon/>
+            </Fab>
+          </Grid>
+          <Grid item>
+            <Fab color="primary" onClick={() => dispatch(getTodoesList())}>
+              <CachedIcon/>
+            </Fab>
+          </Grid>
+        </Grid>
+      </Box>
     </React.Fragment>
   );
 };

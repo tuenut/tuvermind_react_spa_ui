@@ -1,4 +1,4 @@
-import {ICronTodo, IMemoTodo, ITodo, TodoListType} from "./types";
+import {ICronTodo, IMemoTodo, ITodo, TodoesListType} from "./types";
 
 import {random, range} from "../../utils/common";
 
@@ -66,7 +66,7 @@ const createCronTodo: () => ICronTodo = () => ({
   ...getRandomDates()
 });
 
-export const getTestTodoes: () => TodoListType = () => [
+export const getTestTodoes: () => TodoesListType = () => [
   ...range(0, random(6)).map(createMemoTodo),
   ...range(0, random(6)).map(createTodo),
   ...range(0, random(6)).map(createCronTodo),

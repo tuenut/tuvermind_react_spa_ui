@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {withRouter} from 'react-router-dom';
 
 import {Box} from '@material-ui/core';
-
+import CssBaseline from '@material-ui/core/CssBaseline';
 import {useHeadbarStyles} from "../../settings/styles";
 import {TheContent} from "./TheContent";
 import {HeadBar} from "./Headbar";
@@ -16,15 +16,19 @@ const TheLayoutComponent = (props) => {
 
   return (
     <Box>
-      <HeadBar {...props} showMenu={showMenu} setShowMenu={setShowMenu}/>
-      <SideBar {...props} showMenu={showMenu} setShowMenu={setShowMenu}/>
+      <div className={classes.root}>
 
+        <CssBaseline/> {/*Dunno why it there. Need to find out.*/}
 
-      <main className={classes.content}>
-        <div className={classes.toolbar}/>
-        <TheContent/>
-      </main>
+        <HeadBar {...props} showMenu={showMenu} setShowMenu={setShowMenu}/>
+        <SideBar {...props} showMenu={showMenu} setShowMenu={setShowMenu}/>
 
+        <main className={classes.content}>
+          <div className={classes.toolbar}/>
+          <TheContent/>
+        </main>
+
+      </div>
     </Box>
   );
 };
