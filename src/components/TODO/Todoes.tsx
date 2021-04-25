@@ -17,18 +17,27 @@ import {getTodoesList} from "../../Store/Todoes";
 import {useStyles} from "./parts/styles";
 import {TodoesList, TodoEditor} from "./parts";
 import {EditorContextProvider} from "./parts/TodoEditorContext";
+import {updateTodo} from "../../Store/Todoes/actions";
 
 
 export const Todoes = () => {
   const classes = useStyles();
 
-  const [todoInEditor, setTodoInEditor] = React.useState<number>();
-  const onCloseEditor = React.useCallback(
-    () => setTodoInEditor(undefined),
-    []);
-
   const todoesList = useSelector(todoesListSelector);
   const dispatch = useDispatch();
+
+  const [todoInEditor, setTodoInEditor] = React.useState<number>();
+
+  const onCloseEditor = React.useCallback(
+    () => setTodoInEditor(undefined),
+    []
+  );
+  const onSaveEditedTodo = React.useCallback(
+    (todo) => {
+      dispatch(updateTodo(todo.id, todo));
+    },
+    []
+  );
 
   React.useEffect(() => {
     if (todoesList.data === null) {
@@ -51,7 +60,7 @@ export const Todoes = () => {
         <React.Fragment>
           {((todoInEditor !== undefined) && todoesList.data) && (
             <EditorContextProvider todo={todoesList.data[todoInEditor]}>
-              <TodoEditor onClose={onCloseEditor}/>
+              <TodoEditor onClose={onCloseEditor} onSave={onSaveEditedTodo}/>
             </EditorContextProvider>
           )}
         </React.Fragment>

@@ -13,8 +13,8 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
 
-import {CRON, MEMO, TODO, TodoType} from "../../../Store/Todoes/types";
-import {SET_DATE, SET_DESCRIPTION, SET_TITLE, SET_TYPE, useEditorContext} from "./TodoEditorContext";
+import {CRON, ICronTodo, IMemoTodo, ITodo, MEMO, TODO} from "../../../Store/Todoes/types";
+import {SET_DATE, SET_DESCRIPTION, SET_DURATION, SET_TITLE, SET_TYPE, useEditorContext} from "./TodoEditorContext";
 
 
 const EditDateSection = () => {
@@ -60,6 +60,11 @@ const EditDateSection = () => {
 const EditTypeSection = () => {
   const [todoState, dispatch] = useEditorContext();
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({
+    type: SET_TYPE,
+    payload: e.target.value
+  });
+
   return (
     <TextField
       select
@@ -67,10 +72,7 @@ const EditTypeSection = () => {
       id={"task-type"}
       helperText={"Тип задачи"}
       value={todoState.type}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatch({
-        type: SET_TYPE,
-        payload: e.target.value
-      })}
+      onChange={onChange}
     >
       {[TODO, MEMO, CRON].map((item, idx) => (
         <MenuItem key={idx} value={item}>
@@ -84,16 +86,18 @@ const EditTypeSection = () => {
 const EditTitleSection = () => {
   const [todoState, dispatch] = useEditorContext();
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({
+    type: SET_TITLE,
+    payload: e.target.value
+  });
+
   return (
     <TextField
       id={"task-title"}
       label={"Название"}
       helperText={"И как это все называется?"}
       value={todoState.title}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatch({
-        type: SET_TITLE,
-        payload: e.target.value
-      })}
+      onChange={onChange}
       error={!todoState.title}
       fullWidth
     />
@@ -121,13 +125,40 @@ const EditDescriptionSection = () => {
   )
 };
 
-export const TodoEditor: React.FC<{ onClose }> = ({onClose}) => {
+const EditDurationSection = () => {
+  const [todoState, dispatch] = useEditorContext();
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({
+    type: SET_DURATION,
+    payload: e.target.value
+  });
+
+  return (
+    <TextField
+      id={"task-duration"}
+      type={"number"}
+      label={"Длительность"}
+      helperText={"Ну, сколько это еще будет продолжаться?"}
+      value={todoState.duration}
+      onChange={onChange}
+      fullWidth
+    />
+  )
+};
+
+interface TodoEditorProps {
+   onClose: () => void,
+  onSave: (todo: IMemoTodo | ITodo | ICronTodo) => void
+}
+
+export const TodoEditor: React.FC<TodoEditorProps> = ({onClose, onSave}) => {
   const [todoState] = useEditorContext();
 
-  const onCancel = () => {
+  const onCancelHandler = () => {
     onClose();
   };
-  const onSave = () => {
+  const onSaveHandler = () => {
+    // onSave(todoState); // TODO нужно перобразование todoState в объект соответсвующий типу задачи.
     onClose();
   };
 
@@ -148,20 +179,24 @@ export const TodoEditor: React.FC<{ onClose }> = ({onClose}) => {
             <EditDescriptionSection/>
           </Grid>
 
-          <Grid item xs={12}>
-            {([MEMO, TODO].includes(todoState.type)) && (
+          {([MEMO, TODO].includes(todoState.type)) && (
+            <Grid item xs={12}>
               <EditDateSection/>
-            )}
+            </Grid>
+          )}
+
+          <Grid item xs={6}>
+            <EditDurationSection/>
           </Grid>
 
         </Grid>
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onCancel} color={"secondary"}>
+        <Button onClick={onCancelHandler} color={"secondary"}>
           Отмена
         </Button>
-        <Button onClick={onSave} color="primary">
+        <Button onClick={onSaveHandler} color="primary">
           Сохранить
         </Button>
       </DialogActions>

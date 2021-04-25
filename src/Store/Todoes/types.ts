@@ -6,28 +6,33 @@ import {
   TODOES_GET_LIST_ON_FAILURE_ACTION,
   TODOES_GET_LIST_ON_SUCCESS_ACTION,
   TODOES_GET_LIST_START_LOADING_ACTION,
-  TODOES_GET_LIST_STOP_LOADING_ACTION
+  TODOES_GET_LIST_STOP_LOADING_ACTION,
+  TODOES_UPDATE_ACTION,
+  TODOES_UPDATE_ON_SUCCESS_ACTION,
+  TODOES_UPDATE_ON_FAILURE_ACTION,
 } from "./actions";
 
+
+// GET LIST
 export interface IGetTodoesList extends IBaseAction {
   type: typeof TODOES_GET_LIST_ACTION
   options: object
 }
 
-export interface IGetTodoesListStartLoading {
+export interface IGetTodoesListStartLoading extends IBaseAction {
   type: typeof TODOES_GET_LIST_START_LOADING_ACTION
 }
 
-export interface IGetTodoesListStopLoading {
+export interface IGetTodoesListStopLoading extends IBaseAction {
   type: typeof TODOES_GET_LIST_STOP_LOADING_ACTION
 }
 
-export interface IGetTodoesListOnSuccess {
+export interface IGetTodoesListOnSuccess extends IBaseAction {
   type: typeof TODOES_GET_LIST_ON_SUCCESS_ACTION,
   response: AxiosResponse,
 }
 
-export interface IGetTodoesListOnFailure {
+export interface IGetTodoesListOnFailure extends IBaseAction {
   type: typeof TODOES_GET_LIST_ON_FAILURE_ACTION,
   error: object,
 }
@@ -41,6 +46,7 @@ export type GetTodoesListActions =
   ;
 
 
+// STATE
 export interface ITodoesListState extends IBaseStateWithApi {
   data: null | ITodoesData,
 }
@@ -91,3 +97,20 @@ export type TodoesListType = Array<IMemoTodo | ITodo | ICronTodo>;
 export interface ITodoesState {
   list: ITodoesListState
 }
+
+
+// UPDATE ENTITY
+export interface IUpdateTodo extends IBaseAction {
+  type: typeof TODOES_UPDATE_ACTION,
+  id: number,
+  data: IMemoTodo | ITodo | ICronTodo
+}
+export interface IUpdateTodoOnSuccess extends IBaseAction {
+  type: typeof TODOES_UPDATE_ON_SUCCESS_ACTION,
+  response: AxiosResponse,
+}
+export interface IUpdateTodoOnFailure extends IBaseAction {
+  type: typeof TODOES_UPDATE_ON_FAILURE_ACTION,
+  error: object,
+}
+export type UpdateTodoActions = IUpdateTodo | IUpdateTodoOnSuccess | IUpdateTodoOnFailure;

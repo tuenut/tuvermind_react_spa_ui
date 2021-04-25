@@ -40,7 +40,7 @@ const createMemoTodo: () => IMemoTodo = () => ({
   type: "MEMO",
   title: getRandomText(10),
   description: random(2) ? getRandomText(36) : null,
-  duration: null,
+  duration: random(2) ? random(16000) : null,
   status: "suspense",
   ...getRandomDates()
 });
@@ -50,7 +50,7 @@ const createTodo: () => ITodo = () => ({
   type: "TODO",
   title: getRandomText(10),
   description: random(6) ? getRandomText(64) : null,
-  duration: random(16000), // seconds
+  duration: random(2) ? random(16000) : null, // seconds
   status: "suspense",
   ...getRandomDates()
 });
@@ -60,7 +60,7 @@ const createCronTodo: () => ICronTodo = () => ({
   type: "CRON",
   title: getRandomText(10),
   description: random(2) ? getRandomText(42) : null,
-  duration: random(6000), // seconds
+  duration: random(2) ? random(16000) : null, // seconds
   status: "suspense",
   schedule: "",
   ...getRandomDates()

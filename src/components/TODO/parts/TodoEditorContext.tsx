@@ -1,5 +1,5 @@
 import React from "react";
-import {CRON, CronScheduleType, IBaseTodo, MEMO, TODO} from "../../../Store/Todoes/types";
+import {CronScheduleType, IBaseTodo} from "../../../Store/Todoes/types";
 
 export const SET_TITLE = "SET_TITLE";
 export const SET_DESCRIPTION = "SET_DESCRIPTION";

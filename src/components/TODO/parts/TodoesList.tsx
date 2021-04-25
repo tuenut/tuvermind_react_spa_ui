@@ -51,9 +51,6 @@ export const TodoesList = ({openTodoInEditor}) => {
         ))}
 
       </Grid>
-
-
-
     </React.Fragment>
   )
 };
