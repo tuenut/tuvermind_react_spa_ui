@@ -18,6 +18,7 @@ import {
 import {makeStyles} from '@material-ui/core/styles';
 
 import EditIcon from '@material-ui/icons/Edit';
+import Chip from "@material-ui/core/Chip";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -128,6 +129,8 @@ const Actions = ({todo, completed, expanded, setEpand}) => {
       <IconButton color="secondary" onClick={() => null}>
         <DeleteForeverIcon/>
       </IconButton>
+
+      <Chip label={todo.type} color={"primary"} variant={"outlined"}/>
 
       {todo.description && (
         <IconButton

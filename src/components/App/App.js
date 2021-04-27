@@ -13,16 +13,16 @@ const TheLayout = React.lazy(() => import("../TheLayout"));
 
 export const App = () => (
   <StyledEngineProvider injectFirst>
-    <HashRouter>
+      <HashRouter>
 
-      <CssBaseline/>
+        <CssBaseline/>
 
-      <Suspense fallback={<LoadingSpinner/>}>
-        <Switch>
-          <Route path={HOME_ROUTE} name={"Home"} render={props => <TheLayout/>}/>
-        </Switch>
-      </Suspense>
+        <Suspense fallback={<LoadingSpinner/>}>
+          <Switch>
+            <Route path={HOME_ROUTE} name={"Home"} render={props => <TheLayout/>}/>
+          </Switch>
+        </Suspense>
 
-    </HashRouter>
+      </HashRouter>
   </StyledEngineProvider>
 );
