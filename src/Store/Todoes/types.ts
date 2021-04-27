@@ -5,8 +5,8 @@ import {
   TODOES_GET_LIST_ACTION,
   TODOES_GET_LIST_ON_FAILURE_ACTION,
   TODOES_GET_LIST_ON_SUCCESS_ACTION,
-  TODOES_GET_LIST_START_LOADING_ACTION,
-  TODOES_GET_LIST_STOP_LOADING_ACTION,
+  TODOES_START_LOADING_ACTION,
+  TODOES_STOP_LOADING_ACTION,
   TODOES_UPDATE_ACTION,
   TODOES_UPDATE_ON_SUCCESS_ACTION,
   TODOES_UPDATE_ON_FAILURE_ACTION,
@@ -19,12 +19,12 @@ export interface IGetTodoesList extends IBaseAction {
   options: object
 }
 
-export interface IGetTodoesListStartLoading extends IBaseAction {
-  type: typeof TODOES_GET_LIST_START_LOADING_ACTION
+export interface ITodoesStartLoading extends IBaseAction {
+  type: typeof TODOES_START_LOADING_ACTION
 }
 
-export interface IGetTodoesListStopLoading extends IBaseAction {
-  type: typeof TODOES_GET_LIST_STOP_LOADING_ACTION
+export interface ITodoesStopLoading extends IBaseAction {
+  type: typeof TODOES_STOP_LOADING_ACTION
 }
 
 export interface IGetTodoesListOnSuccess extends IBaseAction {
@@ -36,14 +36,6 @@ export interface IGetTodoesListOnFailure extends IBaseAction {
   type: typeof TODOES_GET_LIST_ON_FAILURE_ACTION,
   error: object,
 }
-
-export type GetTodoesListActions =
-  | IGetTodoesList
-  | IGetTodoesListStartLoading
-  | IGetTodoesListStopLoading
-  | IGetTodoesListOnSuccess
-  | IGetTodoesListOnFailure
-  ;
 
 
 // STATE
@@ -105,12 +97,29 @@ export interface IUpdateTodo extends IBaseAction {
   id: number,
   data: IMemoTodo | ITodo | ICronTodo
 }
+
 export interface IUpdateTodoOnSuccess extends IBaseAction {
   type: typeof TODOES_UPDATE_ON_SUCCESS_ACTION,
   response: AxiosResponse,
 }
+
 export interface IUpdateTodoOnFailure extends IBaseAction {
   type: typeof TODOES_UPDATE_ON_FAILURE_ACTION,
   error: object,
 }
-export type UpdateTodoActions = IUpdateTodo | IUpdateTodoOnSuccess | IUpdateTodoOnFailure;
+
+export type TodoesActions =
+  | IGetTodoesList
+  | ITodoesStartLoading
+  | ITodoesStopLoading
+  | IGetTodoesListOnSuccess
+  | IGetTodoesListOnFailure
+  | IUpdateTodo
+  | IUpdateTodoOnSuccess
+  | IUpdateTodoOnFailure
+  ;
+
+export type ITodoesErrorActions =
+| IGetTodoesListOnFailure
+| IUpdateTodoOnFailure
+;

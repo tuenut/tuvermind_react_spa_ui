@@ -48,67 +48,63 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TodoCardTitle = ({todo, completed, onCardClick, expanded}) => {
+const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
   const color = completed ? "primary" : "textPrimary";
   const fade = expanded && !completed;
+
   const subheader = todo.hasOwnProperty("data") && (todo.date.toLocaleString("ru"));
 
+  const title = (
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography color={color}>
+          {completed && (
+            <CheckCircleIcon color="primary"/>
+          )}
+          <b>{todo.title}</b>
+        </Typography>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Chip label={todo.type} color={"primary"} variant={"outlined"} size={"small"}/>
+      </Grid>
+    </Grid>
+  );
+
+  const content = (
+    <Collapse in={!expanded} timeout="auto" unmountOnExit>
+      <CardContent>
+        <Typography noWrap>
+          {todo.description}
+        </Typography>
+
+      </CardContent>
+    </Collapse>
+  );
+
   if (expanded) {
+    const action = (
+      <Fade in={fade}>
+        <IconButton onClick={openEditor}>
+          <EditIcon/>
+        </IconButton>
+      </Fade>
+    );
+
     return (
       <React.Fragment>
-        <CardHeader
-          title={(
-            <Typography color={color}>
-              {completed && (
-                <CheckCircleIcon color="primary"/>
-              )}
-              <b>{todo.title}</b>
-            </Typography>
-          )}
-          action={(
-            <Fade in={fade}>
-              <IconButton>
-                <EditIcon/>
-              </IconButton>
-            </Fade>
-          )}
-          subheader={subheader}
-        />
+        <CardHeader title={title} action={action} subheader={subheader}/>
 
-        <Collapse in={!expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography noWrap>
-              {todo.description}
-            </Typography>
-
-          </CardContent>
-        </Collapse>
+        {content}
       </React.Fragment>
     );
 
   } else {
     return (
-      <CardActionArea onClick={onCardClick}>
-        <CardHeader
-          title={(
-            <Typography color={color}>
-              {completed && (
-                <CheckCircleIcon color="primary"/>
-              )}
-              <b>{todo.title}</b>
-            </Typography>
-          )}
-          subheader={subheader}
-        />
+      <CardActionArea onClick={openEditor}>
+        <CardHeader title={title} subheader={subheader}/>
 
-        <Collapse in={!expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography noWrap>
-              {todo.description}
-            </Typography>
-
-          </CardContent>
-        </Collapse>
+        {content}
       </CardActionArea>
     );
   }
@@ -129,8 +125,6 @@ const Actions = ({todo, completed, expanded, setEpand}) => {
       <IconButton color="secondary" onClick={() => null}>
         <DeleteForeverIcon/>
       </IconButton>
-
-      <Chip label={todo.type} color={"primary"} variant={"outlined"}/>
 
       {todo.description && (
         <IconButton
@@ -154,6 +148,7 @@ const Content = ({todo, expanded}) => {
   return (
     <Collapse in={expanded} timeout="auto" unmountOnExit>
       <CardContent>
+
         <Typography paragraph color="textPrimary">
           {todo.description}
         </Typography>
@@ -199,7 +194,7 @@ export const TodoCard: React.FC<{
         todo={todo}
         expanded={expanded}
         completed={isCompleted}
-        onCardClick={isCompleted ? onCardClick : openTodoInEditor}
+        openEditor={isCompleted ? onCardClick : openTodoInEditor}
       />
       <Actions
         todo={todo}

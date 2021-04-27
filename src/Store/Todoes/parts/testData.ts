@@ -1,6 +1,6 @@
-import {ICronTodo, IMemoTodo, ITodo, TodoesListType} from "./types";
+import {ICronTodo, IMemoTodo, ITodo, TodoesListType} from "../types";
 
-import {random, range} from "../../utils/common";
+import {random, range} from "../../../utils/common";
 
 
 const DAY = 60 * 60 * 24 * 1000;

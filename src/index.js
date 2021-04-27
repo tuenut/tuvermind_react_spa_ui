@@ -17,6 +17,7 @@ import './styles.css';
 import {App} from './components/App/App';
 import {configurator} from "./API";
 import {TodoesApi} from "./API/endpoints";
+import {updateTodoWatcher} from "./Store/Todoes/sagas";
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -35,6 +36,7 @@ const store = createStore(
 );
 
 sagaMiddleware.run(getTodoesListWatcher);
+sagaMiddleware.run(updateTodoWatcher);
 
 
 configurator.configure({todoes: TodoesApi});

@@ -15,6 +15,7 @@ import TimePicker from '@material-ui/lab/TimePicker';
 
 import {CRON, ICronTodo, IMemoTodo, ITodo, MEMO, TODO} from "../../../Store/Todoes/types";
 import {SET_DATE, SET_DESCRIPTION, SET_DURATION, SET_TITLE, SET_TYPE, useEditorContext} from "./TodoEditorContext";
+import {createTodoDataObject} from "../utils";
 
 
 const EditDateSection = () => {
@@ -158,7 +159,8 @@ export const TodoEditor: React.FC<TodoEditorProps> = ({onClose, onSave}) => {
     onClose();
   };
   const onSaveHandler = () => {
-    // onSave(todoState); // TODO нужно перобразование todoState в объект соответсвующий типу задачи.
+    const newTodo = createTodoDataObject(todoState);
+    if (newTodo) onSave(newTodo);
     onClose();
   };
 

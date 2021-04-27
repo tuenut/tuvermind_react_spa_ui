@@ -47,7 +47,7 @@ export const Todoes = () => {
 
   return (
     <React.Fragment>
-      {(!todoesList.loading && todoesList.data) && (
+      {(todoesList.data) && (
         <TodoesList openTodoInEditor={setTodoInEditor}/>
       )}
 
@@ -77,6 +77,7 @@ export const Todoes = () => {
               <AddIcon/>
             </Fab>
           </Grid>
+
           <Grid item>
             <Fab color="primary" onClick={() => dispatch(getTodoesList())}>
               <CachedIcon/>

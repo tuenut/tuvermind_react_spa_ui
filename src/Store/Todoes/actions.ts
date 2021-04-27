@@ -4,14 +4,14 @@ import {
   IGetTodoesList,
   IGetTodoesListOnFailure,
   IGetTodoesListOnSuccess,
-  IGetTodoesListStartLoading,
-  IGetTodoesListStopLoading, IUpdateTodo, IUpdateTodoOnFailure, IUpdateTodoOnSuccess
+  ITodoesStartLoading,
+  ITodoesStopLoading, IUpdateTodo, IUpdateTodoOnFailure, IUpdateTodoOnSuccess
 } from "./types";
 
 // Get new list from server.
 export const TODOES_GET_LIST_ACTION = "TODOES_GET_LIST_ACTION";
-export const TODOES_GET_LIST_START_LOADING_ACTION = "TODOES_GET_LIST_START_LOADING_ACTION";
-export const TODOES_GET_LIST_STOP_LOADING_ACTION = "TODOES_GET_LIST_STOP_LOADING_ACTION";
+export const TODOES_START_LOADING_ACTION = "TODOES_GET_LIST_START_LOADING_ACTION";
+export const TODOES_STOP_LOADING_ACTION = "TODOES_GET_LIST_STOP_LOADING_ACTION";
 export const TODOES_GET_LIST_ON_SUCCESS_ACTION = "TODOES_GET_LIST_ON_SUCCESS_ACTION";
 export const TODOES_GET_LIST_ON_FAILURE_ACTION = "TODOES_GET_LIST_ON_FAILURE_ACTION";
 
@@ -51,13 +51,13 @@ export const getTodoesList =
   );
 
 export const getTodoesListStartLoading =
-  getActionCreator<IGetTodoesListStartLoading>(
-    TODOES_GET_LIST_START_LOADING_ACTION
+  getActionCreator<ITodoesStartLoading>(
+    TODOES_START_LOADING_ACTION
   );
 
 export const getTodoesListStopLoading =
-  getActionCreator<IGetTodoesListStopLoading>(
-    TODOES_GET_LIST_STOP_LOADING_ACTION
+  getActionCreator<ITodoesStopLoading>(
+    TODOES_STOP_LOADING_ACTION
   );
 
 export const getTodoesListOnSuccess =
