@@ -7,17 +7,19 @@ import {createStore, applyMiddleware, compose} from "redux";
 import {Provider} from "react-redux";
 import createSagaMiddleware from "redux-saga";
 
-import {rootReducer} from "./Store/reducers";
-import {getTodoesListWatcher} from "./Store/Todoes";
-
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
-import {App} from './components/App/App';
-import {configurator} from "./API";
-import {TodoesApi} from "./API/endpoints";
+import {configurator} from "./libs/Api/index";
+import {TodoesApi} from "./API/index";
 import {updateTodoWatcher} from "./Store/Todoes/sagas";
+import {getTodoesListWatcher} from "./Store/Todoes";
+import {rootReducer} from "./Store/reducers";
+
+import {HOST} from "./settings/remoteAPIHost";
+
+import {App} from './components/App/App';
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -25,7 +27,8 @@ let enchancers = [
   applyMiddleware(sagaMiddleware),
 ];
 
-const _dev_tools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+const _dev_tools = "__REDUX_DEVTOOLS_EXTENSION__" in window
+  && window.__REDUX_DEVTOOLS_EXTENSION__();
 if (_dev_tools) {
   enchancers = enchancers.concat(_dev_tools)
 }
@@ -39,7 +42,7 @@ sagaMiddleware.run(getTodoesListWatcher);
 sagaMiddleware.run(updateTodoWatcher);
 
 
-configurator.configure({todoes: TodoesApi});
+configurator.configure(HOST, {todoes: TodoesApi});
 
 
 ReactDOM.render(

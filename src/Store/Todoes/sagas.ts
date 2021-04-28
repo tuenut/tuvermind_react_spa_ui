@@ -1,17 +1,22 @@
 import {call, put, SagaReturnType, takeEvery} from "redux-saga/effects";
 import {
+  IGetTodoesListAction,
+  TODOES_UPDATE_ACTION
+} from "./actions/types";
+import {IUpdateTodoAction} from "./actions/types";
+import {getApi} from "../../settings/remoteAPI";
+import {
   getTodoesListOnFailure,
   getTodoesListOnSuccess,
   getTodoesListStartLoading,
   getTodoesListStopLoading,
-  TODOES_GET_LIST_ACTION,
-  TODOES_UPDATE_ACTION, updateTodoOnFailure, updateTodoOnSuccess
-} from "./actions";
-import {IGetTodoesList, IUpdateTodo} from "./types";
-import {getApi} from "../../settings/remoteAPI";
+  updateTodoOnFailure,
+  updateTodoOnSuccess
+} from "./actions/";
+import {TODOES_GET_LIST_ACTION} from "./actions/types";
 
 
-export function* getTodoesListWorker(action: IGetTodoesList) {
+export function* getTodoesListWorker(action: IGetTodoesListAction) {
   yield put(getTodoesListStartLoading());
 
   try {
@@ -33,7 +38,7 @@ export function* getTodoesListWatcher() {
   yield takeEvery(TODOES_GET_LIST_ACTION, getTodoesListWorker);
 }
 
-export function* updateTodoWorker(action: IUpdateTodo) {
+export function* updateTodoWorker(action: IUpdateTodoAction) {
   yield put(getTodoesListStartLoading());
 
   try{

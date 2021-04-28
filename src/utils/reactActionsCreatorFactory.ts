@@ -1,3 +1,5 @@
+import {IBaseAction} from "../Store/types";
+
 type ValueType<T, K> = K extends keyof T ? T[K] : never;
 type ActionType<Action> = ValueType<Action, "type">;
 type ActionArg<Action> = ValueType<Action, Exclude<keyof Action, "type">>;
@@ -6,7 +8,7 @@ type ActionArg<Action> = ValueType<Action, Exclude<keyof Action, "type">>;
  * Функция принимает `...restArgs`, которые соответсвуют типам полей Action,
  *  кроме `type`. Собирает и возвращает объект Action.
  */
-interface IActionCreator<Action> {
+export interface IActionCreator<Action extends IBaseAction> {
   (...args: ActionArg<Action>[]): Action
 }
 
@@ -19,7 +21,7 @@ export interface IGetActionCreator {
   <Action>(
     type: ActionType<Action>,
     ...argsNames: Exclude<keyof Action, "type">[]
-  ): IActionCreator<Action>
+  ): IActionCreator<Action extends IBaseAction ? Action : IBaseAction>
 }
 
 

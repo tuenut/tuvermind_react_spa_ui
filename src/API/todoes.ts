@@ -1,14 +1,14 @@
-import {BaseApiEndpoint} from "../bases/endpointBases";
-import {TODOES_URL} from "../../settings/remoteAPI";
+import {Endpoint} from "../libs/Api/endpoint";
+import {TODOES_URL} from "../settings/remoteAPI";
 import {AxiosPromise} from "axios";
-import {random} from "../../utils/common";
-import {getTestTodoes} from "../../Store/Todoes/parts/testData";
+import {random} from "../utils/common";
+import {getTestTodoes} from "../Store/Todoes/parts/testData";
 import {useSelector} from "react-redux";
-import {todoesListSelector} from "../../Store/Todoes/reducers";
-import {TodoTypes} from "../../Store/Todoes/types";
+import {todoesListSelector} from "../Store/Todoes/reducers";
+import {TodoDataTypes} from "../Store/Todoes/types";
 
 
-export class TodoesApi extends BaseApiEndpoint {
+export class TodoesApi extends Endpoint {
   constructor(client) {
     super(client);
 
@@ -60,7 +60,7 @@ export class TodoesApi extends BaseApiEndpoint {
           status: 200,
           data: {
             message: `Todo ${id} has been completed.`,
-            data: {...data, completed: new Date().valueOf()} as TodoTypes
+            data: {...data, completed: new Date().valueOf()} as TodoDataTypes
           }
         }),
         random(700, 1500)

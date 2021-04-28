@@ -1,15 +1,16 @@
 import {Reducer} from "redux";
 import {
-  IGetTodoesListOnSuccess,
-  ITodoesStartLoading,
-  ITodoesListState,
-  ITodoesStopLoading,
-  ITodoesErrorActions, IUpdateTodoOnSuccess
-} from "../types";
+  ITodoesListState} from "../types";
 import {convertResponseDataToStoreObject} from "../../../utils/common";
+import {
+  IGetTodoesListOnSuccessAction, ITodoesErrorActions,
+  ITodoesStartLoadingAction,
+  ITodoesStopLoadingAction,
+  IUpdateTodoOnSuccessAction
+} from "../actions/types";
 
 export const todoesSuccessGetListReducer:
-  Reducer<ITodoesListState, IGetTodoesListOnSuccess> =
+  Reducer<ITodoesListState, IGetTodoesListOnSuccessAction> =
   (state, action) => ({
     ...state,
     error: false,
@@ -19,7 +20,7 @@ export const todoesSuccessGetListReducer:
   }as ITodoesListState);
 
 export const todoesStartLoadingReducer:
-  Reducer<ITodoesListState, ITodoesStartLoading> =
+  Reducer<ITodoesListState, ITodoesStartLoadingAction> =
   (state, action) => ({
     ...state,
     loading: true,
@@ -27,7 +28,7 @@ export const todoesStartLoadingReducer:
   } as ITodoesListState);
 
 export const todoesStopLoadingReducer:
-  Reducer<ITodoesListState, ITodoesStopLoading> =
+  Reducer<ITodoesListState, ITodoesStopLoadingAction> =
   (state, action) => ({
     ...state,
     loading: false
@@ -42,7 +43,7 @@ export const todoesFailOnRequestReducer:
   } as ITodoesListState);
 
 export const todoesSuccessUpdateObjectReducer:
-  Reducer<ITodoesListState, IUpdateTodoOnSuccess> =
+  Reducer<ITodoesListState, IUpdateTodoOnSuccessAction> =
   (state, action) => ({
     ...state,
     data: {

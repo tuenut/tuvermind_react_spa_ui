@@ -1,4 +1,4 @@
-import {makeApiGetter} from "../API";
+import {makeApiGetter} from "../libs/Api/index";
 import {IEffectiveApiObject} from "../types";
 
 export const WEATHER_URL = "/api/weather/";

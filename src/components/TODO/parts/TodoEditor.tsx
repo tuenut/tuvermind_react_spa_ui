@@ -13,9 +13,10 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
 
-import {CRON, ICronTodo, IMemoTodo, ITodo, MEMO, TODO} from "../../../Store/Todoes/types";
+import {ICronTodo, IMemoTodo, ITodo} from "../../../Store/Todoes/types";
 import {SET_DATE, SET_DESCRIPTION, SET_DURATION, SET_TITLE, SET_TYPE, useEditorContext} from "./TodoEditorContext";
-import {createTodoDataObject} from "../utils";
+import {createTodoDataObject} from "../../../Store/Todoes/state";
+import {CRON, MEMO, TODO} from "../../../Store/Todoes/state";
 
 
 const EditDateSection = () => {

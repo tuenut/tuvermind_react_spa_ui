@@ -1,7 +1,6 @@
 import {AxiosInstance, AxiosPromise} from "axios";
 import {DataHandler, Handler} from "./dataHandler";
 import {URI} from "./uriProvider";
-import {ApiProvider} from "./apiProvider";
 
 
 /** Базовый абстрактный класс для апи-эндпоинтов.
@@ -18,18 +17,21 @@ import {ApiProvider} from "./apiProvider";
  *  class Endpoint extends BaseApiEndpoint {
  *    constructor(client) {
  *      super(ENDPOINT_BASE_URL)
+ *
+ *      this.setUrl(currentEndpointUrl);
  *    }
  *  }
  * */
-export abstract class BaseApiEndpoint {
+export abstract class Endpoint {
   protected client: AxiosInstance;
   protected handlers: DataHandler;
-  protected __url: URI;
+  protected __url!: URI;
 
   protected constructor(client: AxiosInstance) {
     this.client = client;
     this.handlers = new DataHandler();
-    this.__url = new URI("");
+
+    this.setUrl("");
   }
 
   get url(): URI {
@@ -37,7 +39,6 @@ export abstract class BaseApiEndpoint {
   }
 
   protected setUrl(value: string | URI) {
-    // TODO remake to setter after TypeScript release 4.3 with separate types for getters and setters.
     this.__url = typeof value === "string" ? new URI(value) : value;
   }
 
@@ -101,7 +102,7 @@ export abstract class BaseApiEndpoint {
   /**
    * @method setHandler set up default on success handler for instance.
    * @param   {function}         handler   function which consumes data and returns processed data object.
-   * @returns {BaseApiEndpoint}            Returns this object.
+   * @returns {Endpoint}            Returns this object.
    * */
   setHandler(handler: Handler) {
     this.handlers.defaultOnSuccess = handler;
@@ -112,7 +113,7 @@ export abstract class BaseApiEndpoint {
   /**
    * @method setHandler set up default on fail handler for instance.
    * @param   {function}         handler   function which consumes error and returns processed error data object.
-   * @returns {BaseApiEndpoint}            Returns this object.
+   * @returns {Endpoint}            Returns this object.
    * */
   setOnErrorHandler(handler) {
     this.handlers.defaultOnError = handler;

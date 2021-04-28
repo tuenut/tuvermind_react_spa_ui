@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 
-import {URI} from "../../API/bases/apiProvider";
+import {URI} from "../../libs/Api/apiProvider";
 import {WEATHER_URL} from "../../settings/remoteAPI";
 
 import {roundDate} from "../../utils/roundDate";
 import {ForecastCard} from "./parts";
-import {API} from "../../API/bases/apiProvider";
+import {API} from "../../libs/Api/apiProvider";
 
 
 const MINUTE = 1000 * 60;

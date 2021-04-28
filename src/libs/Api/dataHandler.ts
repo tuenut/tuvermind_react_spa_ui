@@ -1,5 +1,6 @@
 import {AxiosError, AxiosResponse} from "axios";
 
+
 export type Handler = (response: AxiosResponse) => any;
 
 export class DataHandler {

@@ -1,11 +1,16 @@
 import axios, {AxiosInstance} from "axios";
-import {HOST} from "../../settings/remoteAPIHost";
-import {ApiConfigurationObject} from "../types";
+
+import {ApiConfigurationObject} from "./types";
 
 
 export class ApiProviderBase{
   protected client;
+  protected host: string;
   private __headers?: any;
+
+  constructor(host: string){
+    this.host = host;
+  }
 
   get headers(): object {
     return {...this.__headers};
@@ -20,11 +25,11 @@ export class ApiProviderBase{
 export class ApiProvider extends ApiProviderBase implements ApiConfigurationObject{
   public client: AxiosInstance;
 
-  constructor() {
-    super();
+  constructor(host: string) {
+    super(host);
 
     this.client = axios.create({
-      baseURL: HOST,
+      baseURL: this.host,
       withCredentials: true,
       headers: this.headers
     });

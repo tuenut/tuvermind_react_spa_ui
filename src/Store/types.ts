@@ -6,19 +6,49 @@ export interface IBaseAction<ActionType = string> {
   type: ActionType
 }
 
-export interface IBaseApiUpdateAction<ActionType, DataType> extends IBaseAction<ActionType> {
+
+// REST API Actions.
+export interface IBaseApiRetrieveRequestAction<ActionType>
+  extends IBaseAction<ActionType> {
+  id: number | string,
+  extraAction?: string
+}
+
+export interface IBaseApiListRequestAction<ActionType>
+  extends IBaseAction<ActionType> {
+  options?: { [key: string]: any }
+}
+
+export interface IBaseApiCreateRequestAction<ActionType, DataType>
+  extends IBaseAction<ActionType> {
+  data: DataType
+}
+
+export interface IBaseApiUpdateRequestAction<ActionType, DataType>
+  extends IBaseAction<ActionType> {
   id: number,
   data: DataType
 }
 
-export interface IBaseApiOnSuccessAction<ActionType> extends IBaseAction<ActionType> {
+export interface IBaseApiDeleteRequestAction<ActionType>
+  extends IBaseAction<ActionType> {
+  id: number,
+}
+
+
+// Actions for handling request responses.
+export interface IBaseApiOnSuccessAction<ActionType>
+  extends IBaseAction<ActionType> {
   response: AxiosResponse,
 }
 
-export interface IBaseApiOnFailureAction<ActionType> extends IBaseAction<ActionType> {
+export interface IBaseApiOnFailureAction<ActionType>
+  extends IBaseAction<ActionType> {
   error: object,
 }
 
+
+// State
 export interface IBaseStateWithApi {
   loading: boolean,
   error: boolean,

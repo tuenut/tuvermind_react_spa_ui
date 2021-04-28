@@ -12,12 +12,11 @@ import CircularProgress from "@material-ui/core/CircularProgress"
 import Dialog from "@material-ui/core/Dialog";
 
 import {todoesListSelector} from "../../Store/Todoes/reducers";
-import {getTodoesList} from "../../Store/Todoes";
+import {getTodoesList, updateTodo} from "../../Store/Todoes";
 
 import {useStyles} from "./parts/styles";
 import {TodoesList, TodoEditor} from "./parts";
 import {EditorContextProvider} from "./parts/TodoEditorContext";
-import {updateTodo} from "../../Store/Todoes/actions";
 
 
 export const Todoes = () => {
