@@ -1,4 +1,4 @@
-import {CRON, IBaseTodo, ICronTodo, IMemoTodo, ITodo, MEMO, TODO} from "../../Store/Todoes/types";
+import {CRON, IBaseTodo, ICronTodo, IMemoTodo, ITodo, MEMO, TODO, TodoTypes} from "../../Store/Todoes/types";
 
 export interface ISplitArrayToColumns {
   (array: any[], cols: number): Array<any[]>
@@ -19,7 +19,7 @@ export const splitArrayToColumns: ISplitArrayToColumns = (array_, columnsCount =
 
 
 export const createTodoDataObject =
-  (data: IBaseTodo & Partial<IMemoTodo | ITodo | ICronTodo>): IMemoTodo | ITodo | ICronTodo | undefined => {
+  (data: IBaseTodo & Partial<TodoTypes>): TodoTypes | undefined => {
     const baseTodoObject: IBaseTodo = {
       id: data.id,
       status: data.status,

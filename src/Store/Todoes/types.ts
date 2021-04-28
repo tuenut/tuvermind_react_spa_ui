@@ -1,6 +1,12 @@
 import {AxiosResponse} from "axios";
 
-import {IBaseAction, IBaseStateWithApi} from "../types";
+import {
+  IBaseAction,
+  IBaseStateWithApi,
+  IBaseApiUpdateAction,
+  IBaseApiOnSuccessAction,
+  IBaseApiOnFailureAction
+} from "../types";
 import {
   TODOES_GET_LIST_ACTION,
   TODOES_GET_LIST_ON_FAILURE_ACTION,
@@ -11,31 +17,6 @@ import {
   TODOES_UPDATE_ON_SUCCESS_ACTION,
   TODOES_UPDATE_ON_FAILURE_ACTION,
 } from "./actions";
-
-
-// GET LIST
-export interface IGetTodoesList extends IBaseAction {
-  type: typeof TODOES_GET_LIST_ACTION
-  options: object
-}
-
-export interface ITodoesStartLoading extends IBaseAction {
-  type: typeof TODOES_START_LOADING_ACTION
-}
-
-export interface ITodoesStopLoading extends IBaseAction {
-  type: typeof TODOES_STOP_LOADING_ACTION
-}
-
-export interface IGetTodoesListOnSuccess extends IBaseAction {
-  type: typeof TODOES_GET_LIST_ON_SUCCESS_ACTION,
-  response: AxiosResponse,
-}
-
-export interface IGetTodoesListOnFailure extends IBaseAction {
-  type: typeof TODOES_GET_LIST_ON_FAILURE_ACTION,
-  error: object,
-}
 
 
 // STATE
@@ -80,22 +61,44 @@ export interface ICronTodo extends IBaseTodo {
   schedule: CronScheduleType,
 }
 
+export type TodoTypes = IMemoTodo | ITodo | ICronTodo
+
 export interface ITodoesData {
-  [id: number]: IMemoTodo | ITodo | ICronTodo
+  [id: number]: TodoTypes
 }
 
-export type TodoesListType = Array<IMemoTodo | ITodo | ICronTodo>;
+export type TodoesListType = Array<TodoTypes>;
 
 export interface ITodoesState {
   list: ITodoesListState
 }
 
 
-// UPDATE ENTITY
-export interface IUpdateTodo extends IBaseAction {
-  type: typeof TODOES_UPDATE_ACTION,
-  id: number,
-  data: IMemoTodo | ITodo | ICronTodo
+// GET LIST
+export interface IGetTodoesList
+  extends IBaseAction<typeof TODOES_GET_LIST_ACTION> {
+  options: object
+}
+
+export interface ITodoesStartLoading
+  extends IBaseAction<typeof TODOES_START_LOADING_ACTION> {
+}
+
+export interface ITodoesStopLoading
+  extends IBaseAction<typeof TODOES_STOP_LOADING_ACTION> {
+}
+
+export interface IGetTodoesListOnSuccess
+  extends IBaseApiOnSuccessAction<typeof TODOES_GET_LIST_ON_SUCCESS_ACTION> {
+}
+
+export interface IGetTodoesListOnFailure
+  extends IBaseApiOnFailureAction<typeof TODOES_GET_LIST_ON_FAILURE_ACTION> {
+}
+
+
+// UPDATE TODO-TASK
+export interface IUpdateTodo extends IBaseApiUpdateAction<typeof TODOES_UPDATE_ACTION, TodoTypes> {
 }
 
 export interface IUpdateTodoOnSuccess extends IBaseAction {
@@ -120,6 +123,10 @@ export type TodoesActions =
   ;
 
 export type ITodoesErrorActions =
-| IGetTodoesListOnFailure
-| IUpdateTodoOnFailure
-;
+  | IGetTodoesListOnFailure
+  | IUpdateTodoOnFailure
+  ;
+
+
+// DELETE TODO-TASK
+export interface IDeleteTodo

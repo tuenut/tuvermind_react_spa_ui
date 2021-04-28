@@ -111,7 +111,7 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
 };
 
 
-const Actions = ({todo, completed, expanded, setEpand}) => {
+const Actions = ({todo, completed, expanded, setExpand}) => {
   const classes = useStyles();
 
   return (
@@ -129,7 +129,7 @@ const Actions = ({todo, completed, expanded, setEpand}) => {
       {todo.description && (
         <IconButton
           className={clsx(classes.expand, {[classes.expandOpen]: expanded,})}
-          onClick={() => setEpand(!expanded)}
+          onClick={() => setExpand(!expanded)}
           aria-expanded={expanded}
           aria-label="show more"
         >
@@ -179,7 +179,7 @@ export const TodoCard: React.FC<{
   todo: ITodo | ICronTodo | IMemoTodo,
   openTodoInEditor
 }> = ({todo, openTodoInEditor}) => {
-  const [expanded, setEpand] = React.useState(false);
+  const [expanded, setExpand] = React.useState(false);
 
   const isCompleted = !(
     (todo.status === "suspense") ||
@@ -200,7 +200,7 @@ export const TodoCard: React.FC<{
         todo={todo}
         expanded={expanded}
         completed={isCompleted}
-        setEpand={setEpand}
+        setExpand={setExpand}
       />
       <Content todo={todo} expanded={expanded}/>
     </Card>
