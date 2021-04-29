@@ -1,6 +1,14 @@
-import {getActionCreator} from "../../../utils/reactActionsCreatorFactory";
 import {
-  IGetTodoesListAction,
+  makeActionCreator,
+  makeApiCreateAction,
+  makeApiListAction,
+  makeApiOnFailureAction,
+  makeApiOnSuccessAction,
+  makeDeleteAction,
+  makeUpdateAction
+} from "../../../libs/actionsCreatorFactory";
+import {
+  ITodoesGetListAction,
   IGetTodoesListOnFailureAction,
   IGetTodoesListOnSuccessAction,
   ITodoesStartLoadingAction,
@@ -28,80 +36,92 @@ import {
   TODOES_DELETE_ON_SUCCESS_ACTION,
   IDeleteTodoOnFailureAction,
   TODOES_DELETE_ON_FAILURE_ACTION,
+  TODOES_COMPLETE_TASK_ACTION,
+  ICompleteTodoAction,
+  ICompleteTodoOnSuccessAction,
+  ICompleteTodoOnFailureAction,
+  TODOES_COMPLETE_TASK_ON_SUCCESS_ACTION,
+  TODOES_COMPLETE_TASK_ON_FAILURE_ACTION,
 } from "./types";
+import {TodoDataTypes} from "../types";
 
 
-export const getTodoesList =
-  getActionCreator<IGetTodoesListAction>(
-    TODOES_GET_LIST_ACTION,
-    'options'
-  );
-export const getTodoesListStartLoading =
-  getActionCreator<ITodoesStartLoadingAction>(
+export const todoesStartLoading =
+  makeActionCreator<ITodoesStartLoadingAction>(
     TODOES_START_LOADING_ACTION
   );
-export const getTodoesListStopLoading =
-  getActionCreator<ITodoesStopLoadingAction>(
+export const todoesStopLoading =
+  makeActionCreator<ITodoesStopLoadingAction>(
     TODOES_STOP_LOADING_ACTION
   );
+
+// List
+export const getTodoesList =
+  makeApiListAction<ITodoesGetListAction>(
+    TODOES_GET_LIST_ACTION
+  );
 export const getTodoesListOnSuccess =
-  getActionCreator<IGetTodoesListOnSuccessAction>(
-    TODOES_GET_LIST_ON_SUCCESS_ACTION,
-    'response'
+  makeApiOnSuccessAction<IGetTodoesListOnSuccessAction>(
+    TODOES_GET_LIST_ON_SUCCESS_ACTION
   );
 export const getTodoesListOnFailure =
-  getActionCreator<IGetTodoesListOnFailureAction>(
-    TODOES_GET_LIST_ON_FAILURE_ACTION,
-    'error'
+  makeApiOnFailureAction<IGetTodoesListOnFailureAction>(
+    TODOES_GET_LIST_ON_FAILURE_ACTION
   );
+
+// Update
 export const updateTodo =
-  getActionCreator<IUpdateTodoAction>(
-    TODOES_UPDATE_ACTION,
-    'id', 'data'
+  makeUpdateAction<IUpdateTodoAction, TodoDataTypes>(
+    TODOES_UPDATE_ACTION
   );
 export const updateTodoOnSuccess =
-  getActionCreator<IUpdateTodoOnSuccessAction>(
-    TODOES_UPDATE_ON_SUCCESS_ACTION,
-    'response'
+  makeApiOnSuccessAction<IUpdateTodoOnSuccessAction>(
+    TODOES_UPDATE_ON_SUCCESS_ACTION
   );
 export const updateTodoOnFailure =
-  getActionCreator<IUpdateTodoOnFailureAction>(
-    TODOES_UPDATE_ON_FAILURE_ACTION,
-    'error'
+  makeApiOnFailureAction<IUpdateTodoOnFailureAction>(
+    TODOES_UPDATE_ON_FAILURE_ACTION
   );
 
+// Create
 export const createTodo =
-  getActionCreator<ICreateTodoAction>(
-    TODOES_CREATE_ACTION,
-    'data'
+  makeApiCreateAction<ICreateTodoAction, TodoDataTypes>(
+    TODOES_CREATE_ACTION
   );
-
 export const createTodoOnSuccess =
-  getActionCreator<ICreateTodoOnSuccessAction>(
-    TODOES_CREATE_ON_SUCCESS_ACTION,
-    'response'
+  makeApiOnSuccessAction<ICreateTodoOnSuccessAction>(
+    TODOES_CREATE_ON_SUCCESS_ACTION
   );
-
 export const createTodoOnFailure =
-  getActionCreator<ICreateTodoOnFailureAction>(
-    TODOES_CREATE_ON_FAILURE_ACTION,
-    'error'
+  makeApiOnFailureAction<ICreateTodoOnFailureAction>(
+    TODOES_CREATE_ON_FAILURE_ACTION
   );
 
+// Delete
 export const deleteTodo =
-  getActionCreator<IDeleteTodoAction>(
-    TODOES_DELETE_ACTION,
-    'id'
+  makeDeleteAction<IDeleteTodoAction>(
+    TODOES_DELETE_ACTION
   );
-
 export const deleteTodoOnSuccess =
-  getActionCreator<IDeleteTodoOnSuccessAction>(
-    TODOES_DELETE_ON_SUCCESS_ACTION,
-    'response'
+  makeApiOnSuccessAction<IDeleteTodoOnSuccessAction>(
+    TODOES_DELETE_ON_SUCCESS_ACTION
+  );
+export const deleteTodoOnFailure =
+  makeApiOnFailureAction<IDeleteTodoOnFailureAction>(
+    TODOES_DELETE_ON_FAILURE_ACTION
   );
 
-export const deleteTodoOnFailure =
-  getActionCreator<IDeleteTodoOnFailureAction>(
-    TODOES_DELETE_ON_FAILURE_ACTION,
-    'error'
+// Complete
+export const completeTodo =
+  makeActionCreator<ICompleteTodoAction>(
+    TODOES_COMPLETE_TASK_ACTION,
+    'id', 'extraAction'
+  );
+export const completeTodoOnSuccess =
+  makeApiOnSuccessAction<ICompleteTodoOnSuccessAction>(
+    TODOES_COMPLETE_TASK_ON_SUCCESS_ACTION
+  );
+export const completeTodoOnFailure =
+  makeApiOnFailureAction<ICompleteTodoOnFailureAction>(
+    TODOES_COMPLETE_TASK_ON_FAILURE_ACTION
   );

@@ -1,6 +1,8 @@
 import {ApiProvider} from "./libs/Api/apiProvider";
-import {Endpoint} from "./libs/Api/endpoint";
+
+import {TodoesApi} from "./API";
+
 
 export interface IEffectiveApiObject extends ApiProvider {
-  todoes: Endpoint
+  todoes: TodoesApi
 }

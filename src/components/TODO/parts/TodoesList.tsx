@@ -11,7 +11,7 @@ import {GridSize} from "@material-ui/core";
 
 import {todoesListSelector} from "../../../Store/Todoes/reducers";
 import {splitArrayToColumns} from "../utils";
-import {convertStoreObjectToArray} from "../../../utils/common"
+import {convertStoreObjectToArray} from "../../../libs/common"
 import {TodoCard} from "./TodoCard";
 
 
@@ -41,7 +41,7 @@ export const TodoesList = ({openTodoInEditor}) => {
                 <Grid item xs={12} key={uuidv4()}>
                   <TodoCard
                     todo={todo}
-                    openTodoInEditor={() => openTodoInEditor(todo.id)}
+                    openTodoInEditor={openTodoInEditor}
                   />
                 </Grid>
               ))}

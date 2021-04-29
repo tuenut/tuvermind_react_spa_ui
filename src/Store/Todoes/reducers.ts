@@ -2,14 +2,15 @@ import {combineReducers, Reducer} from "redux";
 import {IState} from "../types";
 import {ITodoesListState} from "./types";
 import {
+  TODOES_COMPLETE_TASK_ON_SUCCESS_ACTION, TODOES_DELETE_ON_FAILURE_ACTION, TODOES_DELETE_ON_SUCCESS_ACTION,
   TODOES_UPDATE_ON_FAILURE_ACTION, TodoesActions
 } from "./actions/types";
 import {
   todoesFailOnRequestReducer,
   todoesStartLoadingReducer,
-  todoesStopLoadingReducer,
+  todoesStopLoadingReducer, todoesSuccessCompleteTaskReducer, todoesSuccessDeleteTaskReducer,
   todoesSuccessGetListReducer,
-  todoesSuccessUpdateObjectReducer
+  todoesSuccessUpdateTaskReducer
 } from "./parts/partialReducers";
 import {
   TODOES_GET_LIST_ON_FAILURE_ACTION,
@@ -43,13 +44,18 @@ export const listReducer: Reducer<ITodoesListState, TodoesActions> =
       case TODOES_GET_LIST_ON_SUCCESS_ACTION:
         return todoesSuccessGetListReducer(state, action);
 
-      case TODOES_GET_LIST_ON_FAILURE_ACTION:
-        return todoesFailOnRequestReducer(state, action);
-
       case TODOES_UPDATE_ON_SUCCESS_ACTION:
-        return todoesSuccessUpdateObjectReducer(state, action);
+        return todoesSuccessUpdateTaskReducer(state, action);
 
+      case TODOES_COMPLETE_TASK_ON_SUCCESS_ACTION:
+        return todoesSuccessCompleteTaskReducer(state, action);
+
+      case TODOES_DELETE_ON_SUCCESS_ACTION:
+        return todoesSuccessDeleteTaskReducer(state, action);
+
+      case TODOES_GET_LIST_ON_FAILURE_ACTION:
       case TODOES_UPDATE_ON_FAILURE_ACTION:
+      case TODOES_DELETE_ON_FAILURE_ACTION:
         return todoesFailOnRequestReducer(state, action);
 
       default:

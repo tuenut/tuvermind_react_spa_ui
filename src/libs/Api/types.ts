@@ -1,4 +1,5 @@
 import {Endpoint} from "./endpoint";
+import {AxiosPromise} from "axios";
 
 
 export interface ApiConfigurationObject<T = any> {

@@ -2,6 +2,8 @@ import React from 'react';
 
 import clsx from 'clsx';
 
+import {useDispatch} from "react-redux";
+
 import {
   Card,
   CardHeader,
@@ -23,8 +25,9 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import {ICronTodo} from "../../../Store/Todoes/types";
-import {IMemoTodo, ITodo} from "../../../Store/Todoes/types";
+import {TodoDataTypes} from "../../../Store/Todoes/types";
+import {completeTodo, deleteTodo} from "../../../Store/Todoes/actions/actionCreators";
+import {DateTime} from "../../../libs/common";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +55,8 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
   const color = completed ? "primary" : "textPrimary";
   const fade = expanded && !completed;
 
-  const subheader = todo.hasOwnProperty("data") && (todo.date.toLocaleString("ru"));
+  const subheader = todo.hasOwnProperty("date") &&
+    "Начало: " + new DateTime(todo.date).localDateTime;
 
   const title = (
     <Grid container>
@@ -102,7 +106,7 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
   } else {
     return (
       <CardActionArea onClick={openEditor}>
-        <CardHeader title={title} subheader={subheader}/>
+        <CardHeader title={title} subheader={!completed && subheader}/>
 
         {content}
       </CardActionArea>
@@ -114,15 +118,23 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
 const Actions = ({todo, completed, expanded, setExpand}) => {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
   return (
     <CardActions disableSpacing>
       {!completed && (
-        <IconButton color="primary" onClick={() => null}>
+        <IconButton
+          color="primary"
+          onClick={() => dispatch(completeTodo(todo.id))}
+        >
           <CheckCircleIcon/>
         </IconButton>
       )}
 
-      <IconButton color="secondary" onClick={() => null}>
+      <IconButton
+        color="secondary"
+        onClick={() => dispatch(deleteTodo(todo.id))}
+      >
         <DeleteForeverIcon/>
       </IconButton>
 
@@ -154,7 +166,6 @@ const Content = ({todo, expanded}) => {
         </Typography>
 
         <Typography paragraph color="textSecondary">
-
           <small>
             Создано: {new Date(todo.created).toLocaleString("ru")}
           </small>
@@ -167,26 +178,29 @@ const Content = ({todo, expanded}) => {
               </small>
             </React.Fragment>
           )}
-
         </Typography>
+
       </CardContent>
     </Collapse>
   );
 };
 
+export interface TodoCardProps {
+  todo: TodoDataTypes,
+  openTodoInEditor: Function
+}
 
-export const TodoCard: React.FC<{
-  todo: ITodo | ICronTodo | IMemoTodo,
-  openTodoInEditor
-}> = ({todo, openTodoInEditor}) => {
+export const TodoCard: React.FC<TodoCardProps> = ({todo, openTodoInEditor}) => {
   const [expanded, setExpand] = React.useState(false);
 
-  const isCompleted = !(
-    (todo.status === "suspense") ||
-    (todo.status === "inProcess")
-  );
+  const isCompleted = !((todo.status === "suspense") || (todo.status === "inProcess"));
 
-  const onCardClick = () => null;
+  const openEditor = React.useCallback(
+    () => {
+      if (!isCompleted) openTodoInEditor(todo.id);
+    },
+    [todo.id, todo.status]
+  );
 
   return (
     <Card>
@@ -194,7 +208,7 @@ export const TodoCard: React.FC<{
         todo={todo}
         expanded={expanded}
         completed={isCompleted}
-        openEditor={isCompleted ? onCardClick : openTodoInEditor}
+        openEditor={openEditor}
       />
       <Actions
         todo={todo}

@@ -38,6 +38,10 @@ export class DateTime {
     this.localDate = this._object.toLocaleDateString("ru");
     this.localTime = this._object.toLocaleTimeString("ru");
   }
+
+  get localDateTime() {
+    return `${this.localDate} ${this.localTime}`;
+  }
 }
 
 DateTime.prototype.toString = function () {

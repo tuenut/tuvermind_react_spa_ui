@@ -4,7 +4,7 @@ import {
   IBaseApiDeleteRequestAction,
   IBaseApiListRequestAction,
   IBaseApiOnFailureAction,
-  IBaseApiOnSuccessAction,
+  IBaseApiOnSuccessAction, IBaseApiRetrieveRequestAction,
   IBaseApiUpdateRequestAction
 } from "../../types";
 import {TodoDataTypes} from "../types";
@@ -52,7 +52,7 @@ export interface ITodoesStopLoadingAction
   extends IBaseAction<typeof TODOES_STOP_LOADING_ACTION> {
 }
 
-export interface IGetTodoesListAction
+export interface ITodoesGetListAction
   extends IBaseApiListRequestAction<typeof TODOES_GET_LIST_ACTION> {
 }
 
@@ -100,8 +100,21 @@ export interface IDeleteTodoOnFailureAction
   extends IBaseApiOnFailureAction<typeof TODOES_DELETE_ON_FAILURE_ACTION> {
 }
 
+export interface ICompleteTodoAction
+  extends IBaseApiRetrieveRequestAction<typeof TODOES_COMPLETE_TASK_ACTION> {
+  extraAction: 'complete'
+}
+
+export interface ICompleteTodoOnSuccessAction
+  extends IBaseApiOnSuccessAction<typeof TODOES_COMPLETE_TASK_ON_SUCCESS_ACTION> {
+}
+
+export interface ICompleteTodoOnFailureAction
+  extends IBaseApiOnFailureAction<typeof TODOES_COMPLETE_TASK_ON_FAILURE_ACTION> {
+}
+
 export type TodoesActions =
-  | IGetTodoesListAction
+  | ITodoesGetListAction
   | ITodoesStartLoadingAction
   | ITodoesStopLoadingAction
   | IGetTodoesListOnSuccessAction
@@ -111,10 +124,15 @@ export type TodoesActions =
   | IUpdateTodoOnFailureAction
   | IDeleteTodoAction
   | IDeleteTodoOnSuccessAction
+  | IDeleteTodoOnFailureAction
+  | ICompleteTodoAction
+  | ICompleteTodoOnSuccessAction
+  | ICompleteTodoOnFailureAction
   ;
 
 export type ITodoesErrorActions =
   | IGetTodoesListOnFailureAction
   | IUpdateTodoOnFailureAction
   | IDeleteTodoOnFailureAction
+  | ICompleteTodoOnFailureAction
   ;

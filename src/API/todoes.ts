@@ -1,11 +1,13 @@
-import {Endpoint} from "../libs/Api/endpoint";
-import {TODOES_URL} from "../settings/remoteAPI";
 import {AxiosPromise} from "axios";
-import {random} from "../utils/common";
+
+import {TODOES_URL} from "../settings/remoteAPI";
+import {Endpoint} from "../libs/Api/endpoint";
+import {random} from "../libs/common";
+
 import {getTestTodoes} from "../Store/Todoes/parts/testData";
-import {useSelector} from "react-redux";
 import {todoesListSelector} from "../Store/Todoes/reducers";
 import {TodoDataTypes} from "../Store/Todoes/types";
+import {store} from "../Store";
 
 
 export class TodoesApi extends Endpoint {
@@ -43,7 +45,7 @@ export class TodoesApi extends Endpoint {
       setTimeout(
         (value) => resolve({
           status: 200,
-          data: {message: `Todo ${id} has been deleted.`}
+          data: {message: `Todo ${id} has been deleted.`, id}
         }),
         random(700, 1500)
       )
@@ -53,14 +55,23 @@ export class TodoesApi extends Endpoint {
 
   completeTask(id) {
     return new Promise((resolve, reject) => {
-      const data = useSelector(todoesListSelector)[id];
+      const state = store.getState();
+
+      console.log({state});
+
+      const data = state.todoes.list.data[id];
+
 
       setTimeout(
         (value) => resolve({
           status: 200,
           data: {
             message: `Todo ${id} has been completed.`,
-            data: {...data, completed: new Date().valueOf()} as TodoDataTypes
+            data: {
+              ...data,
+              completed: new Date().valueOf(),
+              status: 'done'
+            } as TodoDataTypes,
           }
         }),
         random(700, 1500)

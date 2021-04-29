@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios/index";
 
 import {CardDeck} from 'react-bootstrap';
-import {roundDate} from "../../utils/roundDate";
+import {roundDate} from "../../libs/roundDate";
 import {WEATHER_URL} from "../../settings/remoteAPI";
 import {ForecastCard} from "./parts";
 

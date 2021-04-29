@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {URI} from "../../libs/Api/apiProvider";
 import {WEATHER_URL} from "../../settings/remoteAPI";
 
-import {roundDate} from "../../utils/roundDate";
+import {roundDate} from "../../libs/roundDate";
 import {ForecastCard} from "./parts";
 import {API} from "../../libs/Api/apiProvider";
 
