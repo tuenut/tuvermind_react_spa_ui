@@ -4,9 +4,8 @@ import {TODOES_URL} from "../settings/remoteAPI";
 import {Endpoint} from "../libs/Api/endpoint";
 import {random} from "../libs/common";
 
-import {getTestTodoes} from "../Store/Todoes/parts/testData";
-import {todoesListSelector} from "../Store/Todoes/reducers";
 import {TodoDataTypes} from "../Store/Todoes/types";
+
 import {store} from "../Store";
 
 
@@ -15,19 +14,6 @@ export class TodoesApi extends Endpoint {
     super(client);
 
     this.setUrl(TODOES_URL);
-  }
-
-  list(options = {}) {
-    return new Promise((resolve, reject) => {
-        const data = getTestTodoes();
-
-        setTimeout(
-          (value) => resolve({data}),
-          random(1000, 3000)
-        );
-      }
-    )
-      .then((res) => res) as AxiosPromise;
   }
 
   update(id, data) {

@@ -43,7 +43,7 @@ export const todoesSuccessGetListReducer:
   (state, action) => ({
     ...state,
     error: false,
-    data: convertResponseDataToStoreObject(action.response.data),
+    data: convertResponseDataToStoreObject(action.response.data.results),
     _response: action.response,
     _error: null
   } as ITodoesListState);

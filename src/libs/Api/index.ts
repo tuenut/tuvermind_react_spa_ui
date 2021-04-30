@@ -24,9 +24,9 @@ class ApiConfigurator {
   private config: ApiConfigurationObject;
   private host: string;
 
-  constructor() {
-    this.config = null!;
-    this.host = null!;
+  constructor(host = "", config = {}) {
+    this.config = {...config};
+    this.host = host;
   }
 
   getApi() {
@@ -48,12 +48,14 @@ class ApiConfigurator {
 
     return new Proxy(api, proxyHandler);
   }
-
-  configure(host, configObject: ApiConfigurationObject) {
-    this.host = host;
-    this.config = {...configObject};
-  }
 }
 
-export const configurator = new ApiConfigurator();
-export const makeApiGetter = () => configurator.getApi.bind(configurator);
+export const createApi = (host, config) => {
+  const configurator = new ApiConfigurator(host, config);
+
+  const useConfigurator = () => configurator;
+  const useApi = () => configurator.getApi();
+
+  return [useConfigurator, useApi];
+};
+

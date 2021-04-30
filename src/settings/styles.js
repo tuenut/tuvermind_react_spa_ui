@@ -65,7 +65,7 @@ export const useHeadbarStyles = makeStyles((theme) =>
       ...theme.mixins.toolbar,
     },
     content: {
-      flexGrow: 0,
+      flexGrow: 1,
       padding: theme.spacing(3),
       overflowX: "auto"
     },

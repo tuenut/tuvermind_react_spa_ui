@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import {v4 as uuidv4} from "uuid";
 
 import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 
 import {useTheme} from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
@@ -30,27 +31,25 @@ export const TodoesList = ({openTodoInEditor}) => {
   const todoesList = convertStoreObjectToArray(todoesStore.data);
 
   return (
-    <React.Fragment>
-      <Grid container spacing={2} alignContent="center">
+    <Grid container spacing={2} alignContent="center">
 
-        {splitArrayToColumns(todoesList, cols).map(column => (
-          <Grid item xs={Math.floor(12 / cols) as GridSize} key={uuidv4()}>
-            <Grid container spacing={2} alignContent="flex-start">
+      {splitArrayToColumns(todoesList, cols).map(column => (
+        <Grid item xs={Math.floor(12 / cols) as GridSize} key={uuidv4()}>
+          <Grid container spacing={2} alignContent="flex-start">
 
-              {column.map((todo, idx) => (
-                <Grid item xs={12} key={uuidv4()}>
-                  <TodoCard
-                    todo={todo}
-                    openTodoInEditor={openTodoInEditor}
-                  />
-                </Grid>
-              ))}
+            {column.map((todo, idx) => (
+              <Grid item xs={12} key={uuidv4()}>
+                <TodoCard
+                  todo={todo}
+                  openTodoInEditor={openTodoInEditor}
+                />
+              </Grid>
+            ))}
 
-            </Grid>
           </Grid>
-        ))}
+        </Grid>
+      ))}
 
-      </Grid>
-    </React.Fragment>
+    </Grid>
   )
 };

@@ -1,6 +1,7 @@
 import {takeEvery} from "redux-saga/effects";
 
-import {getApi} from "../../settings/remoteAPI";
+// import {getApi} from "../../settings/remoteAPI";
+import {getApi} from "../../API";
 import {makeApiSagaWorkerFactory} from "../../libs/sagasFactory";
 
 import {
@@ -24,12 +25,11 @@ import {
 import {deleteTodoOnFailure, deleteTodoOnSuccess} from "./actions/actionCreators";
 
 
-const Api = getApi();
 const apiSagaFactory = makeApiSagaWorkerFactory(todoesStartLoading, todoesStopLoading);
 
 
 export const getTodoesListWorker = apiSagaFactory<ITodoesGetListAction>(
-  (action) => Api.todoes.list(action.options),
+  (action) => getApi().todoes.list(action.options),
   getTodoesListOnSuccess, getTodoesListOnFailure
 );
 
@@ -39,7 +39,7 @@ export function* getTodoesListWatcher() {
 
 
 export const updateTodoWorker = apiSagaFactory<IUpdateTodoAction>(
-  (action) => Api.todoes.update(action.id, action.data),
+  (action) => getApi().todoes.update(action.id, action.data),
   updateTodoOnSuccess, updateTodoOnFailure
 );
 
@@ -49,7 +49,7 @@ export function* updateTodoWatcher() {
 
 
 export const completeTodoWorker = apiSagaFactory<ICompleteTodoAction>(
-  (action) => Api.todoes.completeTask(action.id),
+  (action) => getApi().todoes.completeTask(action.id),
   completeTodoOnSuccess, completeTodoOnFailure
 );
 
@@ -59,7 +59,7 @@ export function* completeTodoWatcher() {
 
 
 export const deleteTodoWorker = apiSagaFactory<IDeleteTodoAction>(
-  (action) => Api.todoes.delete(action.id),
+  (action) => getApi().todoes.delete(action.id),
   deleteTodoOnSuccess, deleteTodoOnFailure
 );
 

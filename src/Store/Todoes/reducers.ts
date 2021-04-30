@@ -1,14 +1,13 @@
 import {combineReducers, Reducer} from "redux";
+
 import {IState} from "../types";
 import {ITodoesListState} from "./types";
 import {
-  TODOES_COMPLETE_TASK_ON_SUCCESS_ACTION, TODOES_DELETE_ON_FAILURE_ACTION, TODOES_DELETE_ON_SUCCESS_ACTION,
-  TODOES_UPDATE_ON_FAILURE_ACTION, TodoesActions
-} from "./actions/types";
-import {
   todoesFailOnRequestReducer,
   todoesStartLoadingReducer,
-  todoesStopLoadingReducer, todoesSuccessCompleteTaskReducer, todoesSuccessDeleteTaskReducer,
+  todoesStopLoadingReducer,
+  todoesSuccessCompleteTaskReducer,
+  todoesSuccessDeleteTaskReducer,
   todoesSuccessGetListReducer,
   todoesSuccessUpdateTaskReducer
 } from "./parts/partialReducers";
@@ -16,7 +15,13 @@ import {
   TODOES_GET_LIST_ON_FAILURE_ACTION,
   TODOES_GET_LIST_ON_SUCCESS_ACTION,
   TODOES_START_LOADING_ACTION,
-  TODOES_STOP_LOADING_ACTION, TODOES_UPDATE_ON_SUCCESS_ACTION
+  TODOES_STOP_LOADING_ACTION,
+  TODOES_UPDATE_ON_SUCCESS_ACTION,
+  TODOES_COMPLETE_TASK_ON_SUCCESS_ACTION,
+  TODOES_DELETE_ON_FAILURE_ACTION,
+  TODOES_DELETE_ON_SUCCESS_ACTION,
+  TODOES_UPDATE_ON_FAILURE_ACTION,
+  TodoesActions,
 } from "./actions/types";
 
 

@@ -20,7 +20,6 @@ import {
 import {makeStyles} from '@material-ui/core/styles';
 
 import EditIcon from '@material-ui/icons/Edit';
-import Chip from "@material-ui/core/Chip";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -70,7 +69,6 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
       </Grid>
 
       <Grid item xs={12}>
-        <Chip label={todo.type} color={"primary"} variant={"outlined"} size={"small"}/>
       </Grid>
     </Grid>
   );

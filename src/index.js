@@ -8,16 +8,9 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
-import {configurator} from "./libs/Api/index";
-import {TodoesApi} from "./API/index";
-
-import {HOST} from "./settings/remoteAPIHost";
-
 import {App} from './components/App/App';
 import {store} from "./Store";
 
-
-configurator.configure(HOST, {todoes: TodoesApi});
 
 ReactDOM.render(
   <React.StrictMode>

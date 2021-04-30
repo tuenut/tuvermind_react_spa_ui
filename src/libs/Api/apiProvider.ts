@@ -9,6 +9,7 @@ export class ApiProviderBase{
   private __headers?: any;
 
   constructor(host: string){
+    console.log({host});
     this.host = host;
   }
 
@@ -26,11 +27,15 @@ export class ApiProvider extends ApiProviderBase implements ApiConfigurationObje
   public client: AxiosInstance;
 
   constructor(host: string) {
+    console.log({host});
+
     super(host);
+
+    console.log({host, self: this});
 
     this.client = axios.create({
       baseURL: this.host,
-      withCredentials: true,
+      withCredentials: false, // TODO установил в `false` чтобы CORS работал на время отладки.
       headers: this.headers
     });
   }
