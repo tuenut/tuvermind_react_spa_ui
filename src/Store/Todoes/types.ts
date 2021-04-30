@@ -24,14 +24,14 @@ export type TodoStatusType =
 export type CronScheduleType = string;
 
 export interface IBaseTodo {
-  id: number,
+  id: number | null,
   status: TodoStatusType,
   type: TodoType,
   title: string,
   description: string | null,
   duration: number | null,
-  created: number,
-  updated: number,
+  created: number | null,
+  updated: number | null,
 }
 
 export interface IMemoTodo extends IBaseTodo {

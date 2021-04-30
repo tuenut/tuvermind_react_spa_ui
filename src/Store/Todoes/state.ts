@@ -8,14 +8,14 @@ export const CRON = "CRON";
 export const createTodoDataObject =
   (data: IBaseTodo & Partial<TodoDataTypes>): TodoDataTypes | undefined => {
     const baseTodoObject: IBaseTodo = {
-      id: data.id,
-      status: data.status,
-      type: data.type,
-      title: data.title,
-      description: data.description,
-      updated: data.updated,
-      created: data.created,
-      duration: data.duration
+      id: data.id || null,
+      status: data.status || "suspense",
+      type: data.type || TODO,
+      title: data.title || "",
+      description: data.description || "",
+      updated: data.updated || null,
+      created: data.created || null,
+      duration: data.duration || null
     };
     switch (data.type) {
       case TODO:
