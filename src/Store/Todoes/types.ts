@@ -1,10 +1,10 @@
-import {IBaseStateWithApi} from "../types";
+import {IBaseApiListState} from "../../libs/redux/types";
 import {CRON, MEMO, TODO} from "./state";
 
 
 // STATE
-export interface ITodoesListState extends IBaseStateWithApi {
-  data: null | ITodoesData,
+export interface ITodoesListState extends IBaseApiListState {
+  data: ITodoesData,
 }
 
 export type TodoType =
@@ -56,7 +56,3 @@ export interface ITodoesData {
 }
 
 export type TodoesListType = Array<TodoDataTypes>;
-
-export interface ITodoesState {
-  list: ITodoesListState
-}

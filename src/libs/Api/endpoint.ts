@@ -1,6 +1,7 @@
 import {AxiosInstance, AxiosPromise} from "axios";
-import {DataHandler, Handler} from "./dataHandler";
+import {DataHandler, IHandler} from "./dataHandler";
 import {URI} from "./uriProvider";
+import {idType} from "./types";
 
 
 /** Базовый абстрактный класс для апи-эндпоинтов.
@@ -27,11 +28,15 @@ export abstract class Endpoint {
   protected handlers: DataHandler;
   protected __url!: URI;
 
-  protected constructor(client: AxiosInstance) {
+  /**
+   * TODO надо допилить в конфигураторе, чтобы урл и заголовки получались из конфига и с ними класс инициалицизовался.
+   * Или типа того.
+   * */
+  protected constructor(client: AxiosInstance, url: string = "", handlers: DataHandler | null = null) {
     this.client = client;
-    this.handlers = new DataHandler();
+    this.handlers = handlers ? handlers : new DataHandler();
 
-    this.setUrl("");
+    this.setUrl(url);
   }
 
   get url(): URI {
@@ -48,7 +53,7 @@ export abstract class Endpoint {
    * @param   {string}          [extraAction]  Name of extra action for endpoint.
    * @returns {AxiosPromise}                   AxiosPromise without catch statement.
    * */
-  retrieve(id: number | string, extraAction: string = ""): AxiosPromise {
+  retrieve(id: idType, extraAction: string = ""): AxiosPromise {
     return this.client
       .get(this.url.retrieve(id, extraAction))
       .then(this.handlers.onSuccessRetrieve)
@@ -57,32 +62,33 @@ export abstract class Endpoint {
   /**
    * @method  list
    * @param   {Object}        [options]  REST API otions.
+   * @param   {string}        [extraAction]
    * @returns {AxiosPromise}             AxiosPromise without catch statement.
    * */
-  list(options?): AxiosPromise {
+  list(options?: object, extraAction?: string): AxiosPromise {
     return this.client
-      .get(this.url.list(options))
+      .get(this.url.list(options, extraAction))
       .then(this.handlers.onSuccessList)
   }
 
   /**
    * @method  create
-   * @param   {Object}       data  Data for create new object.
-   * @returns {AxiosPromise}       AxiosPromise without catch statement.
+   * @param   {Object}       [data]  Data for create new object.
+   * @returns {AxiosPromise}         AxiosPromise without catch statement.
    * */
-  create(data: object): AxiosPromise {
+  create(data: object) {
     return this.client
-      .post(this.url.create())
+      .post(this.url.create(), data)
       .then(this.handlers.onSuccessCreate)
   }
 
   /**
    * @method  update
-   * @param   {number | string}   id    Id of entity.
-   * @param   {Object}            data  Data for update object.
-   * @returns {AxiosPromise}            AxiosPromise without catch statement.
+   * @param   {number | string}   [id]    Id of entity.
+   * @param   {Object}            [data]  Data for update object.
+   * @returns {AxiosPromise}              AxiosPromise without catch statement.
    * */
-  update(id: number | string, data: object): AxiosPromise {
+  update(id: idType, data: object): AxiosPromise {
     return this.client
       .put(this.url.update(id), data)
       .then(this.handlers.onSuccessUpdate)
@@ -90,10 +96,10 @@ export abstract class Endpoint {
 
   /**
    * @method delete
-   * @param   {number | string}     id  Id of entity.
-   * @returns {AxiosPromise}            AxiosPromise without catch statement.
+   * @param   {number | string}     [id]  Id of entity.
+   * @returns {AxiosPromise}              AxiosPromise without catch statement.
    * */
-  delete(id: number | string): AxiosPromise {
+  delete(id: idType): AxiosPromise {
     return this.client
       .delete(this.url.delete(id))
       .then(this.handlers.onSuccessDelete)
@@ -101,10 +107,10 @@ export abstract class Endpoint {
 
   /**
    * @method setHandler set up default on success handler for instance.
-   * @param   {function}         handler   function which consumes data and returns processed data object.
-   * @returns {Endpoint}            Returns this object.
+   * @param   {function}         [handler]   function which consumes data and returns processed data object.
+   * @returns {Endpoint}                     Returns this object.
    * */
-  setHandler(handler: Handler) {
+  setHandler(handler: IHandler){
     this.handlers.defaultOnSuccess = handler;
 
     return this;
@@ -112,10 +118,10 @@ export abstract class Endpoint {
 
   /**
    * @method setHandler set up default on fail handler for instance.
-   * @param   {function}         handler   function which consumes error and returns processed error data object.
-   * @returns {Endpoint}            Returns this object.
+   * @param   {function}         [handler]   function which consumes error and returns processed error data object.
+   * @returns {Endpoint}                     Returns this object.
    * */
-  setOnErrorHandler(handler) {
+  setOnErrorHandler(handler: IHandler)  {
     this.handlers.defaultOnError = handler;
 
     return this;

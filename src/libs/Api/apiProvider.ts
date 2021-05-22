@@ -1,44 +1,45 @@
-import axios, {AxiosInstance} from "axios";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 
-import {ApiConfigurationObject} from "./types";
+import {ApiEndpointsConfig} from "./types";
 
 
-export class ApiProviderBase{
-  protected client;
-  protected host: string;
-  private __headers?: any;
+export class BaseApiProvider {
+  protected host;
+  private __headers?: object | Function;
 
-  constructor(host: string){
-    console.log({host});
+  constructor(host: string, headers: object | Function) {
     this.host = host;
+    this.headers = headers;
   }
 
-  get headers(): object {
-    return {...this.__headers};
+  get headers(): object | Function {
+    return (this.__headers instanceof Function) ? this.__headers() : {...this.__headers};
   }
 
-  set headers(headers: object) {
-    this.__headers = headers;
+  set headers(headers: object | Function) {
+    this.__headers = (headers instanceof Function) ? headers : {...headers};
   }
 }
 
-
-export class ApiProvider extends ApiProviderBase implements ApiConfigurationObject{
+export class ApiProvider extends BaseApiProvider implements ApiEndpointsConfig {
   public client: AxiosInstance;
 
-  constructor(host: string) {
-    console.log({host});
-
-    super(host);
-
-    console.log({host, self: this});
+  /**
+   * @constructor
+   * @param {string} [host]
+   * @param {object} [headers] Если передан `axiosConfig` и там есть заголовки,
+   *  то этот параметр имеет приоритет и перезапишет заголовки из конфига.
+   *
+   * @param {AxiosRequestConfig} [axiosConfig] Конфиг для axios для более
+   *  полной настройки клиента.
+   * */
+  constructor(host: string, headers: object = {}, axiosConfig: AxiosRequestConfig = {}) {
+    super(host, headers);
 
     this.client = axios.create({
       baseURL: this.host,
-      withCredentials: false, // TODO установил в `false` чтобы CORS работал на время отладки.
-      headers: this.headers
-    });
+      ...axiosConfig,
+      headers: this.headers,
+    })
   }
 }
-
-

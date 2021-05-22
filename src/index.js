@@ -10,6 +10,10 @@ import './styles.css';
 
 import {App} from './components/App/App';
 import {store} from "./Store";
+import {enableApi} from "./API";
+
+
+enableApi();
 
 
 ReactDOM.render(

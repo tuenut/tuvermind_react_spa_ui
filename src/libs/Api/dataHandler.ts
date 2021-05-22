@@ -1,7 +1,13 @@
 import {AxiosError, AxiosResponse} from "axios";
 
 
-export type Handler = (response: AxiosResponse) => any;
+export interface IHandler {
+  (response: AxiosResponse): any
+}
+
+export interface IHandler {
+  (error: AxiosError | object): any
+}
 
 export class DataHandler {
   protected _onSuccessRetrieve;
@@ -34,23 +40,23 @@ export class DataHandler {
     return this._onSuccessDelete || this.defaultOnSuccess;
   }
 
-  set OnSuccessRetrieve(handler: Handler) {
+  set OnSuccessRetrieve(handler: IHandler) {
     this._onSuccessRetrieve = handler;
   }
 
-  set OnSuccessList(handler: Handler) {
+  set OnSuccessList(handler: IHandler) {
     this._onSuccessList = handler;
   }
 
-  set OnSuccessCreate(handler: Handler) {
+  set OnSuccessCreate(handler: IHandler) {
     this._onSuccessCreate = handler;
   }
 
-  set OnSuccessUpdate(handler: Handler) {
+  set OnSuccessUpdate(handler: IHandler) {
     this._onSuccessUpdate = handler;
   }
 
-  set OnSuccessDelete(handler: Handler) {
+  set OnSuccessDelete(handler: IHandler) {
     this._onSuccessDelete = handler;
   }
 }

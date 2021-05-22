@@ -1,8 +1,10 @@
-export {
-  getTodoesListWatcher,
-  completeTodoWatcher,
-  updateTodoWatcher,
-  deleteTodoWatcher,
-} from "./sagas";
-export {todoesReducer} from "./reducers";
-export {getTodoesList, updateTodo, } from "./actions/";
+import {apiListManagementFactory} from "../../libs/redux";
+import {IState} from "../types";
+
+
+export const [todoesReducer, actions] = apiListManagementFactory("todoes");
+
+export const todoesListSelector = (state: IState) => state.todoes;
+
+
+

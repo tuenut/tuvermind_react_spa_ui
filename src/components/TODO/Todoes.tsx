@@ -11,21 +11,27 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Dialog from "@material-ui/core/Dialog";
 
-import {todoesListSelector} from "../../Store/Todoes/reducers";
-import {getTodoesList, updateTodo} from "../../Store/Todoes";
+import {convertStoreObjectToArray} from "../../libs/common";
+
+import {actions, todoesListSelector} from "../../Store/Todoes";
 
 import {useStyles} from "./parts/styles";
 import {TodoesList, TodoEditor} from "./parts";
 import {EditorContextProvider} from "./parts/TodoEditorContext";
+import {ITodoesData} from "../../Store/Todoes/types";
 
 
 export const Todoes = () => {
   const classes = useStyles();
 
-  const todoesList = useSelector(todoesListSelector);
   const dispatch = useDispatch();
 
-  const [todoInEditor, setTodoInEditor] = React.useState<number>();
+  const todoes = useSelector(todoesListSelector);
+
+  const [todoesList, setTodoesList] = React.useState<ITodoesData[]>(
+    convertStoreObjectToArray(todoes.data)
+  );
+  const [todoInEditor, setTodoInEditor] = React.useState<number | undefined>();
 
   const onCloseEditor = React.useCallback(
     () => setTodoInEditor(undefined),
@@ -33,22 +39,24 @@ export const Todoes = () => {
   );
   const onSaveEditedTodo = React.useCallback(
     (todo) => {
-      dispatch(updateTodo(todo.id, todo));
+      // dispatch(updateTodo(todo.id, todo));
     },
     []
   );
 
   React.useEffect(() => {
-    if (todoesList.data === null) {
-      dispatch(getTodoesList());
+    setTodoesList(convertStoreObjectToArray(todoes.data));
+  }, [todoes.data]);
+
+  React.useEffect(() => {
+    if (todoesList.length === 0) {
+      dispatch(actions.GET_LIST());
     }
   }, []);
 
   return (
     <React.Fragment>
-      {(todoesList.data) && (
-        <TodoesList openTodoInEditor={setTodoInEditor}/>
-      )}
+      <TodoesList openTodoInEditor={setTodoInEditor}/>
 
       <Dialog
         open={todoInEditor !== undefined}
@@ -57,15 +65,15 @@ export const Todoes = () => {
         maxWidth={"sm"}
       >
         <React.Fragment>
-          {((todoInEditor !== undefined) && todoesList.data) && (
-            <EditorContextProvider todo={todoesList.data[todoInEditor]}>
+          {((todoInEditor !== undefined) && todoes.data) && (
+            <EditorContextProvider todo={todoes.data[todoInEditor]}>
               <TodoEditor onClose={onCloseEditor} onSave={onSaveEditedTodo}/>
             </EditorContextProvider>
           )}
         </React.Fragment>
       </Dialog>
 
-      <Backdrop className={classes.backdrop} open={todoesList.loading}>
+      <Backdrop className={classes.backdrop} open={todoes.loading}>
         <CircularProgress color="inherit"/>
       </Backdrop>
 
@@ -78,7 +86,7 @@ export const Todoes = () => {
           </Grid>
 
           <Grid item>
-            <Fab color="primary" onClick={() => dispatch(getTodoesList())}>
+            <Fab color="primary" onClick={() => dispatch(actions.GET_LIST())}>
               <CachedIcon/>
             </Fab>
           </Grid>

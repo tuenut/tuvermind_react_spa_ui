@@ -2,12 +2,7 @@ import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, compose, createStore} from "redux";
 
 import {rootReducer} from "./reducers";
-import {
-  completeTodoWatcher,
-  getTodoesListWatcher,
-  updateTodoWatcher,
-  deleteTodoWatcher
-} from "./Todoes";
+import {todoesListWatcher} from "./Todoes/sagas";
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -18,11 +13,8 @@ let enchancers = [
 ];
 
 
-const _dev_tools = "__REDUX_DEVTOOLS_EXTENSION__" in window
-  && window.__REDUX_DEVTOOLS_EXTENSION__();
-if (_dev_tools) {
-  enchancers = enchancers.concat(_dev_tools)
-}
+if ("__REDUX_DEVTOOLS_EXTENSION__" in window)
+  enchancers.push(window.__REDUX_DEVTOOLS_EXTENSION__());
 
 
 export const store = createStore(
@@ -31,8 +23,4 @@ export const store = createStore(
 );
 
 
-sagaMiddleware.run(getTodoesListWatcher);
-sagaMiddleware.run(updateTodoWatcher);
-sagaMiddleware.run(completeTodoWatcher);
-sagaMiddleware.run(deleteTodoWatcher);
-
+sagaMiddleware.run(todoesListWatcher);

@@ -1,68 +1,35 @@
-import {takeEvery} from "redux-saga/effects";
+import {takeEvery, call, put, select, SagaReturnType} from "redux-saga/effects";
 
-// import {getApi} from "../../settings/remoteAPI";
-import {getApi} from "../../API";
-import {makeApiSagaWorkerFactory} from "../../libs/sagasFactory";
+import {getApi} from "../../libs/Api";
 
-import {
-  ICompleteTodoAction,
-  ITodoesGetListAction,
-  IUpdateTodoAction,
-  TODOES_COMPLETE_TASK_ACTION,
-  TODOES_UPDATE_ACTION,
-  TODOES_GET_LIST_ACTION, IDeleteTodoAction, TODOES_DELETE_ACTION
-} from "./actions/types";
-import {
-  getTodoesListOnFailure,
-  getTodoesListOnSuccess,
-  todoesStartLoading,
-  todoesStopLoading,
-  updateTodoOnFailure,
-  updateTodoOnSuccess,
-  completeTodoOnFailure,
-  completeTodoOnSuccess,
-} from "./actions/";
-import {deleteTodoOnFailure, deleteTodoOnSuccess} from "./actions/actionCreators";
+import {actions, todoesListSelector} from "./";
+import {Api} from "../../API";
+import {IBaseRequestListAction} from "../../libs/redux/types";
 
 
-const apiSagaFactory = makeApiSagaWorkerFactory(todoesStartLoading, todoesStopLoading);
+function* todoesListWorker(action: IBaseRequestListAction) {
+  const {loading} = yield select(todoesListSelector);
 
+  if (!loading) {
+    yield put(actions.START_LOADING());
 
-export const getTodoesListWorker = apiSagaFactory<ITodoesGetListAction>(
-  (action) => getApi().todoes.list(action.options),
-  getTodoesListOnSuccess, getTodoesListOnFailure
-);
+    try {
+      const api = getApi() as Api;
 
-export function* getTodoesListWatcher() {
-  yield takeEvery(TODOES_GET_LIST_ACTION, getTodoesListWorker);
+      const response: SagaReturnType<typeof api.todoes.list> =
+        yield call(() => api.todoes.list(action.options));
+
+      yield put(actions.GET_LIST_ON_SUCCEESS(response));
+    } catch (e) {
+      console.exception(e);
+
+      yield put(actions.GET_LIST_ON_FAILURE(e));
+    }
+
+    yield put(actions.STOP_LOADING());
+  }
 }
 
-
-export const updateTodoWorker = apiSagaFactory<IUpdateTodoAction>(
-  (action) => getApi().todoes.update(action.id, action.data),
-  updateTodoOnSuccess, updateTodoOnFailure
-);
-
-export function* updateTodoWatcher() {
-  yield takeEvery(TODOES_UPDATE_ACTION, updateTodoWorker);
-}
-
-
-export const completeTodoWorker = apiSagaFactory<ICompleteTodoAction>(
-  (action) => getApi().todoes.completeTask(action.id),
-  completeTodoOnSuccess, completeTodoOnFailure
-);
-
-export function* completeTodoWatcher() {
-  yield takeEvery(TODOES_COMPLETE_TASK_ACTION, completeTodoWorker);
-}
-
-
-export const deleteTodoWorker = apiSagaFactory<IDeleteTodoAction>(
-  (action) => getApi().todoes.delete(action.id),
-  deleteTodoOnSuccess, deleteTodoOnFailure
-);
-
-export function* deleteTodoWatcher() {
-  yield takeEvery(TODOES_DELETE_ACTION, deleteTodoWorker);
+export function* todoesListWatcher() {
+  yield takeEvery(actions.GET_LIST.type as string, todoesListWorker);
 }

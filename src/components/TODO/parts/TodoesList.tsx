@@ -10,7 +10,7 @@ import {useTheme} from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import {GridSize} from "@material-ui/core";
 
-import {todoesListSelector} from "../../../Store/Todoes/reducers";
+import {todoesListSelector} from "../../../Store/Todoes/";
 import {splitArrayToColumns} from "../utils";
 import {convertStoreObjectToArray} from "../../../libs/common"
 import {TodoCard} from "./TodoCard";

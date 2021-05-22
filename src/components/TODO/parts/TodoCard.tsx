@@ -25,7 +25,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import {TodoDataTypes} from "../../../Store/Todoes/types";
-import {completeTodo, deleteTodo} from "../../../Store/Todoes/actions/actionCreators";
+
 import {DateTime} from "../../../libs/common";
 
 
@@ -123,7 +123,7 @@ const Actions = ({todo, completed, expanded, setExpand}) => {
       {!completed && (
         <IconButton
           color="primary"
-          onClick={() => dispatch(completeTodo(todo.id))}
+          // onClick={() => dispatch(completeTodo(todo.id))}
         >
           <CheckCircleIcon/>
         </IconButton>
@@ -131,7 +131,7 @@ const Actions = ({todo, completed, expanded, setExpand}) => {
 
       <IconButton
         color="secondary"
-        onClick={() => dispatch(deleteTodo(todo.id))}
+        // onClick={() => dispatch(deleteTodo(todo.id))}
       >
         <DeleteForeverIcon/>
       </IconButton>
