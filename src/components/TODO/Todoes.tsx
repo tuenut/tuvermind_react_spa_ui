@@ -13,12 +13,21 @@ import Dialog from "@material-ui/core/Dialog";
 
 import {convertStoreObjectToArray} from "../../libs/common";
 
-import {actions, todoesListSelector} from "../../Store/Todoes";
+import {actions, todoesCreateAction, todoesListSelector} from "../../Store/Todoes";
 
 import {useStyles} from "./parts/styles";
 import {TodoesList, TodoEditor} from "./parts";
 import {EditorContextProvider} from "./parts/TodoEditorContext";
 import {ITodoesData} from "../../Store/Todoes/types";
+
+
+const newTodo = () => ({
+  "title": "",
+  "description": "",
+  "start_date": "",
+  "end_date": "",
+  "reminders": []
+});
 
 
 export const Todoes = () => {
@@ -31,7 +40,7 @@ export const Todoes = () => {
   const [todoesList, setTodoesList] = React.useState<ITodoesData[]>(
     convertStoreObjectToArray(todoes.data)
   );
-  const [todoInEditor, setTodoInEditor] = React.useState<number | undefined>();
+  const [todoInEditor, setTodoInEditor] = React.useState<number | undefined | null>();
 
   const onCloseEditor = React.useCallback(
     () => setTodoInEditor(undefined),
@@ -39,7 +48,11 @@ export const Todoes = () => {
   );
   const onSaveEditedTodo = React.useCallback(
     (todo) => {
-      // dispatch(updateTodo(todo.id, todo));
+      if (todo.id) {
+        //  TODO there is the place for dispatch update action
+      } else {
+        dispatch(todoesCreateAction(todo));
+      }
     },
     []
   );
@@ -66,7 +79,13 @@ export const Todoes = () => {
       >
         <React.Fragment>
           {((todoInEditor !== undefined) && todoes.data) && (
-            <EditorContextProvider todo={todoes.data[todoInEditor]}>
+            <EditorContextProvider
+              todo={
+                typeof todoInEditor === "number"
+                  ? todoes.data[todoInEditor]
+                  : newTodo()
+              }
+            >
               <TodoEditor onClose={onCloseEditor} onSave={onSaveEditedTodo}/>
             </EditorContextProvider>
           )}
@@ -80,7 +99,7 @@ export const Todoes = () => {
       <Box position="fixed" bottom={20} right={20}>
         <Grid container spacing={2}>
           <Grid item>
-            <Fab onClick={() => null}>
+            <Fab onClick={() => setTodoInEditor(null)}>
               <AddIcon/>
             </Fab>
           </Grid>
