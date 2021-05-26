@@ -1,5 +1,5 @@
 import React from "react";
-import {CronScheduleType, IBaseTodo} from "../../../Store/Todoes/types";
+import {CronScheduleType, ITodo} from "../../../Store/Todoes/types";
 
 export const SET_TITLE = "SET_TITLE";
 export const SET_DESCRIPTION = "SET_DESCRIPTION";
@@ -10,7 +10,7 @@ export const SET_SCHEDULE = "SET_SCHEDULE";
 export const SET_TODO = "SET_TODO";
 
 
-export interface IEditorTodoData extends IBaseTodo {
+export interface IEditorTodoData extends ITodo {
   date?: number | null,
   schedule?: CronScheduleType,
 

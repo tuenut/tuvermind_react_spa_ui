@@ -1,45 +1,22 @@
-import {IBaseTodo, TodoDataTypes} from "./types";
+import {ITodo} from "./types";
 
 
-export const MEMO = "MEMO";
-export const TODO = "TODO";
-export const CRON = "CRON";
+export const PENDING = "pending";
+export const IN_PROCESS = "inProcess";
+export const COMPLETED = "completed";
+export const ARCHIVED = "archived";
+export const EXPIRED = "expired";
+export const SUSPENSE = "suspense";
 
-export const createTodoDataObject =
-  (data: IBaseTodo & Partial<TodoDataTypes>): TodoDataTypes | undefined => {
-    const baseTodoObject: IBaseTodo = {
-      id: data.id || null,
-      status: data.status || "suspense",
-      type: data.type || TODO,
-      title: data.title || "",
-      description: data.description || "",
-      updated: data.updated || null,
-      created: data.created || null,
-      duration: data.duration || null
-    };
-    switch (data.type) {
-      case TODO:
-        return ({
-          ...baseTodoObject,
-          type: TODO,
-          date: data.date || null
-        });
-
-      case MEMO:
-        return ({
-          ...baseTodoObject,
-          type: MEMO,
-          date: data.date || null
-        });
-
-      case CRON:
-        return ({
-          ...baseTodoObject,
-          type: CRON,
-          schedule: data.schedule || ""
-        });
-
-      default:
-        return undefined;
-    }
-  };
+export const createTodoDataObject = (data: ITodo): ITodo => ({
+  id: data.id || null,
+  title: data.title || "",
+  description: data.description || "",
+  start_date: data.start_date || null,
+  duration: data.duration || null,
+  status: data.status || PENDING,
+  reminders: data.reminders || [],
+  created: data.created || null,
+  updated: data.updated || null,
+  completed: data.completed || null,
+});

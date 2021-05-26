@@ -191,7 +191,7 @@ export interface TodoCardProps {
 export const TodoCard: React.FC<TodoCardProps> = ({todo, openTodoInEditor}) => {
   const [expanded, setExpand] = React.useState(false);
 
-  const isCompleted = !((todo.status === "suspense") || (todo.status === "inProcess"));
+  const isCompleted = !((todo.status === "suspense") || !(todo.status === "inProcess"));
 
   const openEditor = React.useCallback(
     () => {

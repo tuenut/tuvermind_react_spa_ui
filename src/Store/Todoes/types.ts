@@ -1,58 +1,36 @@
 import {IBaseApiListState} from "../../libs/redux/types";
-import {CRON, MEMO, TODO} from "./state";
 
+
+export type TodoStatusType =
+  | "pending"
+  | "inProcess"
+  | "completed"
+  | "archived"
+  | "expired"
+  | "suspense"
+  ;
+
+export type CronScheduleType = string;
+
+export interface ITodo {
+  id: number | null,
+  title: string,
+  description: string,
+  start_date: string | null,
+  duration: number | null,
+  status: TodoStatusType,
+  reminders: [],
+  created: string | null,
+  updated: string | null,
+  completed: string | null
+}
+
+export interface ITodoesData {
+  [id: number]: ITodo
+}
 
 // STATE
 export interface ITodoesListState extends IBaseApiListState {
   data: ITodoesData,
 }
 
-export type TodoType =
-  | typeof MEMO
-  | typeof TODO
-  | typeof CRON
-  ;
-
-export type TodoStatusType =
-  | "suspense"
-  | "inProcess"
-  | "done"
-  | "expired"
-  | "archived"
-  ;
-
-export type CronScheduleType = string;
-
-export interface IBaseTodo {
-  id: number | null,
-  status: TodoStatusType,
-  type: TodoType,
-  title: string,
-  description: string | null,
-  duration: number | null,
-  created: number | null,
-  updated: number | null,
-}
-
-export interface IMemoTodo extends IBaseTodo {
-  type: "MEMO",
-  date: number | null,
-}
-
-export interface ITodo extends IBaseTodo {
-  type: "TODO",
-  date: number | null,
-}
-
-export interface ICronTodo extends IBaseTodo {
-  type: "CRON",
-  schedule: CronScheduleType,
-}
-
-export type TodoDataTypes = IMemoTodo | ITodo | ICronTodo
-
-export interface ITodoesData {
-  [id: number]: TodoDataTypes
-}
-
-export type TodoesListType = Array<TodoDataTypes>;
