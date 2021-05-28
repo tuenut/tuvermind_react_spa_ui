@@ -22,7 +22,7 @@ export const makeApiOnFailureAction = (type) =>
 export const makeApiRetrieveAction = (type) =>
   makeActionCreator<IBaseApiRetrieveRequestAction>(type, 'id', 'extraAction');
 
-export const makeApiListAction = <T extends string>(type) =>
+export const makeApiListAction = (type) =>
   makeActionCreator<IBaseApiListRequestAction>(type, 'options');
 
 export const makeApiCreateAction = <D = any>(type) =>

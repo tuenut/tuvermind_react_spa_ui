@@ -1,9 +1,11 @@
 import {apiListManagementFactory} from "../../libs/redux";
+
 import {
   makeApiCreateAction,
   makeApiOnFailureAction,
   makeApiOnSuccessAction,
 } from "../../libs/redux/actions";
+
 import {reduceOnFailedGetListAction} from "../../libs/redux/apiListState";
 
 import {IState} from "../types";
@@ -14,7 +16,7 @@ export const [todoesListReducer, actions] = apiListManagementFactory("todoes");
 export const TODOES_CREATE_REQUEST_ACTION = "TODOES_CREATE_REQUEST_ACTION";
 export const TODOES_CREATE_ON_SUCCESS_ACTION = "TODOES_CREATE_ON_SUCCESS_ACTION";
 export const TODOES_CREATE_ON_FAILURE_ACTION = "TODOES_CREATE_ON_FAILURE_ACTION";
-export const todoesCreateAction = makeApiCreateAction(TODOES_CREATE_REQUEST_ACTION);
+export const todoesCreateRequestAction = makeApiCreateAction(TODOES_CREATE_REQUEST_ACTION);
 export const todoesCreateOnSuccessAction = makeApiOnSuccessAction(TODOES_CREATE_ON_SUCCESS_ACTION);
 export const todoesCreateOnFailureAction = makeApiOnFailureAction(TODOES_CREATE_ON_FAILURE_ACTION);
 

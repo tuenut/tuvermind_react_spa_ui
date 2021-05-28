@@ -1,4 +1,4 @@
-import {IBaseApiListState} from "../../libs/redux/types";
+import { IBaseApiListState } from "../../libs/redux/types";
 
 
 export type TodoStatusType =
@@ -10,23 +10,35 @@ export type TodoStatusType =
   | "suspense"
   ;
 
-export type CronScheduleType = string;
+export interface ITodoReminder {
+  value: number,
+  units: "min" | "hour" | "day" | "week"
+}
 
-export interface ITodo {
-  id: number | null,
+interface ITodoEditablePart {
   title: string,
   description: string,
   start_date: string | null,
   duration: number | null,
+  reminders: ITodoReminder[],
+}
+
+export interface ITodoInEditor extends ITodoEditablePart {
+  id: number | null,
+}
+
+export interface ITodoFromApi extends ITodoEditablePart {
+  id: number,
   status: TodoStatusType,
-  reminders: [],
   created: string | null,
   updated: string | null,
   completed: string | null
 }
 
+export type TodoType = ITodoInEditor | ITodoFromApi;
+
 export interface ITodoesData {
-  [id: number]: ITodo
+  [id: number]: ITodoFromApi
 }
 
 // STATE

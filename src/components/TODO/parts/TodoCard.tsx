@@ -2,52 +2,30 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import {useDispatch} from "react-redux";
+// import { useDispatch } from "react-redux";
 
 import {
   Card,
-  CardHeader,
-  CardContent,
-  CardActions,
   CardActionArea,
-  Typography,
-  IconButton,
+  CardActions,
+  CardContent,
+  CardHeader,
   Collapse,
+  Fade,
   Grid,
-  Fade
+  IconButton,
+  Typography
 } from '@material-ui/core';
-
-import {makeStyles} from '@material-ui/core/styles';
 
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import {TodoDataTypes} from "../../../Store/Todoes/types";
+import { DateTime } from "../../../libs/common";
+import { useTodoCardStyles } from "./styles";
 
-import {DateTime} from "../../../libs/common";
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-}));
+import { TodoCardProps } from "./types";
 
 
 const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
@@ -84,7 +62,7 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
     </Collapse>
   );
 
-  if (expanded) {
+  if ( expanded ) {
     const action = (
       <Fade in={fade}>
         <IconButton onClick={openEditor}>
@@ -114,9 +92,9 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
 
 
 const Actions = ({todo, completed, expanded, setExpand}) => {
-  const classes = useStyles();
+  const classes = useTodoCardStyles();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   return (
     <CardActions disableSpacing>
@@ -183,10 +161,6 @@ const Content = ({todo, expanded}) => {
   );
 };
 
-export interface TodoCardProps {
-  todo: TodoDataTypes,
-  openTodoInEditor: Function
-}
 
 export const TodoCard: React.FC<TodoCardProps> = ({todo, openTodoInEditor}) => {
   const [expanded, setExpand] = React.useState(false);
@@ -195,9 +169,9 @@ export const TodoCard: React.FC<TodoCardProps> = ({todo, openTodoInEditor}) => {
 
   const openEditor = React.useCallback(
     () => {
-      if (!isCompleted) openTodoInEditor(todo.id);
+      if ( !isCompleted ) openTodoInEditor(todo.id);
     },
-    [todo.id, todo.status]
+    [todo.id, isCompleted, openTodoInEditor]
   );
 
   return (

@@ -1,22 +1,22 @@
 import React from "react";
 
-import {useSelector} from "react-redux";
-import {v4 as uuidv4} from "uuid";
+import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
 import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
 
-import {useTheme} from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import {GridSize} from "@material-ui/core";
+import { GridSize } from "@material-ui/core";
 
-import {todoesListSelector} from "../../../Store/Todoes/";
-import {splitArrayToColumns} from "../utils";
-import {convertStoreObjectToArray} from "../../../libs/common"
-import {TodoCard} from "./TodoCard";
+import { todoesListSelector } from "../../../Store/Todoes/";
+import { splitArrayToColumns } from "../utils";
+import { convertStoreObjectToArray } from "../../../libs/common"
+import { TodoCard } from "./TodoCard";
+import { TODO_OPEN_EDITOR, useTodoesListContext } from "./Context";
 
 
-export const TodoesList = ({openTodoInEditor}) => {
+export const TodoesList = () => {
   const theme = useTheme();
 
   const breakpoints = [
@@ -29,6 +29,12 @@ export const TodoesList = ({openTodoInEditor}) => {
 
   const todoesStore = useSelector(todoesListSelector);
   const todoesList = convertStoreObjectToArray(todoesStore.data);
+
+  const [, localDispatch] = useTodoesListContext();
+  const openTodoInEditor = React.useCallback(
+    (todoId) => localDispatch({type: TODO_OPEN_EDITOR, todo: todoId}),
+    [localDispatch]
+  );
 
   return (
     <Grid container spacing={2} alignContent="center">

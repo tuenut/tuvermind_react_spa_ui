@@ -4,7 +4,7 @@ import {TODOES_URL} from "../settings/remoteAPI";
 import {Endpoint} from "../libs/Api/endpoint";
 import {random} from "../libs/common";
 
-import {TodoDataTypes} from "../Store/Todoes/types";
+import {ITodoFromApi} from "../Store/Todoes/types";
 
 import {store} from "../Store";
 
@@ -57,7 +57,7 @@ export class TodoesApi extends Endpoint {
               ...data,
               completed: new Date().valueOf(),
               status: 'done'
-            } as TodoDataTypes,
+            } as ITodoFromApi,
           }
         }),
         random(700, 1500)

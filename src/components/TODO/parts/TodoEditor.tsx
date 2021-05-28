@@ -1,195 +1,107 @@
 import React from "react";
 
+import Grid from "@material-ui/core/Grid";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-import DatePicker from '@material-ui/lab/DatePicker';
-import TimePicker from '@material-ui/lab/TimePicker';
+import {
+  SET_DATE,
+  SET_DESCRIPTION,
+  SET_DURATION,
+  SET_TITLE,
+  useEditorContext
+} from "./TodoEditorContext";
 
-import {ICronTodo, IMemoTodo, ITodo} from "../../../Store/Todoes/types";
-import {SET_DATE, SET_DESCRIPTION, SET_DURATION, SET_TITLE, SET_TYPE, useEditorContext} from "./TodoEditorContext";
-import {createTodoDataObject} from "../../../Store/Todoes/state";
-import {CRON, MEMO, TODO} from "../../../Store/Todoes/state";
+import {
+  EditRemindersSection} from "./EditRemindersSection";
 
+import { TodoEditorProps } from "./types";
+import { EditTitleSection } from "./EditTitleSection";
+import { EditDescriptionSection } from "./EditDescriptionSection";
+import { EditStartDateSection } from "./EditStartDateSection";
+import { EditDurationSection } from "./EditDurationSection";
 
-const EditDateSection = () => {
-  const [todoState, dispatch] = useEditorContext();
-
-  const onChange = (newValue: any) => dispatch({
-    type: SET_DATE, payload: newValue
-  });
-
-  return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <DatePicker
-            value={todoState.date}
-            onChange={onChange}
-            label="Когда начнем?"
-            onError={console.log}
-            minDate={new Date()}
-            inputFormat="dd/MM/yyyy"
-            mask="___/__/__ __:__"
-            renderInput={(params) => <TextField {...params} margin="normal"/>}
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-          <TimePicker
-            orientation="landscape"
-            value={todoState.date}
-            onChange={onChange}
-            label="А во сколько?"
-            onError={console.log}
-            inputFormat="HH:mm"
-            mask="___/__/__ __:__"
-            renderInput={(params) => <TextField {...params} margin="normal"/>}
-          />
-        </Grid>
-      </Grid>
-    </LocalizationProvider>
-  )
-};
-
-const EditTypeSection = () => {
-  const [todoState, dispatch] = useEditorContext();
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({
-    type: SET_TYPE,
-    payload: e.target.value
-  });
-
-  return (
-    <TextField
-      select
-      fullWidth
-      id={"task-type"}
-      helperText={"Тип задачи"}
-      value={todoState.type}
-      onChange={onChange}
-    >
-      {[TODO, MEMO, CRON].map((item, idx) => (
-        <MenuItem key={idx} value={item}>
-          {item}
-        </MenuItem>
-      ))}
-    </TextField>
-  )
-};
-
-const EditTitleSection = () => {
-  const [todoState, dispatch] = useEditorContext();
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({
-    type: SET_TITLE,
-    payload: e.target.value
-  });
-
-  return (
-    <TextField
-      id={"task-title"}
-      label={"Название"}
-      helperText={"И как это все называется?"}
-      value={todoState.title}
-      onChange={onChange}
-      error={!todoState.title}
-      fullWidth
-    />
-  )
-};
-
-const EditDescriptionSection = () => {
-  const [todoState, dispatch] = useEditorContext();
-
-  const onDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({
-    type: SET_DESCRIPTION,
-    payload: e.target.value
-  });
-
-  return (
-    <TextField
-      multiline
-      id={"task-description"}
-      label={"Описание"}
-      helperText={"Так, а делать-то что будем?"}
-      value={todoState.description}
-      onChange={onDescriptionChange}
-      fullWidth
-    />
-  )
-};
-
-const EditDurationSection = () => {
-  const [todoState, dispatch] = useEditorContext();
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({
-    type: SET_DURATION,
-    payload: e.target.value
-  });
-
-  return (
-    <TextField
-      id={"task-duration"}
-      type={"number"}
-      label={"Длительность"}
-      helperText={"Ну, сколько это еще будет продолжаться?"}
-      value={todoState.duration}
-      onChange={onChange}
-      fullWidth
-    />
-  )
-};
-
-interface TodoEditorProps {
-   onClose: () => void,
-  onSave: (todo: IMemoTodo | ITodo | ICronTodo) => void
-}
 
 export const TodoEditor: React.FC<TodoEditorProps> = ({onClose, onSave}) => {
-  const [todoState] = useEditorContext();
+  const [todoState, dispatch] = useEditorContext();
 
   const onCancelHandler = () => {
     onClose();
   };
   const onSaveHandler = () => {
-    const newTodo = createTodoDataObject(todoState);
-    if (newTodo) onSave(newTodo);
+    onSave(todoState);
     onClose();
   };
+
+  const onChangeTitle = React.useCallback(
+    (value) => dispatch({type: SET_TITLE, payload: value}),
+    [dispatch]);
+
+  const onChangeDecription = React.useCallback(
+    (value) => dispatch({type: SET_DESCRIPTION, payload: value}),
+    [dispatch]);
+
+  const onChangeStartDate = React.useCallback(
+    (value) => dispatch({type: SET_DATE, payload: value}),
+    [dispatch]);
+
+  const onChangeDuration = React.useCallback(
+    (value) => dispatch({type: SET_DURATION, payload: value}),
+    [dispatch]);
+
+  const onChangeReminders = React.useCallback(
+    (value) => dispatch({type: SET_DURATION, payload: value}),
+    [dispatch]);
 
   return (
     <React.Fragment>
       <DialogTitle>
-        <EditTitleSection/>
+        <Typography>
+          {todoState.id ? "Редактирование задачи" : "Новая задача"}
+        </Typography>
       </DialogTitle>
 
       <DialogContent>
         <Grid container spacing={2}>
 
-          <Grid item xs={6}>
-            <EditTypeSection/>
+          <Grid item xs={12}>
+            <EditTitleSection
+              value={todoState.title}
+              onChange={onChangeTitle}
+            />
           </Grid>
 
           <Grid item xs={12}>
-            <EditDescriptionSection/>
+            <EditDescriptionSection
+              value={todoState.description}
+              onChange={onChangeDecription}
+            />
           </Grid>
 
-          {([MEMO, TODO].includes(todoState.type)) && (
-            <Grid item xs={12}>
-              <EditDateSection/>
-            </Grid>
-          )}
+
+          <Grid item xs={12}>
+            <EditStartDateSection
+              value={todoState.start_date}
+              onChange={onChangeStartDate}
+            />
+          </Grid>
+
 
           <Grid item xs={6}>
-            <EditDurationSection/>
+            <EditDurationSection
+              value={todoState.duration}
+              onChange={onChangeDuration}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <EditRemindersSection
+              value={todoState.reminders}
+              onChange={onChangeReminders}
+            />
           </Grid>
 
         </Grid>
