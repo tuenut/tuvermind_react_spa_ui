@@ -9,6 +9,8 @@ export const EditTitleSection = ({value, onChange}) => {
 
   return (
     <TextField
+      variant="standard"
+      size={"small"}
       id={"task-title"}
       label={"Название"}
       helperText={"И как это все называется?"}

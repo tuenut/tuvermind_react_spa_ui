@@ -10,22 +10,23 @@ import Typography from "@material-ui/core/Typography";
 import {
   SET_DATE,
   SET_DESCRIPTION,
-  SET_DURATION,
+  SET_DURATION, SET_REMINDERS,
   SET_TITLE,
   useEditorContext
 } from "./TodoEditorContext";
 
 import {
-  EditRemindersSection} from "./EditRemindersSection";
+  EditRemindersSection
+} from "./EditRemindersSection";
 
-import { TodoEditorProps } from "./types";
+// import { TodoEditorProps } from "./types";
 import { EditTitleSection } from "./EditTitleSection";
 import { EditDescriptionSection } from "./EditDescriptionSection";
 import { EditStartDateSection } from "./EditStartDateSection";
 import { EditDurationSection } from "./EditDurationSection";
 
 
-export const TodoEditor: React.FC<TodoEditorProps> = ({onClose, onSave}) => {
+export const TodoEditor = ({onClose, onSave}) => {
   const [todoState, dispatch] = useEditorContext();
 
   const onCancelHandler = () => {
@@ -44,17 +45,23 @@ export const TodoEditor: React.FC<TodoEditorProps> = ({onClose, onSave}) => {
     (value) => dispatch({type: SET_DESCRIPTION, payload: value}),
     [dispatch]);
 
-  const onChangeStartDate = React.useCallback(
-    (value) => dispatch({type: SET_DATE, payload: value}),
-    [dispatch]);
 
   const onChangeDuration = React.useCallback(
     (value) => dispatch({type: SET_DURATION, payload: value}),
     [dispatch]);
 
-  const onChangeReminders = React.useCallback(
-    (value) => dispatch({type: SET_DURATION, payload: value}),
-    [dispatch]);
+
+  const RemindersSection = React.useMemo(() => {
+    const onChangeReminders = (value) =>
+      dispatch({type: SET_REMINDERS, payload: value});
+
+    return (
+      <EditRemindersSection
+        reminders={todoState.reminders}
+        onChange={onChangeReminders}
+      />
+    );
+  }, [todoState.reminders, dispatch]);
 
   return (
     <React.Fragment>
@@ -83,10 +90,7 @@ export const TodoEditor: React.FC<TodoEditorProps> = ({onClose, onSave}) => {
 
 
           <Grid item xs={12}>
-            <EditStartDateSection
-              value={todoState.start_date}
-              onChange={onChangeStartDate}
-            />
+            <EditStartDateSection/>
           </Grid>
 
 
@@ -98,10 +102,7 @@ export const TodoEditor: React.FC<TodoEditorProps> = ({onClose, onSave}) => {
           </Grid>
 
           <Grid item xs={12}>
-            <EditRemindersSection
-              value={todoState.reminders}
-              onChange={onChangeReminders}
-            />
+            <RemindersSection/>
           </Grid>
 
         </Grid>

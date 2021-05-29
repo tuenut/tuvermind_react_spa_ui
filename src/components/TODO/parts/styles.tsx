@@ -26,3 +26,8 @@ export const useTodoCardStyles = makeStyles((theme) => ({
     transform: 'rotate(180deg)',
   },
 }));
+export const useDateTimePickerStyles = makeStyles((theme) => ({
+  root: {
+    background: theme.palette.secondary.light
+  }
+}));

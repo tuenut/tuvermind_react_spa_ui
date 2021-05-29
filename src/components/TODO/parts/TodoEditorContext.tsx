@@ -1,13 +1,14 @@
 import React from "react";
 
-import { ITodoInEditor } from "../../../Store/Todoes/types";
+import { ITodoInEditor, ITodoReminder } from "../../../Store/Todoes/types";
 
 
 export const newTodo = (): ITodoInEditor => ({
   id: null,
   title: "",
   description: "",
-  start_date: "",
+  start_date: null,
+  start_time: null,
   duration: null,
   reminders: []
 });
@@ -17,6 +18,7 @@ export const SET_TITLE = "SET_TITLE";
 export const SET_DESCRIPTION = "SET_DESCRIPTION";
 export const SET_DURATION = "SET_DURATION";
 export const SET_DATE = "SET_DATE";
+export const SET_TIME = "SET_TIME";
 export const SET_SCHEDULE = "SET_SCHEDULE";
 export const SET_REMINDERS = "SET_REMINDERS";
 
@@ -40,6 +42,11 @@ export interface ISetDate {
   payload: string
 }
 
+export interface ISetTime {
+  type: typeof SET_TIME,
+  payload: string
+}
+
 export interface ISetSchedule {
   type: typeof SET_SCHEDULE,
   payload: string
@@ -47,13 +54,14 @@ export interface ISetSchedule {
 
 export interface ISetReminders {
   type: typeof SET_REMINDERS,
-  payload: number[]
+  payload: ITodoReminder[]
 }
 
 export type EditorActionsTypes =
   | ISetTitle
   | ISetDecription
   | ISetDate
+  | ISetTime
   | ISetDuration
   | ISetSchedule
   | ISetReminders
@@ -76,6 +84,9 @@ const reducer: EditorReducer = (state = defaultState, action) => {
 
     case SET_DATE:
       return ({...state, start_date: action.payload});
+
+    case SET_TIME:
+      return ({...state, start_time: action.payload});
 
     case SET_REMINDERS:
       return ({...state, reminders: action.payload});

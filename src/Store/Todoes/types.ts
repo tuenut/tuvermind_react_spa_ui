@@ -1,24 +1,32 @@
 import { IBaseApiListState } from "../../libs/redux/types";
 
 
+export const PENDING = "pending";
+export const IN_PROCESS = "inProcess";
+export const COMPLETED = "completed";
+export const ARCHIVED = "archived";
+export const EXPIRED = "expired";
+export const SUSPENSE = "suspense";
+
 export type TodoStatusType =
-  | "pending"
-  | "inProcess"
-  | "completed"
-  | "archived"
-  | "expired"
-  | "suspense"
+  | typeof PENDING
+  | typeof IN_PROCESS
+  | typeof COMPLETED
+  | typeof ARCHIVED
+  | typeof EXPIRED
+  | typeof SUSPENSE
   ;
 
 export interface ITodoReminder {
-  value: number,
-  units: "min" | "hour" | "day" | "week"
+  id?: number,
+  when: string
 }
 
 interface ITodoEditablePart {
   title: string,
   description: string,
   start_date: string | null,
+  start_time: string | null,
   duration: number | null,
   reminders: ITodoReminder[],
 }

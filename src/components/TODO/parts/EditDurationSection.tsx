@@ -8,6 +8,8 @@ export const EditDurationSection = ({value, onChange}) => {
 
   return (
     <TextField
+      variant="standard"
+      size={"small"}
       id={"task-duration"}
       type={"number"}
       label={"Длительность"}

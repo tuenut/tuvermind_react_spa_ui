@@ -10,6 +10,8 @@ export const EditDescriptionSection = ({value, onChange}) => {
   return (
     <TextField
       multiline
+      variant="standard"
+      size={"small"}
       id={"task-description"}
       label={"Описание"}
       helperText={"Так, а делать-то что будем?"}

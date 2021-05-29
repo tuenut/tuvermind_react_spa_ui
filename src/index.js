@@ -4,9 +4,10 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 
-import './index.css';
+import './assets/css/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.css';
+import './assets/css/responsiveWidth.css';
+import "./assets/css/overrides.css";
 
 import {App} from './components/App/App';
 import {store} from "./Store";
