@@ -115,7 +115,6 @@ export interface IReduxApiStateManagementFactory {
   (
     string,
     stateExtension?: object,
-    reducerExtension?: Reducer
   ): [Reducer<IBaseApiListState, BaseApiActions>, IReduxApiActions]
 }
 

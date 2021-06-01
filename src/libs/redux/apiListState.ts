@@ -5,7 +5,7 @@
  * export const [reducer, actions] = reduxApiStateManagementFactory("someStateName");
  * */
 
-import {Reducer} from "redux";
+import { Reducer } from "redux";
 
 import {
   IReduxApiStateManagementFactory,
@@ -23,8 +23,8 @@ import {
 } from "./types";
 
 
-import {convertResponseDataToStoreObject} from "../common";
-import {makeActionCreator} from "./actions";
+import { convertResponseDataToStoreObject } from "../common";
+import { makeActionCreator } from "./actions";
 
 
 export const createDefaultState = (): IBaseApiListState => ({
@@ -110,7 +110,7 @@ export const createClearDataAction = (prefix: string): IClearDataActions => ({
 export const apiListManagementFactory: IReduxApiStateManagementFactory =
   <StateType extends IBaseApiListState = IBaseApiListState,
     ActionsType extends BaseApiActions = BaseApiActions>
-  (prefix, stateExtension?, reducerExtension?) => {
+  (prefix, stateExtension?) => {
 
     const createConcreteDefaultState = () =>
       ({...createDefaultState(), ...stateExtension});
@@ -127,7 +127,7 @@ export const apiListManagementFactory: IReduxApiStateManagementFactory =
       (state = defaultState, action) => {
         let newState = state;
 
-        switch (action.type) {
+        switch ( action.type ) {
           case actions.CLEAR_DATA.type:
             newState = {...state, data: {...defaultState.data}};
             break;
@@ -154,13 +154,6 @@ export const apiListManagementFactory: IReduxApiStateManagementFactory =
 
         return newState;
       };
-
-    if (reducerExtension instanceof Function) {
-      return ([
-        (state: any, action: any) => reducerExtension(reducer(state, action), action),
-        actions
-      ])
-    }
 
     return [reducer, actions];
   };
