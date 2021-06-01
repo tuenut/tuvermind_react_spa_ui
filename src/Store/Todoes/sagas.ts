@@ -4,13 +4,17 @@ import {getApi} from "../../libs/Api";
 
 import {
   actions,
-  TODOES_CREATE_REQUEST_ACTION, todoesCreateOnFailureAction,
+  TODOES_CREATE_REQUEST_ACTION, TODOES_UPDATE_REQUEST_ACTION, todoesCreateOnFailureAction,
   todoesCreateOnSuccessAction,
-  todoesListSelector,
+  todoesListSelector, todoesUpdateOnFailureAction, todoesUpdateOnSuccessAction,
 } from "./";
 
 import {Api} from "../../API";
-import {IBaseApiCreateRequestAction, IBaseRequestListAction} from "../../libs/redux/types";
+import {
+  IBaseApiCreateRequestAction,
+  IBaseApiUpdateRequestAction,
+  IBaseRequestListAction
+} from "../../libs/redux/types";
 
 
 function* todoesListWorker(action: IBaseRequestListAction) {
@@ -24,6 +28,8 @@ function* todoesListWorker(action: IBaseRequestListAction) {
 
       const response: SagaReturnType<typeof api.todoes.list> =
         yield call(() => api.todoes.list(action.options));
+
+      console.debug({response});
 
       yield put(actions.GET_LIST_ON_SUCCEESS(response));
     } catch (e) {
@@ -54,8 +60,27 @@ function* todoesCreateWorker(action: IBaseApiCreateRequestAction) {
   }
 }
 
+function* todoesUpdateWorker(action: IBaseApiUpdateRequestAction) {
+  try{
+    const api = getApi() as Api;
+
+    const response: SagaReturnType<typeof api.todoes.create> =
+      yield call(() => api.todoes.update(action.id, action.data));
+
+    console.debug({response});
+
+    yield put(todoesUpdateOnSuccessAction(response));
+
+  } catch (e) {
+    console.exception(e);
+
+    yield put(todoesUpdateOnFailureAction(e));
+  }
+}
+
 export function* todoesListWatcher() {
   yield takeEvery(actions.GET_LIST.type as string, todoesListWorker);
 
   yield takeEvery(TODOES_CREATE_REQUEST_ACTION, todoesCreateWorker);
+  yield takeEvery(TODOES_UPDATE_REQUEST_ACTION, todoesUpdateWorker);
 }

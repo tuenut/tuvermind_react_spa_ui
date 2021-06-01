@@ -1,14 +1,18 @@
-import {apiListManagementFactory} from "../../libs/redux";
+import { DateTime } from "luxon/src/luxon";
+
+import { apiListManagementFactory } from "../../libs/redux";
 
 import {
   makeApiCreateAction,
   makeApiOnFailureAction,
   makeApiOnSuccessAction,
+  makeUpdateAction,
 } from "../../libs/redux/actions";
 
-import {reduceOnFailedGetListAction} from "../../libs/redux/apiListState";
+import { reduceOnFailedGetListAction } from "../../libs/redux/apiListState";
 
-import {IState} from "../types";
+import { IState } from "../types";
+import { ITodo, ITodoFromApi, ITodoReminder, ITodoReminderFromApi } from "./types";
 
 
 export const [todoesListReducer, actions] = apiListManagementFactory("todoes");
@@ -20,16 +24,22 @@ export const todoesCreateRequestAction = makeApiCreateAction(TODOES_CREATE_REQUE
 export const todoesCreateOnSuccessAction = makeApiOnSuccessAction(TODOES_CREATE_ON_SUCCESS_ACTION);
 export const todoesCreateOnFailureAction = makeApiOnFailureAction(TODOES_CREATE_ON_FAILURE_ACTION);
 
+export const TODOES_UPDATE_REQUEST_ACTION = "TODOES_UPDATE_REQUEST_ACTION";
+export const TODOES_UPDATE_ON_SUCCESS_ACTION = "TODOES_UPDATE_ON_SUCCESS_ACTION";
+export const TODOES_UPDATE_ON_FAILURE_ACTION = "TODOES_UPDATE_ON_FAILURE_ACTION";
+export const todoesUpdateRequestAction = makeUpdateAction(TODOES_UPDATE_REQUEST_ACTION);
+export const todoesUpdateOnSuccessAction = makeApiOnSuccessAction(TODOES_UPDATE_ON_SUCCESS_ACTION);
+export const todoesUpdateOnFailureAction = makeApiOnFailureAction(TODOES_UPDATE_ON_FAILURE_ACTION);
+
 
 export const todoesListSelector = (state: IState) => state.todoes;
 
 export const todoesReducer = (state, action) => {
   state = todoesListReducer(state, action);
 
-  switch (action.type) {
+  switch ( action.type ) {
+    case TODOES_UPDATE_ON_SUCCESS_ACTION:
     case TODOES_CREATE_ON_SUCCESS_ACTION:
-      console.debug({action});
-
       return ({
         ...state,
         data: {
@@ -37,9 +47,12 @@ export const todoesReducer = (state, action) => {
           [action.response.data.id]: action.response.data
         }
       });
+      break;
 
+    case TODOES_UPDATE_ON_FAILURE_ACTION:
     case TODOES_CREATE_ON_FAILURE_ACTION:
       return reduceOnFailedGetListAction(state, action);
+      break;
 
     default:
       return state;
