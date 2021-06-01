@@ -32,11 +32,11 @@ export abstract class Endpoint {
    * TODO надо допилить в конфигураторе, чтобы урл и заголовки получались из конфига и с ними класс инициалицизовался.
    * Или типа того.
    * */
-  protected constructor(client: AxiosInstance, url: string = "", handlers: DataHandler | null = null) {
+  protected constructor(client: AxiosInstance, url: string | URI, handlersKlass: DataHandler) {
     this.client = client;
-    this.handlers = handlers ? handlers : new DataHandler();
+    this.handlers = handlersKlass;
 
-    this.setUrl(url);
+    this.setUrl(url || "");
   }
 
   get url(): URI {
@@ -103,27 +103,5 @@ export abstract class Endpoint {
     return this.client
       .delete(this.url.delete(id))
       .then(this.handlers.onSuccessDelete)
-  }
-
-  /**
-   * @method setHandler set up default on success handler for instance.
-   * @param   {function}         [handler]   function which consumes data and returns processed data object.
-   * @returns {Endpoint}                     Returns this object.
-   * */
-  setHandler(handler: IHandler){
-    this.handlers.defaultOnSuccess = handler;
-
-    return this;
-  }
-
-  /**
-   * @method setHandler set up default on fail handler for instance.
-   * @param   {function}         [handler]   function which consumes error and returns processed error data object.
-   * @returns {Endpoint}                     Returns this object.
-   * */
-  setOnErrorHandler(handler: IHandler)  {
-    this.handlers.defaultOnError = handler;
-
-    return this;
   }
 }

@@ -10,53 +10,35 @@ export interface IHandler {
 }
 
 export class DataHandler {
-  protected _onSuccessRetrieve;
-  protected _onSuccessList;
-  protected _onSuccessCreate;
-  protected _onSuccessUpdate;
-  protected _onSuccessDelete;
+  public onSuccessRetrieve;
+  public onSuccessList;
+  public onSuccessCreate;
+  public onSuccessUpdate;
+  public onSuccessDelete;
+
+  constructor() {
+    const proxyGetter = (target: DataHandler, name: string) => {
+      if (name in target) {
+        return target[name];
+      } else {
+        if (name.toLowerCase().includes("success")) {
+          return this.defaultOnSuccess;
+
+        } else if (name.toLowerCase().includes("failure")) {
+          return this.defaultOnFailure;
+
+        } else {
+          // use default behavior
+
+          return target[name];
+        }
+      }
+    }
+
+    return new Proxy(this, {get: proxyGetter});
+  }
 
   defaultOnSuccess = (response: AxiosResponse): AxiosResponse => response;
 
-  defaultOnError = (error: AxiosError | object): AxiosError | object => error;
-
-  get onSuccessRetrieve() {
-    return this._onSuccessRetrieve || this.defaultOnSuccess;
-  }
-
-  get onSuccessList() {
-    return this._onSuccessList || this.defaultOnSuccess;
-  }
-
-  get onSuccessCreate() {
-    return this._onSuccessCreate || this.defaultOnSuccess;
-  }
-
-  get onSuccessUpdate() {
-    return this._onSuccessUpdate || this.defaultOnSuccess;
-  }
-
-  get onSuccessDelete() {
-    return this._onSuccessDelete || this.defaultOnSuccess;
-  }
-
-  set OnSuccessRetrieve(handler: IHandler) {
-    this._onSuccessRetrieve = handler;
-  }
-
-  set OnSuccessList(handler: IHandler) {
-    this._onSuccessList = handler;
-  }
-
-  set OnSuccessCreate(handler: IHandler) {
-    this._onSuccessCreate = handler;
-  }
-
-  set OnSuccessUpdate(handler: IHandler) {
-    this._onSuccessUpdate = handler;
-  }
-
-  set OnSuccessDelete(handler: IHandler) {
-    this._onSuccessDelete = handler;
-  }
+  defaultOnFailure = (error: AxiosError | object): AxiosError | object => error;
 }

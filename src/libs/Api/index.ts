@@ -1,6 +1,7 @@
 import {ApiProvider} from "./apiProvider";
 import {ApiEndpointsConfig} from "./types";
 import {AxiosRequestConfig} from "axios";
+import { DataHandler } from "./dataHandler";
 
 
 class EndpointDoesNotExist {
@@ -102,7 +103,15 @@ class ApiManagerSingleton {
     const proxyGetter = (target: ApiProvider, name: string) => {
       if (!(name in target)) {
         if (name in this.endpointsConfig) {
-          Object.getPrototypeOf(target)[name] = new this.endpointsConfig[name](this.api.client);
+          const handlers = this.endpointsConfig[name].handler
+            ? new this.endpointsConfig[name].handler()
+            : new DataHandler();
+
+          Object.getPrototypeOf(target)[name] = new this.endpointsConfig[name].endpoint(
+            this.api.client,
+            this.endpointsConfig[name].url,
+            handlers
+          );
         } else {
           throw new EndpointDoesNotExist(name, {target, config: this.endpointsConfig});
         }

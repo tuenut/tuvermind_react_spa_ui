@@ -1,6 +1,6 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 
-import {ApiEndpointsConfig} from "./types";
+import { ApiEndpointsProvider } from "./types";
 
 
 export class BaseApiProvider {
@@ -21,7 +21,7 @@ export class BaseApiProvider {
   }
 }
 
-export class ApiProvider extends BaseApiProvider implements ApiEndpointsConfig {
+export class ApiProvider extends BaseApiProvider implements ApiEndpointsProvider {
   public client: AxiosInstance;
 
   /**
