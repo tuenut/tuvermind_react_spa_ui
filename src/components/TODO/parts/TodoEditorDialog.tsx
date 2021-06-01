@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Dialog from "@material-ui/core/Dialog";
 
-import { todoesCreateRequestAction, todoesListSelector } from "../../../Store/Todoes/index";
+import { todoesCreateRequestAction, todoesListSelector, todoesUpdateRequestAction } from "../../../Store/Todoes/index";
 
 import { EditorContextProvider, newTodo } from "./TodoEditorContext";
 import { TODO_CLOSE_EDITOR, useTodoesListContext } from "./Context";
@@ -23,8 +23,10 @@ export const TodoEditorDialog = () => {
   );
   const onSave = React.useCallback(
     (todo) => {
+      console.log({todo});
+
       if ( todo.id ) {
-        //  TODO there is the place for dispatch update action
+        reduxDispatch(todoesUpdateRequestAction(todo.id, todo));
       } else {
         reduxDispatch(todoesCreateRequestAction(todo));
       }

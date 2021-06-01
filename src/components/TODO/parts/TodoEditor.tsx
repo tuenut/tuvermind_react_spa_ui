@@ -15,15 +15,11 @@ import {
   useEditorContext
 } from "./TodoEditorContext";
 
-import {
-  EditRemindersSection
-} from "./EditRemindersSection";
-
-// import { TodoEditorProps } from "./types";
 import { EditTitleSection } from "./EditTitleSection";
 import { EditDescriptionSection } from "./EditDescriptionSection";
 import { EditStartDateSection } from "./EditStartDateSection";
 import { EditDurationSection } from "./EditDurationSection";
+import { EditRemindersSection } from "./EditRemindersSection";
 
 
 export const TodoEditor = ({onClose, onSave}) => {
@@ -33,35 +29,11 @@ export const TodoEditor = ({onClose, onSave}) => {
     onClose();
   };
   const onSaveHandler = () => {
+    console.log("onSaveHandler");
+
     onSave(todoState);
     onClose();
   };
-
-  const onChangeTitle = React.useCallback(
-    (value) => dispatch({type: SET_TITLE, payload: value}),
-    [dispatch]);
-
-  const onChangeDecription = React.useCallback(
-    (value) => dispatch({type: SET_DESCRIPTION, payload: value}),
-    [dispatch]);
-
-
-  const onChangeDuration = React.useCallback(
-    (value) => dispatch({type: SET_DURATION, payload: value}),
-    [dispatch]);
-
-
-  const RemindersSection = React.useMemo(() => {
-    const onChangeReminders = (value) =>
-      dispatch({type: SET_REMINDERS, payload: value});
-
-    return (
-      <EditRemindersSection
-        reminders={todoState.reminders}
-        onChange={onChangeReminders}
-      />
-    );
-  }, [todoState.reminders, dispatch]);
 
   return (
     <React.Fragment>
@@ -75,17 +47,11 @@ export const TodoEditor = ({onClose, onSave}) => {
         <Grid container spacing={2}>
 
           <Grid item xs={12}>
-            <EditTitleSection
-              value={todoState.title}
-              onChange={onChangeTitle}
-            />
+            <EditTitleSection/>
           </Grid>
 
           <Grid item xs={12}>
-            <EditDescriptionSection
-              value={todoState.description}
-              onChange={onChangeDecription}
-            />
+            <EditDescriptionSection/>
           </Grid>
 
 
@@ -95,14 +61,11 @@ export const TodoEditor = ({onClose, onSave}) => {
 
 
           <Grid item xs={6}>
-            <EditDurationSection
-              value={todoState.duration}
-              onChange={onChangeDuration}
-            />
+            <EditDurationSection/>
           </Grid>
 
           <Grid item xs={12}>
-            <RemindersSection/>
+            <EditRemindersSection/>
           </Grid>
 
         </Grid>

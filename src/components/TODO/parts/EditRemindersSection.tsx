@@ -1,5 +1,7 @@
 import React from "react";
 
+import { DateTime } from "luxon";
+
 import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -36,38 +38,41 @@ const RemindersList = ({reminders, onChange}) => {
       }}
       component="ul"
     >
-      {reminders.map((value, idx) =>
-        <ListItem key={`${value}.${idx}`}>
+      {reminders.map((value, idx) => value.when && (
+        <ListItem key={`${value.when.valueOf()}.${value.id}.${idx}`}>
           <Chip
-            label={value}
+            label={value.when.toLocaleString(DateTime.DATETIME_MED)}
             onDelete={() => onChange([
               ...reminders.slice(0, idx),
               ...reminders.slice(idx + 1)
             ])}
           />
         </ListItem>
-      )}
+      ))}
     </Grid>
   )
 };
 
 
-export const EditRemindersSection = ({reminders, onChange: onChangeReminders}) => {
+export const EditRemindersSection = () => {
   const classes = useDateTimePickerStyles();
 
-  const [reminderDateTime, setReminderDateTime] = React.useState("");
+  const [{reminders}, dispatch] = useEditorContext();
+
+  const [reminderInput, setReminderInput] = React.useState("");
+
+  const onChangeReminders = (value) =>
+    dispatch({type: SET_REMINDERS, payload: value});
 
   const onPressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if ( e.key === "Enter" ) {
       onChangeReminders([
         ...reminders,
-        {when: reminderDateTime}
+        {when: reminderInput}
       ]);
-      setReminderDateTime("");
+      setReminderInput("");
     }
   }
-
-  console.log({inputValue: reminderDateTime});
 
   const DateTimeRenderInput = (params) => (
     <TextField
@@ -92,8 +97,8 @@ export const EditRemindersSection = ({reminders, onChange: onChangeReminders}) =
             label="Когда напомнить?"
             inputFormat={"yyyy-MM-dd HH:mm"}
             mask={"____-__-__ __:__"}
-            value={reminderDateTime}
-            onChange={(value) => setReminderDateTime(value!)}
+            value={reminderInput}
+            onChange={(value) => setReminderInput(value!)}
             renderInput={DateTimeRenderInput}
           />
         </LocalizationProvider>

@@ -13,15 +13,13 @@ import { SET_DATE, SET_TIME, useEditorContext } from "./TodoEditorContext";
 
 
 export const EditStartDateSection = () => {
-  const [todoState, dispatch] = useEditorContext();
+  const [{start_date, start_time}, dispatch] = useEditorContext();
 
-  const onChangeStartDate = React.useCallback(
-    (value) => dispatch({type: SET_DATE, payload: value}),
-    [dispatch]);
+  const onChangeStartDate = (value) =>
+    dispatch({type: SET_DATE, payload: value});
 
-  const onChangeStartTime = React.useCallback(
-    (value) => dispatch({type: SET_TIME, payload: value}),
-    [dispatch]);
+  const onChangeStartTime = (value) =>
+    dispatch({type: SET_TIME, payload: value});
 
   return (
     <LocalizationProvider
@@ -32,7 +30,7 @@ export const EditStartDateSection = () => {
         <Grid item xs={6}>
           <DatePicker
             showDaysOutsideCurrentMonth
-            value={todoState.start_date}
+            value={start_date}
             onChange={onChangeStartDate}
             label="Когда начнем?"
             onError={console.log}
@@ -52,7 +50,7 @@ export const EditStartDateSection = () => {
 
         <Grid item xs={6}>
           <TimePicker
-            value={todoState.start_time}
+            value={start_time}
             onChange={onChangeStartTime}
             label="А во сколько?"
             inputFormat="HH:mm"

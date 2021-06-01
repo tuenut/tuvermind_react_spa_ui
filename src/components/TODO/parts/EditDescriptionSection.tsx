@@ -1,11 +1,14 @@
 import React from "react";
 
 import TextField from "@material-ui/core/TextField";
+import { SET_DESCRIPTION, useEditorContext } from "./TodoEditorContext";
 
 
-export const EditDescriptionSection = ({value, onChange}) => {
+export const EditDescriptionSection = () => {
+  const [{description}, dispatch] = useEditorContext();
+
   const onDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    onChange(e.target.value);
+    dispatch({type: SET_DESCRIPTION, payload: e.target.value});
 
   return (
     <TextField
@@ -15,7 +18,7 @@ export const EditDescriptionSection = ({value, onChange}) => {
       id={"task-description"}
       label={"Описание"}
       helperText={"Так, а делать-то что будем?"}
-      value={value}
+      value={description}
       onChange={onDescriptionChange}
       fullWidth
     />

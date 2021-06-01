@@ -1,9 +1,11 @@
 import React from "react";
 
-import { ITodoInEditor, ITodoReminder } from "../../../Store/Todoes/types";
+import { DateTime } from "luxon";
+
+import { ITodoEditablePart, ITodo, ITodoReminder } from "../../../Store/Todoes/types";
 
 
-export const newTodo = (): ITodoInEditor => ({
+export const newTodo = (): ITodoEditablePart => ({
   id: null,
   title: "",
   description: "",
@@ -39,12 +41,12 @@ export interface ISetDuration {
 
 export interface ISetDate {
   type: typeof SET_DATE,
-  payload: string
+  payload: DateTime
 }
 
 export interface ISetTime {
   type: typeof SET_TIME,
-  payload: string
+  payload: DateTime
 }
 
 export interface ISetSchedule {
@@ -67,7 +69,7 @@ export type EditorActionsTypes =
   | ISetReminders
   ;
 
-export type EditorReducer = React.Reducer<ITodoInEditor, EditorActionsTypes>;
+export type EditorReducer = React.Reducer<ITodoEditablePart | ITodo, EditorActionsTypes>;
 
 const defaultState = newTodo();
 
@@ -97,10 +99,10 @@ const reducer: EditorReducer = (state = defaultState, action) => {
 };
 
 
-const EditorContext = React.createContext(null! as [ITodoInEditor, React.Dispatch<EditorActionsTypes>]);
+const EditorContext = React.createContext(null! as [ITodo, React.Dispatch<EditorActionsTypes>]);
 export const useEditorContext = () => React.useContext(EditorContext);
 export const EditorContextProvider = (props) => {
-  const [todo, dispatch] = React.useReducer(reducer, {...props.todo} as ITodoInEditor);
+  const [todo, dispatch] = React.useReducer(reducer, {...props.todo} as ITodo);
 
   const value = React.useMemo(() => [todo, dispatch], [todo]);
 

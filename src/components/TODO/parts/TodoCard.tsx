@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { DateTime} from "luxon";
+
 import clsx from 'clsx';
 
 // import { useDispatch } from "react-redux";
@@ -22,7 +24,6 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import { DateTime } from "../../../libs/common";
 import { useTodoCardStyles } from "./styles";
 
 import { TodoCardProps } from "./types";
@@ -33,7 +34,7 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
   const fade = expanded && !completed;
 
   const subheader = todo.hasOwnProperty("date") &&
-    "Начало: " + new DateTime(todo.date).localDateTime;
+    "Начало: " + todo.date.toLocaleString(DateTime.DATETIME_MED);
 
   const title = (
     <Grid container>
@@ -143,14 +144,14 @@ const Content = ({todo, expanded}) => {
 
         <Typography paragraph color="textSecondary">
           <small>
-            Создано: {new Date(todo.created).toLocaleString("ru")}
+            Создано: {todo.created.toLocaleString(DateTime.DATETIME_MED)}
           </small>
 
           {showUpdate && (
             <React.Fragment>
               <br/>
               <small>
-                Обновлено: {new Date(todo.updated).toLocaleString("ru")}
+                Обновлено: {todo.updated.toLocaleString(DateTime.DATETIME_MED)}
               </small>
             </React.Fragment>
           )}

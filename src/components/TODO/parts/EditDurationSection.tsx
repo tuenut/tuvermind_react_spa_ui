@@ -1,10 +1,13 @@
 import React from "react";
 
 import TextField from "@material-ui/core/TextField";
+import { SET_DURATION, useEditorContext } from "./TodoEditorContext";
 
-export const EditDurationSection = ({value, onChange}) => {
+export const EditDurationSection = () => {
+  const [{duration}, dispatch] = useEditorContext();
+
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
-    onChange(e.target.value);
+     dispatch({type: SET_DURATION, payload: parseInt(e.target.value)});
 
   return (
     <TextField
@@ -14,7 +17,7 @@ export const EditDurationSection = ({value, onChange}) => {
       type={"number"}
       label={"Длительность"}
       helperText={"Ну, сколько это еще будет продолжаться?"}
-      value={value || ""}
+      value={duration ? duration.toString() : ""}
       onChange={onChangeHandler}
       fullWidth
     />
