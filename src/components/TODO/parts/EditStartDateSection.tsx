@@ -13,7 +13,7 @@ import { SET_DATE, SET_TIME, useEditorContext } from "./TodoEditorContext";
 
 
 export const EditStartDateSection = () => {
-  const [{start_date, start_time}, dispatch] = useEditorContext();
+  const [{startDate, startTime}, dispatch] = useEditorContext();
 
   const onChangeStartDate = (value) =>
     dispatch({type: SET_DATE, payload: value});
@@ -30,7 +30,7 @@ export const EditStartDateSection = () => {
         <Grid item xs={6}>
           <DatePicker
             showDaysOutsideCurrentMonth
-            value={start_date}
+            value={startDate}
             onChange={onChangeStartDate}
             label="Когда начнем?"
             onError={console.log}
@@ -50,7 +50,7 @@ export const EditStartDateSection = () => {
 
         <Grid item xs={6}>
           <TimePicker
-            value={start_time}
+            value={startTime}
             onChange={onChangeStartTime}
             label="А во сколько?"
             inputFormat="HH:mm"

@@ -1,19 +1,11 @@
-import { TodoType, ITodoFromApi } from "../../../Store/Todoes/types";
+import { ITodoFromApi } from "../../../API/todoes/types";
 import { TODO_CLOSE_EDITOR, TODO_OPEN_EDITOR } from "./Context";
-
-
-export interface TodoEditorProps {
-  onClose: () => void,
-  onSave: (todo: TodoType) => void
-}
 
 
 export interface TodoCardProps {
   todo: ITodoFromApi,
   openTodoInEditor: Function
 }
-
-export type todoIdType = number | undefined | null;
 
 export interface ITodoOpenEditor {
   type: typeof TODO_OPEN_EDITOR,

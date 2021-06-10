@@ -1,7 +1,7 @@
 import { configureApi } from "../libs/Api";
 
 import { HOST } from "../settings/remoteAPIHost";
-import { TodoesApi, TodoesHandler } from "./todoes";
+import {TodoesApi, TodoesHandler} from "./todoes";
 import { AxiosRequestConfig } from "axios";
 import { ApiProvider } from "../libs/Api/apiProvider";
 

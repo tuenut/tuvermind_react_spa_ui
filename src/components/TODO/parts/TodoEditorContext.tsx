@@ -2,15 +2,16 @@ import React from "react";
 
 import { DateTime } from "luxon";
 
-import { ITodoEditablePart, ITodo, ITodoReminder } from "../../../Store/Todoes/types";
+import { ITodoEditablePart, ITodoReminder } from "../../../Store/Todoes/types";
+import {ITodo} from "../../../API/todoes/types";
 
 
 export const newTodo = (): ITodoEditablePart => ({
   id: null,
   title: "",
   description: "",
-  start_date: null,
-  start_time: null,
+  startDate: null,
+  startTime: null,
   duration: null,
   reminders: []
 });
@@ -69,7 +70,8 @@ export type EditorActionsTypes =
   | ISetReminders
   ;
 
-export type EditorReducer = React.Reducer<ITodoEditablePart | ITodo, EditorActionsTypes>;
+export type EditorReducer =
+  React.Reducer<ITodoEditablePart | ITodo, EditorActionsTypes>;
 
 const defaultState = newTodo();
 
@@ -85,10 +87,10 @@ const reducer: EditorReducer = (state = defaultState, action) => {
       return ({...state, duration: action.payload});
 
     case SET_DATE:
-      return ({...state, start_date: action.payload});
+      return ({...state, startDate: action.payload});
 
     case SET_TIME:
-      return ({...state, start_time: action.payload});
+      return ({...state, startTime: action.payload});
 
     case SET_REMINDERS:
       return ({...state, reminders: action.payload});

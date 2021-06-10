@@ -12,7 +12,6 @@ import {
 import { reduceOnFailedGetListAction } from "../../libs/redux/apiListState";
 
 import { IState } from "../types";
-import { ITodo, ITodoFromApi, ITodoReminder, ITodoReminderFromApi } from "./types";
 
 
 export const [todoesListReducer, actions] = apiListManagementFactory("todoes");
@@ -47,12 +46,10 @@ export const todoesReducer = (state, action) => {
           [action.response.data.id]: action.response.data
         }
       });
-      break;
 
     case TODOES_UPDATE_ON_FAILURE_ACTION:
     case TODOES_CREATE_ON_FAILURE_ACTION:
       return reduceOnFailedGetListAction(state, action);
-      break;
 
     default:
       return state;
