@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DateTime} from "luxon";
+import {DateTime} from "luxon";
 
 import clsx from 'clsx';
 
@@ -24,32 +24,25 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import { useTodoCardStyles } from "./styles";
+import {useTodoCardStyles} from "./styles";
 
-import { TodoCardProps } from "./types";
+import {TodoCardProps} from "./types";
 
 
-const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
+const TodoCardTitle = ({todo, completed, openEditor, expanded, onTitleClick}) => {
   const color = completed ? "primary" : "textPrimary";
-  const fade = expanded && !completed;
 
-  const subheader = todo.hasOwnProperty("date") &&
-    "Начало: " + todo.date.toLocaleString(DateTime.DATETIME_MED);
+  const subheader = todo.hasOwnProperty("startDate") &&
+    todo.startDate.toLocaleString(DateTime.DATE_MED)
+    + " "
+    + todo.startTime.toLocaleString(DateTime.TIME_24_SIMPLE)
+  ;
 
   const title = (
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography color={color}>
-          {completed && (
-            <CheckCircleIcon color="primary"/>
-          )}
-          <b>{todo.title}</b>
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12}>
-      </Grid>
-    </Grid>
+    <Typography color={color} variant={"h5"}>
+      {completed && (<CheckCircleIcon color="primary"/>)}
+      <b>{todo.title}</b>
+    </Typography>
   );
 
   const content = (
@@ -63,36 +56,17 @@ const TodoCardTitle = ({todo, completed, openEditor, expanded}) => {
     </Collapse>
   );
 
-  if ( expanded ) {
-    const action = (
-      <Fade in={fade}>
-        <IconButton onClick={openEditor}>
-          <EditIcon/>
-        </IconButton>
-      </Fade>
-    );
+  return (
+    <CardActionArea onClick={onTitleClick}>
+      <CardHeader title={title} subheader={!completed && subheader}/>
 
-    return (
-      <React.Fragment>
-        <CardHeader title={title} action={action} subheader={subheader}/>
-
-        {content}
-      </React.Fragment>
-    );
-
-  } else {
-    return (
-      <CardActionArea onClick={openEditor}>
-        <CardHeader title={title} subheader={!completed && subheader}/>
-
-        {content}
-      </CardActionArea>
-    );
-  }
+      {content}
+    </CardActionArea>
+  );
 };
 
 
-const Actions = ({todo, completed, expanded, setExpand}) => {
+const Actions = ({todo, completed, expanded, openEditor}) => {
   const classes = useTodoCardStyles();
 
   // const dispatch = useDispatch();
@@ -115,16 +89,21 @@ const Actions = ({todo, completed, expanded, setExpand}) => {
         <DeleteForeverIcon/>
       </IconButton>
 
-      {todo.description && (
-        <IconButton
-          className={clsx(classes.expand, {[classes.expandOpen]: expanded,})}
-          onClick={() => setExpand(!expanded)}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon/>
-        </IconButton>
-      )}
+
+      <IconButton onClick={openEditor}>
+        <EditIcon/>
+      </IconButton>
+
+      {/*{todo.description && (*/}
+      {/*<IconButton*/}
+      {/*className={clsx(classes.expand, {[classes.expandOpen]: expanded,})}*/}
+      {/*onClick={() => setExpand(!expanded)}*/}
+      {/*aria-expanded={expanded}*/}
+      {/*aria-label="show more"*/}
+      {/*>*/}
+      {/*<ExpandMoreIcon/>*/}
+      {/*</IconButton>*/}
+      {/*)}*/}
 
     </CardActions>
   )
@@ -166,11 +145,19 @@ const Content = ({todo, expanded}) => {
 export const TodoCard: React.FC<TodoCardProps> = ({todo, openTodoInEditor}) => {
   const [expanded, setExpand] = React.useState(false);
 
-  const isCompleted = !((todo.status === "suspense") || !(todo.status === "inProcess"));
+  const expandCollaapseCard = React.useCallback(
+    () => setExpand(!expanded),
+    [expanded]
+  );
+
+  const isCompleted = React.useMemo(() =>
+      !((todo.status === "suspense") || !(todo.status === "inProcess"))
+    , [todo]
+  );
 
   const openEditor = React.useCallback(
     () => {
-      if ( !isCompleted ) openTodoInEditor(todo.id);
+      if (!isCompleted) openTodoInEditor(todo.id);
     },
     [todo.id, isCompleted, openTodoInEditor]
   );
@@ -182,12 +169,13 @@ export const TodoCard: React.FC<TodoCardProps> = ({todo, openTodoInEditor}) => {
         expanded={expanded}
         completed={isCompleted}
         openEditor={openEditor}
+        onTitleClick={expandCollaapseCard}
       />
       <Actions
         todo={todo}
         expanded={expanded}
         completed={isCompleted}
-        setExpand={setExpand}
+        openEditor={openEditor}
       />
       <Content todo={todo} expanded={expanded}/>
     </Card>
