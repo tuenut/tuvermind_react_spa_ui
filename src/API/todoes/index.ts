@@ -7,50 +7,52 @@ import {TODOES_URL} from "../../settings/remoteAPI";
 
 import {random} from "../../libs/common";
 
-import {AxiosPromise} from "axios";
+import {AxiosPromise, AxiosResponse} from "axios";
 import {
   IHandleOnSuccessList,
   ITodoFromApi,
   ITodoReminderFromApi,
-  ITodoReminder
+  ITodoReminder, ITodo, ITodoToApiCreate
 } from "./types";
 
 
 export class TodoesHandler extends DataHandler {
-  onSuccessList: IHandleOnSuccessList = (response) => {
-    console.log("Custom handler called!");
-
-    const parser = (todoObject: ITodoFromApi) => {
-      const reminders = todoObject.reminders.map(
+  todoParser = (todoObject: ITodoFromApi) => {
+    const reminders = todoObject.reminders
+      ? todoObject.reminders.map(
         (reminder: ITodoReminderFromApi): ITodoReminder => ({
           ...reminder,
           when: DateTime.fromISO(reminder.when)
         })
-      );
-      const startDate = DateTime.fromISO(todoObject.start_date);
-      const startTime = todoObject.start_time
-        ? DateTime.fromISO(todoObject.start_time)
-        : null;
-      const created = DateTime.fromISO(todoObject.created);
-      const updated = todoObject.updated
-        ? DateTime.fromISO(todoObject.updated)
-        : null;
-      const completed = todoObject.completed
-        ? DateTime.fromISO(todoObject.completed)
-        : null;
+      )
+      : [];
+    const startDate = DateTime.fromISO(todoObject.start_date);
+    const startTime = todoObject.start_time
+      ? DateTime.fromISO(todoObject.start_time)
+      : null;
+    const created = DateTime.fromISO(todoObject.created);
+    const updated = todoObject.updated
+      ? DateTime.fromISO(todoObject.updated)
+      : null;
+    const completed = todoObject.completed
+      ? DateTime.fromISO(todoObject.completed)
+      : null;
 
-      return ({
-        ...todoObject,
-        startDate,
-        startTime,
-        created,
-        updated,
-        completed,
-        reminders,
-      });
-    };
+    return ({
+      ...todoObject,
+      startDate,
+      startTime,
+      created,
+      updated,
+      completed,
+      reminders,
+    });
+  };
 
-    const customizedData = response.data.results.map(parser);
+  onSuccessList: IHandleOnSuccessList = (response) => {
+    console.log("Custom handler called!");
+
+    const customizedData = response.data.results.map(this.todoParser);
     console.log({customizedData});
 
     return {
@@ -60,6 +62,26 @@ export class TodoesHandler extends DataHandler {
         results: customizedData
       }
     }
+  };
+
+  onCreateRequest = (data: ITodo): ITodoToApiCreate => {
+    return ({
+      ...data,
+      start_date: data.startDate!.toISODate(),
+      start_time: data.startTime!.toISOTime(),
+      reminders: data.reminders
+        ? data.reminders
+          .map((reminder: ITodoReminder): ITodoReminderFromApi =>
+            ({...reminder, when: reminder.when.toISO()})
+          )
+        : [],
+    });
+  };
+
+  onSuccessCreate = (response: AxiosResponse<ITodoFromApi>): AxiosResponse<ITodo> => {
+    const customizedData = this.todoParser(response.data);
+
+    return ({...response, data: customizedData});
   }
 }
 

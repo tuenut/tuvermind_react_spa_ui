@@ -25,7 +25,7 @@ export type TodoStatusType =
 /** API PART
  */
 export interface ITodoReminderFromApi {
-  id: number,
+  id?: number,
   when: string
 }
 
@@ -40,6 +40,15 @@ export interface ITodoFromApi {
   created: string,
   updated: string | null,
   completed: string | null
+  reminders: ITodoReminderFromApi[],
+}
+
+export interface ITodoToApiCreate {
+  title: string,
+  description: string,
+  start_date: string,
+  start_time: string | null,
+  duration: number | null,
   reminders: ITodoReminderFromApi[],
 }
 

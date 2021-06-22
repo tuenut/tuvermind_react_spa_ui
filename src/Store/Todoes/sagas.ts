@@ -29,8 +29,6 @@ function* todoesListWorker(action: IBaseRequestListAction) {
       const response: SagaReturnType<typeof api.todoes.list> =
         yield call(() => api.todoes.list(action.options));
 
-      console.debug({response});
-
       yield put(actions.GET_LIST_ON_SUCCEESS(response));
     } catch (e) {
       console.exception(e);
@@ -49,8 +47,6 @@ function* todoesCreateWorker(action: IBaseApiCreateRequestAction) {
     const response: SagaReturnType<typeof api.todoes.create> =
       yield call(() => api.todoes.create(action.data));
 
-    console.debug({response});
-
     yield put(todoesCreateOnSuccessAction(response));
 
   } catch (e) {
@@ -66,8 +62,6 @@ function* todoesUpdateWorker(action: IBaseApiUpdateRequestAction) {
 
     const response: SagaReturnType<typeof api.todoes.create> =
       yield call(() => api.todoes.update(action.id, action.data));
-
-    console.debug({response});
 
     yield put(todoesUpdateOnSuccessAction(response));
 
