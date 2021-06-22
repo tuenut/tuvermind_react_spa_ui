@@ -23,7 +23,7 @@ export class URI {
   }
 
   create() {
-    return this.retrieve("");
+    return this.url;
   }
 
   update(id) {

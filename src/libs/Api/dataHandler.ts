@@ -16,6 +16,8 @@ export class DataHandler {
   public onSuccessUpdate;
   public onSuccessDelete;
 
+  public onCreateRequest?;
+
   constructor() {
     const proxyGetter = (target: DataHandler, name: string) => {
       if (name in target) {

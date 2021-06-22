@@ -77,9 +77,13 @@ export abstract class Endpoint {
    * @returns {AxiosPromise}         AxiosPromise without catch statement.
    * */
   create(data: object) {
+    if (this.handlers.onCreateRequest) {
+      data = this.handlers.onCreateRequest(data);
+    }
+
     return this.client
       .post(this.url.create(), data)
-      .then(this.handlers.onSuccessCreate)
+      .then(this.handlers.onSuccessCreate);
   }
 
   /**
