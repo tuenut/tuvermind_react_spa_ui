@@ -8,10 +8,12 @@ export class URI {
     this.url = url.endsWith("/") ? url : url + "/";
   }
 
-  retrieve(entityId: idType, extraAction?: string): string {
+  retrieve(entityId: idType, extraAction?: string, options?: object): string {
+    const parsedOptions = this.parseOptions(options);
+
     return extraAction
-      ? `${this.url}${entityId}/${extraAction}/`
-      : `${this.url}${entityId}/`;
+      ? `${this.url}${entityId}/${extraAction}/${parsedOptions}`
+      : `${this.url}${entityId}/${parsedOptions}`;
   }
 
   list(options?: object, extraAction?: string): string {
@@ -34,9 +36,14 @@ export class URI {
     return this.retrieve(id);
   }
 
-  parseOptions = (options: object = {}): string =>
-    Object.entries(options)
+  parseOptions = (options: object = {}): string => {
+    let parsedOptions = Object.entries(options)
       .filter(([k, v]) => Boolean(v))
       .map((opt) => opt.join("="))
       .join("&");
+
+    parsedOptions = parsedOptions ? "?" + parsedOptions : "";
+
+    return parsedOptions;
+  };
 }

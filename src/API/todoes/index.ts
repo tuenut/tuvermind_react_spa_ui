@@ -105,30 +105,7 @@ export class TodoesApi extends Endpoint {
       .then(res => res) as AxiosPromise;
   }
 
-  // completeTask(id) {
-  //   return new Promise((resolve, reject) => {
-  //     const state = store.getState();
-  //
-  //     console.log({state});
-  //
-  //     const data = state.todoes.list.data[id];
-  //
-  //
-  //     setTimeout(
-  //       (value) => resolve({
-  //         status: 200,
-  //         data: {
-  //           message: `Todo ${id} has been completed.`,
-  //           data: {
-  //             ...data,
-  //             completed: new Date().valueOf(),
-  //             status: 'done'
-  //           } as ITodoFromApi,
-  //         }
-  //       }),
-  //       random(700, 1500)
-  //     )
-  //   })
-  //     .then(res => res) as AxiosPromise;
-  // }
+  completeTask(id) {
+    return this.retrieve(id, "complete");
+  }
 }

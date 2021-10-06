@@ -1,11 +1,9 @@
 import React from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import useSWR from 'swr';
 
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from "@material-ui/core/CircularProgress"
-
-import { actions, todoesListSelector } from "../../Store/Todoes";
 
 import {
   FloatingActions,
@@ -13,28 +11,39 @@ import {
   TodoEditorDialog,
   useStyles
 } from "./parts";
-import { TodoesListContextProvider } from "./parts/Context";
+import {TodoesListContextProvider} from "./parts/Context";
+import axios from "axios";
+import {TODOES_URL} from "../../settings/remoteAPI";
+import {HOST} from "../../settings/remoteAPIHost";
+
+
+export const defaultFetcher = (url) => axios.get(url)
+  .then(res => res.data);
+
+export const useTodoList = (page?) => {
+  const url = new URL(TODOES_URL, HOST);
+
+  if (page) {
+    url.searchParams.set("page", page);
+  }
+
+  return useSWR(url.toString(), defaultFetcher);
+};
 
 
 export const Todoes = () => {
   const classes = useStyles();
 
-  const dispatch = useDispatch();
-
-  const todoes = useSelector(todoesListSelector);
-
-  React.useEffect(() => {
-    dispatch(actions.GET_LIST());
-  }, [dispatch]);
+  const {data, error, isValidating} = useTodoList();
 
   return (
     <React.Fragment>
       <TodoesListContextProvider>
-        <TodoesList/>
+        {data && <TodoesList/>}
 
         <TodoEditorDialog/>
 
-        <Backdrop className={classes.backdrop} open={todoes.loading}>
+        <Backdrop className={classes.backdrop} open={!data && ! error}>
           <CircularProgress color="inherit"/>
         </Backdrop>
 

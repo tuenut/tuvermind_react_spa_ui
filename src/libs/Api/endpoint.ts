@@ -51,11 +51,12 @@ export abstract class Endpoint {
    * @method retrieve
    * @param   {number | string} id             Id of entity.
    * @param   {string}          [extraAction]  Name of extra action for endpoint.
+   * @param   {Object}          [options]      REST API otions.
    * @returns {AxiosPromise}                   AxiosPromise without catch statement.
    * */
-  retrieve(id: idType, extraAction: string = ""): AxiosPromise {
+  retrieve(id: idType, extraAction: string = "", options?: object): AxiosPromise {
     return this.client
-      .get(this.url.retrieve(id, extraAction))
+      .get(this.url.retrieve(id, extraAction, options))
       .then(this.handlers.onSuccessRetrieve)
   }
 
