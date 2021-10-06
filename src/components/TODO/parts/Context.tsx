@@ -8,7 +8,7 @@ export const TODO_CLOSE_EDITOR = "TODO_CLOSE_EDITOR";
 
 const defaultState: ILocalState = {
   editorTodo: undefined
-}
+};
 
 const TodoesListContext = React.createContext(null!);
 
@@ -17,24 +17,24 @@ export const useTodoesListContext: IUseTodoesListContext = () =>
 
 
 const reducer = (state: ILocalState = defaultState, action: actions) => {
-  switch ( action.type ) {
+  switch (action.type) {
 
     case TODO_OPEN_EDITOR:
       return ({
         ...state,
         editorTodo: action.todo
-      })
+      });
 
     case TODO_CLOSE_EDITOR:
       return ({
         ...state,
         editorTodo: undefined
-      })
+      });
 
     default:
       return state;
   }
-}
+};
 
 
 export const TodoesListContextProvider = (props) => {
@@ -46,5 +46,5 @@ export const TodoesListContextProvider = (props) => {
   );
 
   return <TodoesListContext.Provider {...props} value={value}/>
-}
+};
 

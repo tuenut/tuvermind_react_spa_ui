@@ -16,7 +16,7 @@ import AdapterDateFns from "@date-io/luxon/";
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 
 import { SET_REMINDERS, useEditorContext } from "./TodoEditorContext";
-import { useDateTimePickerStyles } from "./styles";
+import { useDateTimePickerStyles } from "../styles";
 
 
 const ListItem = styled('li')(({theme}) => ({

@@ -3,19 +3,17 @@ import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import Grid from "@material-ui/core/Grid";
+import { GridSize } from "@material-ui/core";
 
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 
-import { splitArrayToColumns } from "../utils";
-import { convertStoreObjectToArray } from "../../../libs/common"
+import { splitArrayToColumns, convertStoreObjectToArray } from "../../../libs";
+import { useTodoList } from "../../../libs/swrHooks";
 
 import { TodoCard } from "./TodoCard";
 import { TODO_OPEN_EDITOR, useTodoesListContext } from "./Context";
 
-import {useTodoList} from "../Todoes";
-
-import { GridSize } from "@material-ui/core";
 
 export const TodoesList = () => {
   const theme = useTheme();
@@ -28,12 +26,15 @@ export const TodoesList = () => {
   ];
   const cols = breakpoints.find(x => x) || 1;
 
-  const {data, error, isValidating} = useTodoList();
+  const {data} = useTodoList();
   const todoesList = convertStoreObjectToArray(data?.results);
 
   const [, localDispatch] = useTodoesListContext();
   const openTodoInEditor = React.useCallback(
-    (todoId) => localDispatch({type: TODO_OPEN_EDITOR, todo: todoId}),
+    (todoId) => localDispatch({
+      type: TODO_OPEN_EDITOR,
+      todo: todoId
+    }),
     [localDispatch]
   );
 

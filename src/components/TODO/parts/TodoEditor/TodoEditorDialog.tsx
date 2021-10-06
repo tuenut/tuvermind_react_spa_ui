@@ -4,10 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Dialog from "@material-ui/core/Dialog";
 
-import { todoesCreateRequestAction, todoesListSelector, todoesUpdateRequestAction } from "../../../Store/Todoes/index";
+// TODO: rewrite to context
+import {
+  todoesCreateRequestAction,
+  todoesListSelector,
+  todoesUpdateRequestAction
+} from "../../../../Store/Todoes";
 
 import { EditorContextProvider, newTodo } from "./TodoEditorContext";
-import { TODO_CLOSE_EDITOR, useTodoesListContext } from "./Context";
+import { TODO_CLOSE_EDITOR, useTodoesListContext } from "../Context";
 import { TodoEditor } from "./TodoEditor";
 
 
@@ -55,4 +60,4 @@ export const TodoEditorDialog = () => {
       </React.Fragment>
     </Dialog>
   );
-}
+};

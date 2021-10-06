@@ -1,31 +1,24 @@
 import React from 'react';
 
-import {DateTime} from "luxon";
+import { DateTime } from "luxon";
 
-import clsx from 'clsx';
-
-
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Collapse,
-  Fade,
-  Grid,
-  IconButton,
-  Typography
-} from '@material-ui/core';
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
 
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import {useTodoCardStyles} from "./styles";
+import { useTodoCardStyles } from "./styles";
 
-import {TodoCardProps} from "./types";
+import { TodoCardProps } from "./types";
 
 
 const TodoCardTitle = ({todo, completed, openEditor, expanded, onTitleClick}) => {
@@ -156,7 +149,7 @@ export const TodoCard: React.FC<TodoCardProps> = ({todo, openTodoInEditor}) => {
 
   const openEditor = React.useCallback(
     () => {
-      if (!isCompleted) openTodoInEditor(todo.id);
+      if ( !isCompleted ) openTodoInEditor(todo.id);
     },
     [todo.id, isCompleted, openTodoInEditor]
   );

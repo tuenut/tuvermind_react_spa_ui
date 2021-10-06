@@ -2,8 +2,8 @@ import React from "react";
 
 import { DateTime } from "luxon";
 
-import { ITodoEditablePart, ITodoReminder } from "../../../Store/Todoes/types";
-import {ITodo} from "../../../API/todoes/types";
+import { ITodoEditablePart, ITodoReminder } from "../../../../Store/Todoes/types";
+import {ITodo} from "../../../../API/todoes/types";
 
 
 export const newTodo = (): ITodoEditablePart => ({

@@ -1,4 +1,4 @@
 export { TodoesList } from "./TodoesList";
-export { TodoEditorDialog } from "./TodoEditorDialog";
+export { TodoEditorDialog } from "./TodoEditor/";
 export { FloatingActions } from "./FloatingActions";
 export { useStyles } from "./styles";
