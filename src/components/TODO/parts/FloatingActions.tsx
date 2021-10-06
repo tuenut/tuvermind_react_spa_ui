@@ -9,7 +9,7 @@ import CachedIcon from '@material-ui/icons/Cached';
 import AddIcon from '@material-ui/icons/Add';
 
 import { TODO_OPEN_EDITOR, useTodoesListContext } from "./Context";
-import { actions } from "../../../Store/Todoes";
+import { actions } from "../../../Store/__DEPRECATED__Todoes";
 
 
 export const FloatingActions = () => {

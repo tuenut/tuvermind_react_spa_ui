@@ -9,7 +9,7 @@ import {
   todoesListSelector, todoesUpdateOnFailureAction, todoesUpdateOnSuccessAction,
 } from "./";
 
-import {Api} from "../../API";
+import {Api} from "../../__DEPRECATED__API";
 import {
   IBaseApiCreateRequestAction,
   IBaseApiUpdateRequestAction,

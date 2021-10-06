@@ -11,7 +11,7 @@ import "./assets/css/overrides.css";
 
 import {App} from './components/App/App';
 import {store} from "./Store";
-import {enableApi} from "./API";
+import {enableApi} from "./__DEPRECATED__API";
 
 
 enableApi();

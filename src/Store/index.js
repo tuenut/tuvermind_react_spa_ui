@@ -2,7 +2,7 @@ import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, compose, createStore} from "redux";
 
 import {rootReducer} from "./reducers";
-import {todoesListWatcher} from "./Todoes/sagas";
+import {todoesListWatcher} from "./__DEPRECATED__Todoes/sagas";
 
 
 const sagaMiddleware = createSagaMiddleware();

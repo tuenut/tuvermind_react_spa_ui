@@ -1,7 +1,7 @@
 import {IBaseApiListState} from "../../libs/redux/types";
 
 import {DateTime} from "luxon";
-import {ITodo} from "../../API/todoes/types";
+import {ITodo} from "../../__DEPRECATED__API/todoes/types";
 
 
 export interface ITodoReminder {

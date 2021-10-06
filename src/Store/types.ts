@@ -1,4 +1,4 @@
-import {ITodoesListState} from "./Todoes/types";
+import {ITodoesListState} from "./__DEPRECATED__Todoes/types";
 
 
 export interface IState {

@@ -1,4 +1,4 @@
-import { ITodoFromApi } from "../../../API/todoes/types";
+import { ITodoFromApi } from "../../../__DEPRECATED__API/todoes/types";
 import { TODO_CLOSE_EDITOR, TODO_OPEN_EDITOR } from "./Context";
 
 
