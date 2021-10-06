@@ -5,10 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import Grid from "@material-ui/core/Grid";
 import { GridSize } from "@material-ui/core";
 
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-
 import { splitArrayToColumns, convertStoreObjectToArray } from "../../../libs";
+import { useCardCols } from "../../../libs/hooks";
 import { useTodoList } from "../../../libs/swrHooks";
 
 import { TodoCard } from "./TodoCard";
@@ -16,15 +14,7 @@ import { TODO_OPEN_EDITOR, useTodoesListContext } from "./Context";
 
 
 export const TodoesList = () => {
-  const theme = useTheme();
-
-  const breakpoints = [
-    useMediaQuery(theme.breakpoints.up('lg')) && 4,
-    useMediaQuery(theme.breakpoints.up('md')) && 3,
-    useMediaQuery(theme.breakpoints.up('sm')) && 2,
-    useMediaQuery(theme.breakpoints.up('xs')) && 1,
-  ];
-  const cols = breakpoints.find(x => x) || 1;
+  const cols = useCardCols();
 
   const {data} = useTodoList();
   const todoesList = convertStoreObjectToArray(data?.results);
