@@ -3,13 +3,12 @@ import { TODO_CLOSE_EDITOR, TODO_OPEN_EDITOR } from "./Context";
 
 
 export interface TodoCardProps {
-  todo: ITodoFromApi,
-  openTodoInEditor: Function
+  todo: ITodoFromApi
 }
 
 export interface ITodoOpenEditor {
   type: typeof TODO_OPEN_EDITOR,
-  todo: number | null
+  payload: number | null
 }
 
 export interface ITodoCloseEditor {

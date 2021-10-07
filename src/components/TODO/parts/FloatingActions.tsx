@@ -18,7 +18,7 @@ export const FloatingActions = () => {
   const [, localDispatch] = useTodoesListContext();
 
   const createNew = React.useCallback(
-    () => localDispatch({type: TODO_OPEN_EDITOR, todo: null}),
+    () => localDispatch({type: TODO_OPEN_EDITOR, payload: null}),
     [localDispatch]
   );
 
@@ -44,4 +44,4 @@ export const FloatingActions = () => {
       </Grid>
     </Box>
   )
-}
+};

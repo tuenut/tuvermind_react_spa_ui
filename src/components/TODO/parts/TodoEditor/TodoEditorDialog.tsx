@@ -23,7 +23,7 @@ export const TodoEditorDialog = () => {
   const [state, localDispatch] = useTodoesListContext();
   const editingTodo = React.useMemo(
     () => state.editorTodo
-      ? todoes.data[state.editorTodo]
+      ? todoes[state.editorTodo]
       : newTodo(),
     [state.editorTodo]
   );

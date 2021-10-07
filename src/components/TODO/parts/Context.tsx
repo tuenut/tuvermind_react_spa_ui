@@ -1,5 +1,6 @@
 import React from "react";
-import { actions, ILocalState, IUseTodoesListContext } from "./types";
+import { actions, ILocalState, ITodoOpenEditor, IUseTodoesListContext } from "./types";
+import { makeActionCreator } from "../../../libs/redux/actions";
 
 
 export const TODO_OPEN_EDITOR = "TODO_OPEN_EDITOR";
@@ -22,7 +23,7 @@ const reducer = (state: ILocalState = defaultState, action: actions) => {
     case TODO_OPEN_EDITOR:
       return ({
         ...state,
-        editorTodo: action.todo
+        editorTodo: action.payload
       });
 
     case TODO_CLOSE_EDITOR:
@@ -47,4 +48,9 @@ export const TodoesListContextProvider = (props) => {
 
   return <TodoesListContext.Provider {...props} value={value}/>
 };
+
+export const openTodoInEditor = makeActionCreator<ITodoOpenEditor>(
+  TODO_OPEN_EDITOR,
+  "payload"
+);
 

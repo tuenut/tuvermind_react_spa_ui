@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
-import MenuItem from '@material-ui/core/MenuItem';
 
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import DateTimePicker from "@material-ui/lab/DateTimePicker";
@@ -16,7 +15,6 @@ import AdapterDateFns from "@date-io/luxon/";
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 
 import { SET_REMINDERS, useEditorContext } from "./TodoEditorContext";
-import { useDateTimePickerStyles } from "../styles";
 
 
 const ListItem = styled('li')(({theme}) => ({
@@ -55,8 +53,6 @@ const RemindersList = ({reminders, onChange}) => {
 
 
 export const EditRemindersSection = () => {
-  const classes = useDateTimePickerStyles();
-
   const [{reminders}, dispatch] = useEditorContext();
 
   const [reminderInput, setReminderInput] = React.useState("");
@@ -72,7 +68,7 @@ export const EditRemindersSection = () => {
       ]);
       setReminderInput("");
     }
-  }
+  };
 
   const DateTimeRenderInput = (params) => (
     <TextField
@@ -109,4 +105,4 @@ export const EditRemindersSection = () => {
       )}
     </Grid>
   )
-}
+};
