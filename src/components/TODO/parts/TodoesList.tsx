@@ -19,12 +19,12 @@ export const TodoesList = () => {
   return (
     <Grid container spacing={2} alignContent="center">
 
-      {splitArrayToColumns(todoesList, cols).map(column => (
+      {splitArrayToColumns(todoesList, cols).map((column) => (
         <Grid item xs={Math.floor(12 / cols) as GridSize} key={uuidv4()}>
           <Grid container spacing={2} alignContent="flex-start">
 
-            {column.map((todo, idx) => (
-              <Grid item xs={12} key={uuidv4()}>
+            {column.map((todo) => (
+              <Grid item xs={12} key={todo.id}>
                 <TodoCard todo={todo}/>
               </Grid>
             ))}

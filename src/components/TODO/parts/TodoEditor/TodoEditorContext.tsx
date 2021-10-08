@@ -3,7 +3,8 @@ import React from "react";
 import { DateTime } from "luxon";
 
 import { ITodoEditablePart, ITodoReminder } from "../../../../Store/__DEPRECATED__Todoes/types";
-import {ITodo} from "../../../../__DEPRECATED__API/todoes/types";
+import { ITodo } from "../../../../__DEPRECATED__API/todoes/types";
+import { makeActionCreator } from "../../../../libs/redux/actions";
 
 
 export const newTodo = (): ITodoEditablePart => ({
@@ -24,6 +25,7 @@ export const SET_DATE = "SET_DATE";
 export const SET_TIME = "SET_TIME";
 export const SET_SCHEDULE = "SET_SCHEDULE";
 export const SET_REMINDERS = "SET_REMINDERS";
+export const OPEN_NEW_TODO = "OPEN_NEW_TODO";
 
 export interface ISetTitle {
   type: typeof SET_TITLE,
@@ -60,6 +62,10 @@ export interface ISetReminders {
   payload: ITodoReminder[]
 }
 
+export interface IOpenNewTodo {
+  type: typeof OPEN_NEW_TODO
+}
+
 export type EditorActionsTypes =
   | ISetTitle
   | ISetDecription
@@ -68,7 +74,10 @@ export type EditorActionsTypes =
   | ISetDuration
   | ISetSchedule
   | ISetReminders
+  | IOpenNewTodo
   ;
+
+export const openNewTodoAction = makeActionCreator<IOpenNewTodo>(OPEN_NEW_TODO);
 
 export type EditorReducer =
   React.Reducer<ITodoEditablePart | ITodo, EditorActionsTypes>;
@@ -76,7 +85,7 @@ export type EditorReducer =
 const defaultState = newTodo();
 
 const reducer: EditorReducer = (state = defaultState, action) => {
-  switch ( action.type ) {
+  switch (action.type) {
     case SET_TITLE:
       return ({...state, title: action.payload});
 
@@ -95,18 +104,31 @@ const reducer: EditorReducer = (state = defaultState, action) => {
     case SET_REMINDERS:
       return ({...state, reminders: action.payload});
 
+    case OPEN_NEW_TODO:
+      return newTodo();
+
     default:
       return state;
   }
 };
 
 
-const EditorContext = React.createContext(null! as [ITodo, React.Dispatch<EditorActionsTypes>]);
+const EditorContext = React.createContext(null! as {
+  todo: ITodo,
+  dispatch: React.Dispatch<EditorActionsTypes>,
+  isEditorOpen: boolean,
+  setIsEditorOpen: React.Dispatch<React.SetStateAction<boolean>>
+});
 export const useEditorContext = () => React.useContext(EditorContext);
 export const EditorContextProvider = (props) => {
-  const [todo, dispatch] = React.useReducer(reducer, {...props.todo} as ITodo);
+  const [todo, dispatch] =
+    React.useReducer(reducer, {...defaultState as ITodo});
+  const [isEditorOpen, setIsEditorOpen] =
+    React.useState<boolean>(false);
 
-  const value = React.useMemo(() => [todo, dispatch], [todo]);
+  const value = React.useMemo(
+    () => ({todo, dispatch, isEditorOpen, setIsEditorOpen}),
+    [todo, isEditorOpen]);
 
   return <EditorContext.Provider {...props} value={value}/>
 };

@@ -7,14 +7,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 
-import {
-  SET_DATE,
-  SET_DESCRIPTION,
-  SET_DURATION, SET_REMINDERS,
-  SET_TITLE,
-  useEditorContext
-} from "./TodoEditorContext";
-
+import { useEditorContext } from "./TodoEditorContext";
 import { EditTitleSection } from "./EditTitleSection";
 import { EditDescriptionSection } from "./EditDescriptionSection";
 import { EditStartDateSection } from "./EditStartDateSection";
@@ -23,15 +16,13 @@ import { EditRemindersSection } from "./EditRemindersSection";
 
 
 export const TodoEditor = ({onClose, onSave}) => {
-  const [todoState, dispatch] = useEditorContext();
+  const {todo} = useEditorContext();
 
   const onCancelHandler = () => {
     onClose();
   };
   const onSaveHandler = () => {
-    console.log("onSaveHandler");
-
-    onSave(todoState);
+    onSave(todo);
     onClose();
   };
 
@@ -39,7 +30,7 @@ export const TodoEditor = ({onClose, onSave}) => {
     <React.Fragment>
       <DialogTitle>
         <Typography>
-          {todoState.id ? "Редактирование задачи" : "Новая задача"}
+          {todo.id ? "Редактирование задачи" : "Новая задача"}
         </Typography>
       </DialogTitle>
 

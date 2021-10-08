@@ -4,8 +4,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from "@material-ui/core/CircularProgress"
 
 import { FloatingActions, TodoEditorDialog, TodoesList, useStyles } from "./parts";
-import { TodoesListContextProvider } from "./parts/Context";
+
 import { useTodoList } from "../../libs/swrHooks";
+import { EditorContextProvider } from "./parts/TodoEditor/TodoEditorContext";
 
 
 export const Todoes = () => {
@@ -15,7 +16,8 @@ export const Todoes = () => {
 
   return (
     <React.Fragment>
-      <TodoesListContextProvider>
+
+      <EditorContextProvider>
         {data && <TodoesList/>}
 
         <TodoEditorDialog/>
@@ -26,7 +28,7 @@ export const Todoes = () => {
 
         <FloatingActions/>
 
-      </TodoesListContextProvider>
+      </EditorContextProvider>
     </React.Fragment>
   );
 };

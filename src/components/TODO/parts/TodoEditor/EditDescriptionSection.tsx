@@ -5,7 +5,7 @@ import { SET_DESCRIPTION, useEditorContext } from "./TodoEditorContext";
 
 
 export const EditDescriptionSection = () => {
-  const [{description}, dispatch] = useEditorContext();
+  const {todo, dispatch} = useEditorContext();
 
   const onDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     dispatch({type: SET_DESCRIPTION, payload: e.target.value});
@@ -18,7 +18,7 @@ export const EditDescriptionSection = () => {
       id={"task-description"}
       label={"Описание"}
       helperText={"Так, а делать-то что будем?"}
-      value={description}
+      value={todo.description}
       onChange={onDescriptionChange}
       fullWidth
     />

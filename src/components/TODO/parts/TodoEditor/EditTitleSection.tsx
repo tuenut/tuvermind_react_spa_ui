@@ -5,7 +5,7 @@ import { SET_TITLE, useEditorContext } from "./TodoEditorContext";
 
 
 export const EditTitleSection = () => {
-  const [{title}, dispatch] = useEditorContext();
+  const {todo, dispatch} = useEditorContext();
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     dispatch({type: SET_TITLE, payload: e.target.value});
@@ -17,9 +17,9 @@ export const EditTitleSection = () => {
       id={"task-title"}
       label={"Название"}
       helperText={"И как это все называется?"}
-      value={title}
+      value={todo.title}
       onChange={onChangeHandler}
-      error={!title}
+      error={!todo.title}
       fullWidth
     />
   )

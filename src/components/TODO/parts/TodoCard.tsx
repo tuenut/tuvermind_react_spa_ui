@@ -16,7 +16,6 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlined';
 
 import { TodoCardProps } from "./types";
-import { openTodoInEditor, useTodoesListContext } from "./Context";
 
 
 const TodoCardTitle = ({todo, completed, openEditor, expanded, onTitleClick}) => {
@@ -61,9 +60,7 @@ const Actions = ({todo, completed, expanded, openEditor}) => {
       {!completed && (
         <IconButton
           color="primary"
-          onClick={() =>
-            alert(`Как будто отправили запрос для закрытия задачи <${todo.id}>`
-            )}
+          onClick={() => alert("Not Implemented Error!")}
         >
           <CheckCircleIcon/>
         </IconButton>
@@ -71,9 +68,7 @@ const Actions = ({todo, completed, expanded, openEditor}) => {
 
       <IconButton
         color="secondary"
-        onClick={() =>
-          alert(`Как будто отправили запрос для удаления задачи <${todo.id}>`
-          )}
+        onClick={() => alert("Not Implemented Error!")}
       >
         <DeleteForeverIcon/>
       </IconButton>
@@ -120,7 +115,6 @@ const Content = ({todo, expanded}) => {
 
 
 export const TodoCard: React.FC<TodoCardProps> = ({todo}) => {
-  const [, dispatch] = useTodoesListContext();
   const [expanded, setExpand] = React.useState(false);
 
   const expandCollaapseCard = React.useCallback(
@@ -135,7 +129,7 @@ export const TodoCard: React.FC<TodoCardProps> = ({todo}) => {
 
   const openEditor = React.useCallback(
     () => {
-      if ( !isCompleted ) dispatch(openTodoInEditor(todo.id));
+      if ( !isCompleted ) alert("Not Implemented Error!");
     },
     [todo.id, isCompleted]
   );

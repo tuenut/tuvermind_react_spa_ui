@@ -2,7 +2,6 @@ import React from "react";
 
 import { DateTime } from "luxon";
 
-import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
@@ -53,7 +52,7 @@ const RemindersList = ({reminders, onChange}) => {
 
 
 export const EditRemindersSection = () => {
-  const [{reminders}, dispatch] = useEditorContext();
+  const {todo, dispatch} = useEditorContext();
 
   const [reminderInput, setReminderInput] = React.useState("");
 
@@ -63,7 +62,7 @@ export const EditRemindersSection = () => {
   const onPressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if ( e.key === "Enter" ) {
       onChangeReminders([
-        ...reminders,
+        ...todo.reminders,
         {when: reminderInput}
       ]);
       setReminderInput("");
@@ -100,8 +99,8 @@ export const EditRemindersSection = () => {
         </LocalizationProvider>
       </Grid>
 
-      {(reminders.length !== 0) && (
-        <RemindersList reminders={reminders} onChange={onChangeReminders}/>
+      {(todo.reminders.length !== 0) && (
+        <RemindersList reminders={todo.reminders} onChange={onChangeReminders}/>
       )}
     </Grid>
   )

@@ -1,67 +1,40 @@
 import React from "react";
 
-import { useDispatch } from "react-redux";
-
 import Dialog from "@material-ui/core/Dialog";
 
-// TODO: rewrite to context
-import {
-  todoesCreateRequestAction,
-  todoesUpdateRequestAction
-} from "../../../../Store/__DEPRECATED__Todoes";
-
-import { EditorContextProvider, newTodo } from "./TodoEditorContext";
-import { TODO_CLOSE_EDITOR, useTodoesListContext } from "../Context";
+import { useEditorContext } from "./TodoEditorContext";
 import { TodoEditor } from "./TodoEditor";
-import { useTodoList } from "../../../../libs/swrHooks";
 
 
 export const TodoEditorDialog = () => {
-  const reduxDispatch = useDispatch();
-  const {data: todoes} = useTodoList();
-
-  const [state, localDispatch] = useTodoesListContext();
-  const editingTodo = React.useMemo(
-    () => state.editorTodo
-      ? todoes[state.editorTodo]
-      : newTodo(),
-    [state.editorTodo]
-  );
-  const isOpen = React.useMemo(
-    () => state.editorTodo !== undefined,
-    [state.editorTodo]
-  );
+  const {todo, dispatch, isEditorOpen, setIsEditorOpen} = useEditorContext();
 
   const onClose = React.useCallback(
-    () => localDispatch({type: TODO_CLOSE_EDITOR}),
-    [localDispatch]
+    () => setIsEditorOpen(false),
+    []
   );
-  // TODO: rewrite on context
+
   const onSave = React.useCallback(
     (todo) => {
-      console.log({todo});
-
       if ( todo.id ) {
-        reduxDispatch(todoesUpdateRequestAction(todo.id, todo));
+        alert("Not Implemented Error!");
       } else {
-        reduxDispatch(todoesCreateRequestAction(todo));
+        alert("Not Implemented Error!");
       }
     },
-    [reduxDispatch]
+    [todo]
   );
 
   return (
     <Dialog
-      open={isOpen}
+      fullWidth
+      open={isEditorOpen}
       onClose={onClose}
-      fullWidth={true}
       maxWidth={"sm"}
     >
       <React.Fragment>
-        {isOpen && (
-          <EditorContextProvider todo={editingTodo}>
-            <TodoEditor onClose={onClose} onSave={onSave}/>
-          </EditorContextProvider>
+        {isEditorOpen && (
+          <TodoEditor onClose={onClose} onSave={onSave}/>
         )}
       </React.Fragment>
     </Dialog>

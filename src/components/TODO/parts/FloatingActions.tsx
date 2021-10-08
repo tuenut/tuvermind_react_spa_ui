@@ -1,31 +1,19 @@
 import React from "react";
 
-import { useDispatch } from "react-redux";
-
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
-import CachedIcon from '@material-ui/icons/Cached';
 import AddIcon from '@material-ui/icons/Add';
 
-import { TODO_OPEN_EDITOR, useTodoesListContext } from "./Context";
-import { actions } from "../../../Store/__DEPRECATED__Todoes";
-
+import { openNewTodoAction, useEditorContext } from "./TodoEditor/TodoEditorContext";
 
 export const FloatingActions = () => {
-  const reduxDispatch = useDispatch();
+  const {dispatch, setIsEditorOpen} = useEditorContext();
 
-  const [, localDispatch] = useTodoesListContext();
-
-  const createNew = React.useCallback(
-    () => localDispatch({type: TODO_OPEN_EDITOR, payload: null}),
-    [localDispatch]
-  );
-
-  const updateList = React.useCallback(
-    () => reduxDispatch(actions.GET_LIST()),
-    [reduxDispatch]
-  );
+  const createNew = React.useCallback(() => {
+    setIsEditorOpen(true);
+    dispatch(openNewTodoAction());
+  }, []);
 
   return (
     <Box position="fixed" bottom={20} right={20}>
@@ -36,11 +24,6 @@ export const FloatingActions = () => {
           </Fab>
         </Grid>
 
-        <Grid item>
-          <Fab color="primary" onClick={updateList}>
-            <CachedIcon/>
-          </Fab>
-        </Grid>
       </Grid>
     </Box>
   )
