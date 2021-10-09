@@ -12,7 +12,8 @@ import { EditorContextProvider } from "./parts/TodoEditor/TodoEditorContext";
 export const Todoes = () => {
   const classes = useStyles();
 
-  const {data, error, isValidating} = useTodoList();
+  const {data, isLoading} = useTodoList();
+  console.log(data);
 
   return (
     <React.Fragment>
@@ -22,7 +23,7 @@ export const Todoes = () => {
 
         <TodoEditorDialog/>
 
-        <Backdrop className={classes.backdrop} open={!data && !error}>
+        <Backdrop className={classes.backdrop} open={isLoading}>
           <CircularProgress color="inherit"/>
         </Backdrop>
 

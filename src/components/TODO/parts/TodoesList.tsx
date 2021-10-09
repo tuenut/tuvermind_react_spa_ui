@@ -8,12 +8,12 @@ import { splitArrayToColumns, convertStoreObjectToArray } from "../../../libs";
 import { useCardCols } from "../../../libs/hooks";
 import { useTodoList } from "../../../libs/swrHooks";
 
-import { TodoCard } from "./TodoCard";
+import { TodoCard } from "./TodoCard/TodoCard";
 
 
 export const TodoesList = () => {
   const {data} = useTodoList();
-  const todoesList = convertStoreObjectToArray(data?.results);
+  const todoesList = convertStoreObjectToArray(data);
   const cols = useCardCols();
 
   return (

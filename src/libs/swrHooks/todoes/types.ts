@@ -1,9 +1,6 @@
-import {DateTime} from "luxon";
-
-import {AxiosResponse} from "axios";
-
-import {PaginatedApiResponse} from "../../types";
-
+import { DateTime } from "luxon";
+import { PaginatedApiResponse } from "../../../types";
+import { AxiosResponse } from "axios";
 
 export const PENDING = "pending";
 export const IN_PROCESS = "inProcess";
@@ -20,7 +17,6 @@ export type TodoStatusType =
   | typeof EXPIRED
   | typeof SUSPENSE
   ;
-
 
 /** API PART
  */
@@ -43,39 +39,26 @@ export interface ITodoFromApi {
   reminders: ITodoReminderFromApi[],
 }
 
-export interface ITodoToApiCreate {
-  title: string,
-  description: string,
-  start_date: string,
-  start_time: string | null,
-  duration: number | null,
-  reminders: ITodoReminderFromApi[],
-}
-
-
 /** Runtime part
  */
-export interface ITodoReminder {
+export interface ITodoReminderObject {
   id?: number,
   when: DateTime
 }
 
-export interface ITodo {
+export interface ITodoObject {
   id: number,
   title: string,
   description: string,
   startDate: DateTime | null,
   startTime: DateTime | null,
   duration: number | null,
-  reminders: ITodoReminder[],
+  reminders: ITodoReminderObject[],
   status: TodoStatusType,
   created: DateTime,
   updated: DateTime | null,
   completed: DateTime | null
 }
 
-export interface IHandleOnSuccessList {
-  (
-    response: AxiosResponse<PaginatedApiResponse<ITodoFromApi>>
-  ): AxiosResponse<PaginatedApiResponse<ITodo>>
-}
+
+export type TodoesListResponseType = AxiosResponse<PaginatedApiResponse<ITodoFromApi>>;

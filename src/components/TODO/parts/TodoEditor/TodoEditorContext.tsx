@@ -2,13 +2,12 @@ import React from "react";
 
 import { DateTime } from "luxon";
 
-import { ITodoEditablePart, ITodoReminder } from "../../../../Store/__DEPRECATED__Todoes/types";
-import { ITodo } from "../../../../__DEPRECATED__API/todoes/types";
 import { makeActionCreator } from "../../../../libs/redux/actions";
+import { ITodoFromApi, ITodoObject, ITodoReminderObject } from "../../../../libs/swrHooks/todoes/types";
 
 
-export const newTodo = (): ITodoEditablePart => ({
-  id: null,
+export const newTodo = (): Partial<ITodoObject> => ({
+  id: undefined,
   title: "",
   description: "",
   startDate: null,
@@ -17,6 +16,7 @@ export const newTodo = (): ITodoEditablePart => ({
   reminders: []
 });
 
+const defaultState = newTodo();
 
 export const SET_TITLE = "SET_TITLE";
 export const SET_DESCRIPTION = "SET_DESCRIPTION";
@@ -25,7 +25,9 @@ export const SET_DATE = "SET_DATE";
 export const SET_TIME = "SET_TIME";
 export const SET_SCHEDULE = "SET_SCHEDULE";
 export const SET_REMINDERS = "SET_REMINDERS";
-export const OPEN_NEW_TODO = "OPEN_NEW_TODO";
+export const CREATE_NEW_TODO = "CREATE_NEW_TODO";
+export const EDIT_TODO = "EDIT_TODO";
+
 
 export interface ISetTitle {
   type: typeof SET_TITLE,
@@ -59,11 +61,16 @@ export interface ISetSchedule {
 
 export interface ISetReminders {
   type: typeof SET_REMINDERS,
-  payload: ITodoReminder[]
+  payload: ITodoReminderObject[]
 }
 
-export interface IOpenNewTodo {
-  type: typeof OPEN_NEW_TODO
+export interface IOpenEditorToCreateNewTodo {
+  type: typeof CREATE_NEW_TODO
+}
+
+export interface IOpenEditorToEditTodo {
+  type: typeof EDIT_TODO,
+  payload: ITodoFromApi
 }
 
 export type EditorActionsTypes =
@@ -74,17 +81,19 @@ export type EditorActionsTypes =
   | ISetDuration
   | ISetSchedule
   | ISetReminders
-  | IOpenNewTodo
+  | IOpenEditorToCreateNewTodo
+  | IOpenEditorToEditTodo
   ;
 
-export const openNewTodoAction = makeActionCreator<IOpenNewTodo>(OPEN_NEW_TODO);
+export const openEditorToCreateNewTodoAction =
+  makeActionCreator<IOpenEditorToCreateNewTodo>(CREATE_NEW_TODO);
+export const openEditorToEditTodoAction =
+  makeActionCreator<IOpenEditorToEditTodo>(EDIT_TODO, "payload");
 
 export type EditorReducer =
-  React.Reducer<ITodoEditablePart | ITodo, EditorActionsTypes>;
+  React.Reducer<ITodoObject, EditorActionsTypes>;
 
-const defaultState = newTodo();
-
-const reducer: EditorReducer = (state = defaultState, action) => {
+const reducer = (state = defaultState, action) => {
   switch (action.type) {
     case SET_TITLE:
       return ({...state, title: action.payload});
@@ -104,8 +113,13 @@ const reducer: EditorReducer = (state = defaultState, action) => {
     case SET_REMINDERS:
       return ({...state, reminders: action.payload});
 
-    case OPEN_NEW_TODO:
+    case CREATE_NEW_TODO:
       return newTodo();
+
+    case EDIT_TODO:
+      return {
+        ...action.payload
+      };
 
     default:
       return state;
@@ -114,7 +128,7 @@ const reducer: EditorReducer = (state = defaultState, action) => {
 
 
 const EditorContext = React.createContext(null! as {
-  todo: ITodo,
+  todo: ITodoObject,
   dispatch: React.Dispatch<EditorActionsTypes>,
   isEditorOpen: boolean,
   setIsEditorOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -122,7 +136,7 @@ const EditorContext = React.createContext(null! as {
 export const useEditorContext = () => React.useContext(EditorContext);
 export const EditorContextProvider = (props) => {
   const [todo, dispatch] =
-    React.useReducer(reducer, {...defaultState as ITodo});
+    React.useReducer(reducer, {...defaultState as ITodoObject});
   const [isEditorOpen, setIsEditorOpen] =
     React.useState<boolean>(false);
 

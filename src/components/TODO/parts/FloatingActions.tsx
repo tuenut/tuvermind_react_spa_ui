@@ -5,14 +5,14 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-import { openNewTodoAction, useEditorContext } from "./TodoEditor/TodoEditorContext";
+import { openEditorToCreateNewTodoAction, useEditorContext } from "./TodoEditor/TodoEditorContext";
 
 export const FloatingActions = () => {
   const {dispatch, setIsEditorOpen} = useEditorContext();
 
   const createNew = React.useCallback(() => {
     setIsEditorOpen(true);
-    dispatch(openNewTodoAction());
+    dispatch(openEditorToCreateNewTodoAction());
   }, []);
 
   return (
