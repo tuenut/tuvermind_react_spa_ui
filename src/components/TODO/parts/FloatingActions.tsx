@@ -19,11 +19,12 @@ export const FloatingActions = () => {
     <Box position="fixed" bottom={20} right={20}>
       <Grid container spacing={2}>
         <Grid item>
+
           <Fab onClick={createNew}>
             <AddIcon/>
           </Fab>
-        </Grid>
 
+        </Grid>
       </Grid>
     </Box>
   )
