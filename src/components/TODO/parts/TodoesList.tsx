@@ -8,7 +8,8 @@ import { splitArrayToColumns, convertStoreObjectToArray } from "../../../libs";
 import { useCardCols } from "../../../libs/hooks";
 import { useTodoList } from "../../../libs/swrHooks";
 
-import { TodoCard } from "./TodoCard/TodoCard";
+import { TodoCard } from "./TodoCard/";
+import { TodoCardContextProvider } from "./TodoCard/TodoCardContext";
 
 
 export const TodoesList = () => {
@@ -25,7 +26,9 @@ export const TodoesList = () => {
 
             {column.map((todo) => (
               <Grid item xs={12} key={todo.id}>
-                <TodoCard todo={todo}/>
+                <TodoCardContextProvider todo={todo}>
+                  <TodoCard todo={todo}/>
+                </TodoCardContextProvider>
               </Grid>
             ))}
 

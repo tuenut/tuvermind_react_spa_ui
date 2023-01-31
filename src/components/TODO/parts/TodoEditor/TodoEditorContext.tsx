@@ -70,7 +70,7 @@ export interface IOpenEditorToCreateNewTodo {
 
 export interface IOpenEditorToEditTodo {
   type: typeof EDIT_TODO,
-  payload: ITodoFromApi
+  payload: ITodoObject
 }
 
 export type EditorActionsTypes =

@@ -9,40 +9,42 @@ import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
+import { useTodoCardContext } from "./TodoCardContext";
 
 
-export const TodoCardTitle =
-  ({todo, completed, openEditor, expanded, onTitleClick}) => {
-    const color = completed ? "primary" : "textPrimary";
+export const TodoCardTitle = () => {
+  const {todo, isCompleted, expanded, onClick} = useTodoCardContext();
 
-    const startDateString = todo.hasOwnProperty("startDate") && (
-      `${todo.startDate.toLocaleString(DateTime.DATE_MED)} ` +
-      `${todo.startTime.toLocaleString(DateTime.TIME_24_SIMPLE)}`
-    );
+  const color = isCompleted ? "primary" : "textPrimary";
 
-    const title = (
-      <Typography color={color} variant={"h5"}>
-        {completed && (<CheckCircleIcon color="primary"/>)}
-        <b>{todo.title}</b>
-      </Typography>
-    );
+  const startDateString = (todo.startDate &&  todo.startTime) && (
+    `${todo.startDate.toLocaleString(DateTime.DATE_MED)} ` +
+    `${todo.startTime.toLocaleString(DateTime.TIME_24_SIMPLE)}`
+  );
 
-    const content = (
-      <Collapse in={!expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography noWrap>
-            {todo.description}
-          </Typography>
+  const title = (
+    <Typography color={color} variant={"h5"}>
+      {isCompleted && (<CheckCircleIcon color="primary"/>)}
+      <b>{todo.title}</b>
+    </Typography>
+  );
 
-        </CardContent>
-      </Collapse>
-    );
+  const content = (
+    <Collapse in={!expanded} timeout="auto" unmountOnExit>
+      <CardContent>
+        <Typography noWrap>
+          {todo.description}
+        </Typography>
 
-    return (
-      <CardActionArea onClick={onTitleClick}>
-        <CardHeader title={title} subheader={!completed && startDateString}/>
+      </CardContent>
+    </Collapse>
+  );
 
-        {content}
-      </CardActionArea>
-    );
-  };
+  return (
+    <CardActionArea onClick={onClick}>
+      <CardHeader title={title} subheader={!isCompleted && startDateString}/>
+
+      {content}
+    </CardActionArea>
+  );
+};

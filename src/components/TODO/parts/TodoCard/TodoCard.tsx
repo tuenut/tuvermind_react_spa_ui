@@ -2,38 +2,16 @@ import React from "react";
 
 import Card from "@material-ui/core/Card/Card";
 
-import { useEditorContext } from "../TodoEditor/TodoEditorContext";
+import { openEditorToEditTodoAction, useEditorContext } from "../TodoEditor/TodoEditorContext";
 import { ITodoObject } from "../../../../libs/swrHooks/todoes/types";
 
 import { TodoCardTitle } from "./TodoCardTitle";
 import { TodoCardActions } from "./TodoCardActions";
 import { TodoCardContent } from "./TodoCardContent";
+import { useTodoCardContext } from "./TodoCardContext";
 
 
 export const TodoCard: React.FC<{ todo: ITodoObject }> = ({todo}) => {
-  const [expanded, setExpand] = React.useState(false);
-
-  const {dispatch, setIsEditorOpen} = useEditorContext();
-
-  const expandCollaapseCard = React.useCallback(
-    () => setExpand(!expanded),
-    [expanded]
-  );
-
-  const isCompleted = React.useMemo(() =>
-      !((todo.status === "suspense") || !(todo.status === "inProcess"))
-    , [todo]
-  );
-
-  const openEditor = React.useCallback(
-    () => {
-      if ( !isCompleted ) {
-        // dispatch(openEditorToEditTodoAction(todo));
-        alert("Not Implemented Error!");
-      }
-    },
-    [todo, isCompleted]
-  );
 
   return (
     <Card>
