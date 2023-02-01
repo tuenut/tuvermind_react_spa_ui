@@ -1,1 +1,1 @@
-export const WEATHER_URL = "/api/weather/";
+export const WEATHER_URL = "/api/v0/weather/";
