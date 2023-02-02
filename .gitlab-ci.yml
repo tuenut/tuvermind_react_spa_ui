@@ -4,7 +4,7 @@ stages:
 build_ui_image:
   stage: build
   tags:
-    - home-server
+    - home-server-shell
   script:
     - docker build --tag tuvermind/spa --tag tuvermind/spa:$(head -n1 .version) .
     - docker image prune --force
